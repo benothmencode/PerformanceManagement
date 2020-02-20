@@ -46,10 +46,6 @@ namespace PerformanceManagement.API
             {
                 endpoints.MapControllers();
             });
-
-
-
-            //mycommit
         }
     }
 }

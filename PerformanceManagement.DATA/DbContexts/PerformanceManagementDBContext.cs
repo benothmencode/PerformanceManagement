@@ -18,5 +18,12 @@ namespace PerformanceManagement.DATA.DbContexts
         public DbSet<User> Users { get; set; }
         public DbSet<Badge> Badges { get; set; }
 
+        public DbSet<Resource> Resources { get; set; }
+
+        public DbSet<Resource_Parameter> ResourceParameters { get; set; }
+
+        public DbSet<Resource_URI> ResourcesURIS { get; set; }
+
+
     }
 }

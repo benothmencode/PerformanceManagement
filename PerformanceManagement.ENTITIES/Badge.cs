@@ -15,5 +15,7 @@ namespace PerformanceManagement.ENTITIES
         public byte Icon { get; set; }
         [Required]
         public string Description { get; set; }
+        public int BadgesCriteria { get; set; }
+        public ICollection<UserBadge> UserBadges { get; set; }
     }
 }

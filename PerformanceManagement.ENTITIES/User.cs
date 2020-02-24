@@ -26,7 +26,9 @@ namespace PerformanceManagement.ENTITIES
         public byte[] PasswordHash { get; set; }
 
         [Required]
-        public List<User_system> UserSystList { get; set; }
+ 
+        public ICollection<UserBadge> UserBadges { get; set; }
+        public ICollection<User_system> User_Systems { get; set; }
 
     }
 }

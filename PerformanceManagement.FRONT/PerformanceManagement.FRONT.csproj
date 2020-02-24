@@ -4,6 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PerformanceManagement.API\PerformanceManagement.API.csproj" />
+    <ProjectReference Include="..\PerformanceManagement.DATA\PerformanceManagement.DATA.csproj" />
+    <ProjectReference Include="..\PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj" />
+  </ItemGroup>
+
 
 
 </Project>

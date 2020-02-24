@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceManagement.API", "PerformanceManagement.API\PerformanceManagement.API.csproj", "{EBDC10A2-B2E5-4DDE-805D-0809977BAC32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.API", "PerformanceManagement.API\PerformanceManagement.API.csproj", "{EBDC10A2-B2E5-4DDE-805D-0809977BAC32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceManagement.DATA", "PerformanceManagement.DATA\PerformanceManagement.DATA.csproj", "{DDFFBD87-23DA-4100-964D-4CFB6F9A9F56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.DATA", "PerformanceManagement.DATA\PerformanceManagement.DATA.csproj", "{DDFFBD87-23DA-4100-964D-4CFB6F9A9F56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceManagement.ENTITIES", "PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj", "{492A2265-1DAD-46C9-8ABA-C098E605154A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.ENTITIES", "PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj", "{492A2265-1DAD-46C9-8ABA-C098E605154A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceManagement.FRONT", "PerformanceManagement.FRONT\PerformanceManagement.FRONT.csproj", "{4AD2C7F8-C322-4808-B9EF-C95873E348D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.FRONT", "PerformanceManagement.FRONT\PerformanceManagement.FRONT.csproj", "{4AD2C7F8-C322-4808-B9EF-C95873E348D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

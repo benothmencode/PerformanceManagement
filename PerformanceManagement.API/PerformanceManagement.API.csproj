@@ -8,5 +8,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PerformanceManagement.DATA\PerformanceManagement.DATA.csproj" />
+    <ProjectReference Include="..\PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj" />
+  </ItemGroup>
+
 
 </Project>

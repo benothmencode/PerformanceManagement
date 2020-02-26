@@ -13,5 +13,6 @@ namespace PerformanceManagement.API.Models.SystemEntityModel
 
         [Required]
         public string BasePath { get; set; }
+
     }
 }

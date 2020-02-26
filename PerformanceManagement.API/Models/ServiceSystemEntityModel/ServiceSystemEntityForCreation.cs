@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PerformanceManagement.API.Models.SystemEntityModel
 {
-    public class SystemEntityForCreation
+    public class ServiceSystemEntityForCreation
     {
         [Required]
         public string SystemName { get; set; }

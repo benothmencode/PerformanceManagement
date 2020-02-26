@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace PerformanceManagement.API.Profiles
 {
-    public class SystemProfile : Profile
+    public class ServiceSystemProfile : Profile
     {
 
-        public SystemProfile()
+        public ServiceSystemProfile()
         {
-            CreateMap<ENTITIES.ServiceSystem, SystemEntityDto>();
-            CreateMap<SystemEntityForCreation, ENTITIES.Resource>();
+            CreateMap<ENTITIES.ServiceSystem, ServiceSystemEntityDto>();
+            CreateMap<ServiceSystemEntityForCreation, ENTITIES.Resource>();
 
 
 

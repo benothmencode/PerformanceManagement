@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PerformanceManagement.API.Models.SystemEntityModel
 {
-    public class SystemEntityDto
+    public class ServiceSystemEntityDto
     {
     }
 }

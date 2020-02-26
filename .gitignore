@@ -339,6 +339,7 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+appsettings.json
 
 # ignore an entire directory
 /PerformanceManagement.DATA/Migrations/

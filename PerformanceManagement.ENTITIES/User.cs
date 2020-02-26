@@ -11,6 +11,7 @@ namespace PerformanceManagement.ENTITIES
     {
         [Key]
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         [Required]
         public string Email { get; set; }
@@ -20,11 +21,15 @@ namespace PerformanceManagement.ENTITIES
         public string LastName { get; set; }
         [Required]
         public string Username { get; set; }
-        [Required]
+        
         public byte[] PasswordSalt { get; set; }
-        [Required]
+      
         public byte[] PasswordHash { get; set; }
-
+       
+        public DateTime Created { get; set; }
+     
+        public DateTime Modified { get; set; }
+       
         [Required]
  
         public ICollection<UserBadge> UserBadges { get; set; }

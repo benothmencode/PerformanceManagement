@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceManagement.DATA.DbContexts;
 
 namespace PerformanceManagement.DATA.Migrations
 {
     [DbContext(typeof(PerformanceManagementDBContext))]
-    partial class PerformanceManagementDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200224162303_FMigration")]
+    partial class FMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,28 +46,6 @@ namespace PerformanceManagement.DATA.Migrations
                     b.ToTable("Badges");
                 });
 
-            modelBuilder.Entity("PerformanceManagement.ENTITIES.ParameterValues", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ResourceParameterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResourceParameterId");
-
-                    b.ToTable("ParameterValues");
-                });
-
             modelBuilder.Entity("PerformanceManagement.ENTITIES.Resource", b =>
                 {
                     b.Property<Guid>("Id")
@@ -74,7 +54,7 @@ namespace PerformanceManagement.DATA.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SystemId")
                         .HasColumnType("uniqueidentifier");
@@ -85,15 +65,12 @@ namespace PerformanceManagement.DATA.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.HasIndex("SystemId");
 
                     b.ToTable("Resource");
                 });
 
-            modelBuilder.Entity("PerformanceManagement.ENTITIES.ResourceParameter", b =>
+            modelBuilder.Entity("PerformanceManagement.ENTITIES.Resource_Parameter", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +85,7 @@ namespace PerformanceManagement.DATA.Migrations
                     b.Property<string>("Key")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ResourceURIId")
+                    b.Property<Guid>("ResourceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Value")
@@ -116,7 +93,7 @@ namespace PerformanceManagement.DATA.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ResourceURIId");
+                    b.HasIndex("ResourceId");
 
                     b.ToTable("ResourceParameter");
                 });
@@ -150,7 +127,7 @@ namespace PerformanceManagement.DATA.Migrations
                     b.ToTable("ResourceURI");
                 });
 
-            modelBuilder.Entity("PerformanceManagement.ENTITIES.ServiceSystem", b =>
+            modelBuilder.Entity("PerformanceManagement.ENTITIES.System", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,7 +141,7 @@ namespace PerformanceManagement.DATA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceSystems");
+                    b.ToTable("System");
                 });
 
             modelBuilder.Entity("PerformanceManagement.ENTITIES.User", b =>
@@ -251,29 +228,20 @@ namespace PerformanceManagement.DATA.Migrations
                     b.ToTable("User_system");
                 });
 
-            modelBuilder.Entity("PerformanceManagement.ENTITIES.ParameterValues", b =>
-                {
-                    b.HasOne("PerformanceManagement.ENTITIES.ResourceParameter", "resourceParameter")
-                        .WithMany("ExpectedValues")
-                        .HasForeignKey("ResourceParameterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PerformanceManagement.ENTITIES.Resource", b =>
                 {
-                    b.HasOne("PerformanceManagement.ENTITIES.ServiceSystem", "System")
+                    b.HasOne("PerformanceManagement.ENTITIES.System", "System")
                         .WithMany("ResourceList")
                         .HasForeignKey("SystemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PerformanceManagement.ENTITIES.ResourceParameter", b =>
+            modelBuilder.Entity("PerformanceManagement.ENTITIES.Resource_Parameter", b =>
                 {
-                    b.HasOne("PerformanceManagement.ENTITIES.Resource_URI", "ResourceURI")
+                    b.HasOne("PerformanceManagement.ENTITIES.Resource", "Resource")
                         .WithMany("ParameterList")
-                        .HasForeignKey("ResourceURIId")
+                        .HasForeignKey("ResourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

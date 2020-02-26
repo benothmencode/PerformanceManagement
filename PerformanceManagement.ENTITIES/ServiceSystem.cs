@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PerformanceManagement.ENTITIES
 {
-    public class System
+    public class ServiceSystem
     {
         public Guid Id { get; set; }
         public string SystemName { get; set; }

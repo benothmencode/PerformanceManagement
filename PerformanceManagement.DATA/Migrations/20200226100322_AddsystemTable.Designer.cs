@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceManagement.DATA.DbContexts;
 
 namespace PerformanceManagement.DATA.Migrations
 {
     [DbContext(typeof(PerformanceManagementDBContext))]
-    partial class PerformanceManagementDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200226100322_AddsystemTable")]
+    partial class AddsystemTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,7 +152,7 @@ namespace PerformanceManagement.DATA.Migrations
                     b.ToTable("ResourceURI");
                 });
 
-            modelBuilder.Entity("PerformanceManagement.ENTITIES.ServiceSystem", b =>
+            modelBuilder.Entity("PerformanceManagement.ENTITIES.System", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,7 +166,7 @@ namespace PerformanceManagement.DATA.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceSystems");
+                    b.ToTable("Systems");
                 });
 
             modelBuilder.Entity("PerformanceManagement.ENTITIES.User", b =>
@@ -262,7 +264,7 @@ namespace PerformanceManagement.DATA.Migrations
 
             modelBuilder.Entity("PerformanceManagement.ENTITIES.Resource", b =>
                 {
-                    b.HasOne("PerformanceManagement.ENTITIES.ServiceSystem", "System")
+                    b.HasOne("PerformanceManagement.ENTITIES.System", "System")
                         .WithMany("ResourceList")
                         .HasForeignKey("SystemId")
                         .OnDelete(DeleteBehavior.Cascade)

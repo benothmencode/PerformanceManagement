@@ -13,7 +13,8 @@ namespace PerformanceManagement.DATA.DbContexts
 
             modelBuilder.Entity<User>().HasIndex(s => s.Username).IsUnique();
             modelBuilder.Entity<User>().HasIndex(s => s.Email).IsUnique();
-           
+            modelBuilder.Entity<Resource>().HasIndex(r => r.Name).IsUnique();
+
             //many to many between user and badge
             modelBuilder.Entity<UserBadge>()
         .HasKey(ub => new { ub.UserId, ub.BadgeId });
@@ -40,8 +41,9 @@ namespace PerformanceManagement.DATA.DbContexts
         public DbSet<Badge> Badges { get; set; }
 
         public DbSet<Resource> Resources { get; set; }
+        public DbSet<ENTITIES.ServiceSystem> ServiceSystems { get; set; }
 
-        public DbSet<Resource_Parameter> ResourceParameters { get; set; }
+        public DbSet<ResourceParameter> ResourceParameters { get; set; }
 
         public DbSet<Resource_URI> ResourcesURIS { get; set; }
 

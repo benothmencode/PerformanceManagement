@@ -19,13 +19,16 @@ namespace PerformanceManagement.ENTITIES
         [Required]
         public string Type { get; set; }
 
+
+        
         [ForeignKey("SystemId")]
         public Guid SystemId { get; set; }
-        public System System { get; set; }
+
+        public ServiceSystem System { get; set; }
 
 
         public List<Resource_URI> URIList { get; set; }
 
-        public List<Resource_Parameter> ParameterList { get; set; }
+        
     }
 }

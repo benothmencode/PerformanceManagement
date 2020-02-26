@@ -23,6 +23,8 @@ namespace PerformanceManagement.ENTITIES
 
         public string ConfigValue { get; set; }
 
+        public List<ResourceParameter> ParameterList { get; set; }
+
         [ForeignKey("ResourceId")]
         public Guid ResourceId { get; set; }
         public Resource Resource { get; set; }

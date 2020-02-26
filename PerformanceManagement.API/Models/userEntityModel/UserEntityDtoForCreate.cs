@@ -2,23 +2,29 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace PerformanceManagement.ENTITIES
+namespace PerformanceManagement.API.Models.userEntityModel
 {
-    public class Badge
+    public class UserEntityDtoForCreate
     {
+
+
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         [Required]
-        public string Title { get; set; }
+        public string LastName { get; set; }
         [Required]
-        public byte Icon { get; set; }
+        public string FirstName { get; set; }
         [Required]
-        public string Description { get; set; }
-        public int BadgesCriteria { get; set; }
-        public ICollection<UserBadge> UserBadges { get; set; }
+        public string Username { get; set; }
+        [Required]
+        public string Email { get; set; }
+
+
     }
 }

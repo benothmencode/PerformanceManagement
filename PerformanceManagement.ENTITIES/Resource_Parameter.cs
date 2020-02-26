@@ -13,7 +13,7 @@ namespace PerformanceManagement.ENTITIES
         public string Value { get; set; }
         public bool IsSpecific { get; set; }
         public string Description { get; set; }
-
+        [NotMapped]
         public List<string> ExpectedValues  { get; set; }
 
         [ForeignKey("ResourceId")]

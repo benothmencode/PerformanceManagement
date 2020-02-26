@@ -6,6 +6,7 @@ namespace PerformanceManagement.ENTITIES
 {
     public class System
     {
+
         public Guid Id { get; set; }
         public string SystemName { get; set; }
 

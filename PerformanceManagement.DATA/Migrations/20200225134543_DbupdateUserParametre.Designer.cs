@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PerformanceManagement.DATA.DbContexts;
 
 namespace PerformanceManagement.DATA.Migrations
 {
     [DbContext(typeof(PerformanceManagementDBContext))]
-    partial class PerformanceManagementDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200225134543_DbupdateUserParametre")]
+    partial class DbupdateUserParametre
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,7 +192,6 @@ namespace PerformanceManagement.DATA.Migrations
             modelBuilder.Entity("PerformanceManagement.ENTITIES.UserBadge", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BadgeId")

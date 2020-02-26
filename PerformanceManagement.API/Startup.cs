@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
+using PerformanceManagement.DATA.Repositories.BadgeRepository;
 
 namespace PerformanceManagement.API
 {
@@ -28,6 +29,8 @@ namespace PerformanceManagement.API
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBadgeRepository, BadgeRepository>();
+           
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
@@ -39,7 +42,7 @@ namespace PerformanceManagement.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+           
             app.UseHttpsRedirection();
 
             app.UseRouting();

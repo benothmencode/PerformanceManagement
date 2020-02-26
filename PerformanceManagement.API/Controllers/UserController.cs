@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PerformanceManagement.DATA.Repositories;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using PerformanceManagement.API.Models;
 using PerformanceManagement.ENTITIES;

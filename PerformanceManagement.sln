@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.DATA"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.ENTITIES", "PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj", "{492A2265-1DAD-46C9-8ABA-C098E605154A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectF", "ProjectF\ProjectF.csproj", "{96889A28-4626-437E-90C5-A05034999C78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{492A2265-1DAD-46C9-8ABA-C098E605154A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{492A2265-1DAD-46C9-8ABA-C098E605154A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{492A2265-1DAD-46C9-8ABA-C098E605154A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96889A28-4626-437E-90C5-A05034999C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96889A28-4626-437E-90C5-A05034999C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96889A28-4626-437E-90C5-A05034999C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96889A28-4626-437E-90C5-A05034999C78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

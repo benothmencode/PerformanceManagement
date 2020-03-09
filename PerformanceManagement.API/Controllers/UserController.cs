@@ -7,6 +7,7 @@ using AutoMapper;
 using PerformanceManagement.API.Models;
 using PerformanceManagement.ENTITIES;
 using PerformanceManagement.API.Models.userEntityModel;
+using PerformanceManagement.FRONT.Pages;
 
 namespace PerformanceManagement.API.Controllers
 {
@@ -100,10 +101,24 @@ namespace PerformanceManagement.API.Controllers
         
         }
 
+        public override RedirectToPageResult RedirectToPage(string Index)
+        {
+            return base.RedirectToPage(Index);
+        }
 
 
 
 
+        //[HttpGet("{UserId}")]
+        //[ActionName("GetListOfBadgesForUser")]
+
+        ////public List<Badge> GetListBadges(Guid UserId) 
+        ////{
+
+
+        ////    return L;
+
+        ////}
 
 
     }

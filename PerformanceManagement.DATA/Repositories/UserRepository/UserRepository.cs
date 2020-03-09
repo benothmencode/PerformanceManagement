@@ -231,5 +231,16 @@ namespace PerformanceManagement.DATA.Repositories
             }
         }
 
+        //public List<Badge> GetListBadges(Guid UserId)
+        //{
+
+        //    User user = GetById(UserId);
+        //    if UserId = user.Id;
+
+
+        //}
+
+
+
     }
 }

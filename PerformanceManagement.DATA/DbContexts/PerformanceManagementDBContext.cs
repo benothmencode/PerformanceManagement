@@ -28,10 +28,10 @@ namespace PerformanceManagement.DATA.DbContexts
                 .HasForeignKey(ub => ub.BadgeId);
 
 
-            //One To Many between User and User_System
-            modelBuilder.Entity<User>()
-        .HasMany(u => u.User_Systems)
-        .WithOne(s => s.User);
+        //    //One To Many between User and User_System
+        //    modelBuilder.Entity<User>()
+        //.HasMany(u => u.User_Systems)
+        //.WithOne(s => s.User);
 
 
 

@@ -14,7 +14,7 @@ namespace ProjectF.Models
         public int UserProgression { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime BadgeDeadline { get; set; } 
-
+        //lkzdaz
 
     }
 }

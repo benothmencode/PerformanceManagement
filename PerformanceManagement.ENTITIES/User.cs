@@ -10,16 +10,16 @@ namespace PerformanceManagement.ENTITIES
     public class User
     {
         [Key]
-        [Required]
+       // [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        [Required]
+        //[Required]
         public string Email { get; set; }
-        [Required]
+        //[Required]
         public string FirstName { get; set; }
-        [Required]
+       // [Required]
         public string LastName { get; set; }
-        [Required]
+        //[Required]
         public string Username { get; set; }
         
         public byte[] PasswordSalt { get; set; }

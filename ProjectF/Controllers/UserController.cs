@@ -10,13 +10,8 @@ namespace ProjectF.Controllers
 {
     public class UserController : Controller
     {
-        // GET: User
-        public ActionResult Profile()
-        {
-            
-            var badges = new List<Badge>();
-
-            badges.Add(new Badge()
+        static IList<Badge> badges = new List<Badge>(){
+            new Badge()
             {
                 Id = 1,
                 Icon = "BadgeImage",
@@ -25,18 +20,20 @@ namespace ProjectF.Controllers
                 UserProgression = 25,
                 StartedAt = new DateTime(2020, 03, 06).ToString("dd/MM/yyyy"),
                 BadgeDeadline = new DateTime(2020, 05, 06).ToString("dd/MM/yyyy")
-            });
-            badges.Add(new Badge()
-            {
-                Id = 2,
+            },
+            new Badge()
+             {
+            Id = 2,
                 Icon = "BadgeImage",
                 Title = "30 Todos",
                 BadgeCriteria = 30,
                 UserProgression = 70,
                 StartedAt = new DateTime(2029, 04, 06).ToString("dd/MM/yyyy"),
                 BadgeDeadline = new DateTime(2020, 03, 06).ToString("dd/MM/yyyy")
-            });
-            var user = new User()
+            }
+        };
+        static IList<User> users = new List<User>()
+        {new User()
             {
                 Id = 1,
                 Username = "Wijden",
@@ -46,11 +43,49 @@ namespace ProjectF.Controllers
                 Location = "Manouba,Tunisia",
                 Skills = "UI Design Coding Javascript PHP Node.js",
                 Badges=badges
-            };
-           
-          
+            },
+            new User() { Id = 2,
+                Username = "racha",
+                Userimage ="user8-128x128.jpg",
+                Job = "Software Engineer",
+                Description = "Hi i'm a Member of IyaSoft company",
+                Skills = "UI Design Coding Javascript PHP Node.js",
+                Location = "Manouba-Tunisia" ,
+                Badges=badges
+            },
+            new User() { Id = 3,
+                Username = "Hassen",
+                Userimage ="user1-128x128.jpg",
+                Job = "Software Engineer",
+                Description = "Hi i'm a Member of IyaSoft company",
+                Skills = "UI Design Coding Javascript PHP Node.js",
+                Location = "Tunisia",
+                Badges=badges
+            },
+            new User() { Id = 4, Username = "jihed",
+                Userimage ="user2-160x160.jpg",
+                Job = "Software Engineer",
+                Description = "Hi i'm a Member of IyaSoft company",
+                Skills = "UI Design Coding Javascript PHP Node.js",
+                Location = "Manouba-Tunisia",
+                Badges=badges
+            }
+        };
+
+        // GET: User
+        public ActionResult Profile(int idUser)
+        {
+            User user = users.FirstOrDefault(u => u.Id == idUser);
             return View(user);
         }
+
+        
+        public ActionResult ListEmployees()
+        { 
+            return View("Employees",users);
+        }
+
+
 
         //    // GET: User/Details/5
         //    public ActionResult Details(int id)

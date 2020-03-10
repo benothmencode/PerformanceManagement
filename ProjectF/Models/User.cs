@@ -16,7 +16,7 @@ namespace ProjectF.Models
         public string Location { get; set; }
         public string Skills { get; set; }
 
-        public List<Badge> Badges { get; set; }
+        public IList<Badge> Badges { get; set; }
         public List<Vote> Votes { get; set; }
 
        

@@ -13,7 +13,7 @@ namespace ProjectF.Models
         public DateTime ObtainDate { get; set; }
         public int UserProgression { get; set; }
         public DateTime StartedAt { get; set; }
-        public DateTime BadgeDeadline { get; set; }
+        public DateTime BadgeDeadline { get; set; } 
 
 
     }

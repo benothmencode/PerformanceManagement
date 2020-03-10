@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PerformanceManagement.ENTITIES;
 using ProjectF.Models;
 
 namespace ProjectF.Controllers
@@ -20,6 +21,24 @@ namespace ProjectF.Controllers
 
         public IActionResult Index()
         {
+            //var d = new DateTime(2020,10,9);
+            //ViewBag.date = d;
+            //var c = d.Minute;
+            //ViewBag.time =c;
+            
+            //var sender = new User();
+            //var username = sender.Username = "Racha";
+            //ViewBag.sender = username;
+
+            //var action = "Send you an email";
+            //ViewBag.action = action;
+
+
+            //var description = "this is the description of the action";
+            //ViewBag.description = description;
+
+            
+
             return View();
         }
 

@@ -12,9 +12,9 @@ namespace ProjectF.Models
         public string Icon { get; set; }
         public DateTime ObtainDate { get; set; }
         public int UserProgression { get; set; }
-        public DateTime StartedAt { get; set; }
-        public DateTime BadgeDeadline { get; set; } 
-        //lkzdaz
+        public string StartedAt { get; set; }
+        public string BadgeDeadline { get; set; }
+        public int BadgeCriteria { get; set; }
 
     }
 }

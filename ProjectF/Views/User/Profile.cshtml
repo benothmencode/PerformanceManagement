@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjectF.Models.User>
+﻿@model User
 
 @{
     ViewData["Title"] = "Profile";
@@ -32,18 +32,18 @@
                     <div class="card card-primary card-outline h-100">
                         <div class="card-body box-profile">
                             <div class="text-center">
-                                <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg"
+                                <img class="profile-user-img img-fluid img-circle" src="~/theme/dist/img/@Model.Userimage"
                                      alt="User profile picture">
                             </div>
 
-                            <h3 class="profile-username text-center">Wijden</h3>
+                            <h3 class="profile-username text-center">@Model.Username</h3>
 
-                            <p class="text-muted text-center">Software Engineer</p>
+                            <p class="text-muted text-center">@Model.Job</p>
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
-                                    <b>Total Badges</b> <a class="float-right">20</a>
-                                </li>
+                                    <b>Total Badges</b> <a class="float-right">@Model.Badges.Count()</a>
+</li>
                                 <li class="list-group-item">
                                     <b>Total Votes</b> <a class="float-right">543</a>
                                 </li>
@@ -68,38 +68,28 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <strong><i class="fas fa-book mr-1"></i> Education</strong>
+                            <strong><i class="fas fa-book mr-1"></i> Description</strong>
 
                             <p class="text-muted">
-                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                @Model.Description
                             </p>
 
                             <hr>
 
                             <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
-                            <p class="text-muted">Malibu, California</p>
+                            <p class="text-muted">@Model.Location</p>
 
                             <hr>
 
                             <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
 
                             <p class="text-muted">
-                                <span class="tag tag-danger">UI Design</span>
-                                <span class="tag tag-success">Coding</span>
-                                <span class="tag tag-info">Javascript</span>
-                                <span class="tag tag-warning">PHP</span>
-                                <span class="tag tag-primary">Node.js</span>
+                                <span class="tag tag-danger">@Model.Skills</span>
+                                
                             </p>
 
                             <hr>
-
-                            <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
-
-                            <p class="text-muted">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim
-                                neque.
-                            </p>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -113,7 +103,7 @@
                 <div class="col-lg-9 mb-4">
                     <div class="card card-primary h-100">
                         <div class="card-header p-2">
-                            <h2 class="card-title" class="text-primary">This Month achievement</h2>
+                            <h2 class="card-title">This Month achievement</h2>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -131,31 +121,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach (var item in Model.Badges)
+                                        {
                                         <tr>
                                             <td></td>
-                                            <td>50 commits </td>
+                                            <td>@item.Title </td>
                                             <td>
                                                 <div class="progress progress-xs">
-                                                    <div class="progress-bar progress-bar-danger" style="width: 50%"></div>
+                                                    <div class="progress-bar progress-bar-danger" style="width: @item.UserProgression%"></div>
                                                 </div>
                                             </td>
-                                            <td><span class="badge bg-danger">50%</span></td>
-                                            <td>06/03/2020 </td>
-                                            <td>06/05/2020 </td>
+                                            <td><span class="badge bg-danger">@item.UserProgression%</span></td>
+                                            <td>@item.StartedAt</td>
+                                            <td>@item.BadgeDeadline</td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>30 Todos </td>
-                                            <td>
-                                                <div class="progress progress-xs">
-                                                    <div class="progress-bar bg-warning" style="width: 70%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-warning">70%</span></td>
-                                            <td>06/03/2020 </td>
-                                            <td>06/05/2020 </td>
-                                        </tr>
-
+                                        }
                                     </tbody>
                                 </table>
 

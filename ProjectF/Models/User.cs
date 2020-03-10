@@ -9,15 +9,16 @@ namespace ProjectF.Models
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public string Userprofile { get; set; }
+        public string Userimage { get; set; }
         public string Job { get; set; }
         public string Description { get; set; }
 
         public string Location { get; set; }
         public string Skills { get; set; }
-        public List<Badge> Badges = new List<Badge>();
-   
 
+        public List<Badge> Badges { get; set; }
+        public List<Vote> Votes { get; set; }
 
+       
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectF.Models;
+using System;
+using System.Collections.Generic;
 
 namespace ProjectF.Controllers
 {
@@ -13,12 +11,13 @@ namespace ProjectF.Controllers
         {
 
             var badges = new List<Badge>();
-            
-            badges.Add(new Badge{ 
-            Title="50 Commit",
-            UserProgression=50,
+
+            badges.Add(new Badge
+            {
+                Title = "50 Commit",
+                UserProgression = 50,
                 StartedAt = new DateTime(2020, 12, 05).ToString("dd/MM/yyyy"),
-            BadgeDeadline=new DateTime(2021,02,06).ToString("dd/MM/yyyy")
+                BadgeDeadline = new DateTime(2021, 02, 06).ToString("dd/MM/yyyy")
             });
 
             badges.Add(new Badge

@@ -20,23 +20,23 @@ namespace ProjectF.Controllers
         public IActionResult Index()
         {
             var users = new List<User>();
-            users.Add(new User() { Id=1 ,Username = "Racha" });
-            users.Add(new User() {Id=2, Username = "Wijden" });
+            users.Add(new User() { Id = 1, Username = "Racha" });
+            users.Add(new User() { Id = 2, Username = "Wijden" });
             var events = new List<Event>();
             var DayEvents = new List<DayEvent>();
 
             DayEvents.Add(new DayEvent
             {
-                Id=2,
+                Id = 2,
                 Title = "first",
-                Description="this is a description",
-                User = users.FirstOrDefault(user =>user.Id==1),
-                Action="Commented your photo",
-                TimeLeft=new System.TimeSpan()
+                Description = "this is a description",
+                User = users.FirstOrDefault(user => user.Id == 1),
+                Action = "Commented your photo",
+                TimeLeft = new System.TimeSpan()
             });
             DayEvents.Add(new DayEvent
             {
-                Id=1,
+                Id = 1,
                 Title = "Second",
                 Description = "this is a description",
                 User = users.FirstOrDefault(user => user.Id == 2),
@@ -47,7 +47,7 @@ namespace ProjectF.Controllers
             events.Add(new Event
             {
 
-                Date = new System.DateTime(2020,05,03),
+                Date = new System.DateTime(2020, 05, 03),
                 DayEvents = DayEvents
 
             });

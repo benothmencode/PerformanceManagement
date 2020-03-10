@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectF.Models;
+using System.Collections.Generic;
 
 namespace ProjectF.Controllers
 {
@@ -18,7 +15,7 @@ namespace ProjectF.Controllers
             return View(votes);
         }
 
-        
+
 
         //public User offerVote(int idVote)
         //{

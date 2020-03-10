@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using ProjectF.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ProjectF.Models;
 
 namespace ProjectF.Controllers
 {
@@ -79,10 +77,10 @@ namespace ProjectF.Controllers
             return View(user);
         }
 
-        
+
         public ActionResult ListEmployees()
-        { 
-            return View("Employees",users);
+        {
+            return View("Employees", users);
         }
 
 

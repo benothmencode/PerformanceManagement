@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ProjectF.Models
 {
@@ -19,6 +16,6 @@ namespace ProjectF.Models
         public IList<Badge> Badges { get; set; }
         public List<Vote> Votes { get; set; }
 
-       
+
     }
 }

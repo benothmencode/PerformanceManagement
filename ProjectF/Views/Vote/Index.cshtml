@@ -1,0 +1,167 @@
+﻿@model IEnumerable<ProjectF.Models.Vote>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+
+
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="content">
+            <div class="container-fluid">
+
+
+                <div class="row">
+                    <div class="card-body">
+                        <h2>Votes </h2>
+                        <hr>
+                        <table class="table table-striped projects">
+                            <thead>
+                            <th style="width:20%">
+                                Votes
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Offer To
+                            </th>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                <tr>
+                                    <td> @item.Title </td>
+                                    <td>
+                                        @item.Quantity
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary">Offer</button>
+                                    </td>
+                                </tr>
+                                }
+                               
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+                @*<div class="row">
+                    <div class="card-body">
+                        <h2>Awards </h2>
+                        <hr>
+                        <table class="table table-striped projects">
+                            <thead>
+                            <th style="width: 20%">
+                                Votes
+                            </th>
+                            <th>
+                                Given to
+                            </th>
+
+                            <th> Offered in </th>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> Helpful </td>
+                                    <td>
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">
+                                                <a href="#"><img alt="Avatar" class="table-avatar" src="../../dist/img/user1-128x128.jpg"></a>
+                                            </li>
+
+                                        </ul>
+
+
+                                    </td>
+
+                                    <td> 12Feb.2020</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Smart </td>
+                                    <td>
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">
+                                                <img alt="Avatar" class="table-avatar" src="../../dist/img/user8-128x128.jpg">
+                                            </li>
+
+                                        </ul>
+                                    </td>
+                                    <td> 30Jan.2020</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td> Helpful </td>
+                                    <td>
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">
+                                                <img alt="Avatar" class="table-avatar" src="../../dist/img/user8-128x128.jpg">
+                                            </li>
+
+                                        </ul>
+
+
+                                    </td>
+
+                                    <td> 15July.2020</td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+
+                </div>*@
+
+
+                <!-- Vote Cards -->
+                <!-- Awards Cards -->
+                <hr>
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+
+
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </section>
+</div>
+<!-- ./wrapper -->

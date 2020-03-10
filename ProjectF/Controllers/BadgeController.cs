@@ -17,16 +17,16 @@ namespace ProjectF.Controllers
             badges.Add(new Badge{ 
             Title="50 Commit",
             UserProgression=50,
-            StartedAt=new DateTime(2020,12,05),
-            BadgeDeadline=new DateTime(2021,02,06)
+                StartedAt = new DateTime(2020, 12, 05).ToString("dd/MM/yyyy"),
+            BadgeDeadline=new DateTime(2021,02,06).ToString("dd/MM/yyyy")
             });
 
             badges.Add(new Badge
             {
                 Title = "30 Todos",
                 UserProgression = 70,
-                StartedAt = new DateTime(2020, 01, 05),
-                BadgeDeadline = new DateTime(2020, 02, 06)
+                StartedAt = new DateTime(2020, 01, 05).ToString("dd/MM/yyyy"),
+                BadgeDeadline = new DateTime(2020, 02, 06).ToString("dd/MM/yyyy")
             });
 
 

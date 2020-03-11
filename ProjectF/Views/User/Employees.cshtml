@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<ProjectF.Models.User>
+
 @{
     ViewData["Title"] = "Employees";
+     var  id = ViewData["idvote"] ;
 }
 
 
@@ -52,7 +54,6 @@
                             <img src="~/theme/dist/img/@item.Userimage " alt="User Image"><br />
                             @Html.ActionLink(@item.Username, "Profile", new { idUser = item.Id })
                             <span class="users-list-date">Today</span>
-
                         </li>
                         }
                     </ul>

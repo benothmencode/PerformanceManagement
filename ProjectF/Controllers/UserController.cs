@@ -8,6 +8,7 @@ namespace ProjectF.Controllers
 {
     public class UserController : Controller
     {
+        static IList<Vote> Votess = VoteController.votes;
         static IList<Badge> badges = new List<Badge>(){
             new Badge()
             {
@@ -30,7 +31,8 @@ namespace ProjectF.Controllers
                 BadgeDeadline = new DateTime(2020, 03, 06).ToString("dd/MM/yyyy")
             }
         };
-        static IList<User> users = new List<User>()
+        
+        public static IList<User> users = new List<User>()
         {new User()
             {
                 Id = 1,
@@ -40,7 +42,8 @@ namespace ProjectF.Controllers
                 Description = "Hi i'm a Member of IyaSoft company",
                 Location = "Manouba,Tunisia",
                 Skills = "UI Design Coding Javascript PHP Node.js",
-                Badges=badges
+                Badges=badges,
+                
             },
             new User() { Id = 2,
                 Username = "racha",
@@ -49,7 +52,8 @@ namespace ProjectF.Controllers
                 Description = "Hi i'm a Member of IyaSoft company",
                 Skills = "UI Design Coding Javascript PHP Node.js",
                 Location = "Manouba-Tunisia" ,
-                Badges=badges
+                Badges=badges,
+               
             },
             new User() { Id = 3,
                 Username = "Hassen",
@@ -58,7 +62,8 @@ namespace ProjectF.Controllers
                 Description = "Hi i'm a Member of IyaSoft company",
                 Skills = "UI Design Coding Javascript PHP Node.js",
                 Location = "Tunisia",
-                Badges=badges
+                Badges=badges,
+               
             },
             new User() { Id = 4, Username = "jihed",
                 Userimage ="user2-160x160.jpg",
@@ -66,9 +71,11 @@ namespace ProjectF.Controllers
                 Description = "Hi i'm a Member of IyaSoft company",
                 Skills = "UI Design Coding Javascript PHP Node.js",
                 Location = "Manouba-Tunisia",
-                Badges=badges
+                Badges=badges,
+                
             }
         };
+        
 
         // GET: User
         public ActionResult Profile(int idUser)
@@ -83,7 +90,12 @@ namespace ProjectF.Controllers
             return View("Employees", users);
         }
 
-
+        [HttpGet]
+        public IActionResult ListEmployees([FromQuery] int idVote)
+        {
+            ViewData["idvote"] = idVote;
+            return View("Employees", users);
+        }
 
         //    // GET: User/Details/5
         //    public ActionResult Details(int id)

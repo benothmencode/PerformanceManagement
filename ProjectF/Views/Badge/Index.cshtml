@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+   
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -54,7 +55,7 @@
                                         {
                                             <tr>
                                                 
-                                                <td>@item.Title</td>
+                                                <td>@item.Challenge</td>
                                                 <td>
                                                     <div class="progress progress-xs">
                                                         <div class="progress-bar progress-bar-danger" style="width:@item.UserProgression%"></div>
@@ -111,54 +112,37 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                            </td>
-                                            <td>
-                                                <a>
-                                                    First Commits winner
-                                                </a>
-                                                <br />
-                                            </td>
-                                            <td>
-                                                <img alt="Avatar" class="table-avatar" src="../../dist/img/badge.png">
-                                            </td>
-                                            <td>
-                                                Obtained 01/02/2019
-                                            </td>
-                                            <td class="project-actions text-right">
-                                                <a class="btn btn-primary btn-sm" href="../examples/Badge-detail.html">
-                                                    <i class="fas fa-folder">
-                                                    </i>
-                                                    View
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                            </td>
-                                            <td>
-                                                <a>
-                                                    100 Commits winner
-                                                </a>
-                                                <br />
-                                            </td>
-                                            <td>
-                                                <img alt="Avatar" class="table-avatar" src="../../dist/img/badge.png">
-                                            </td>
-                                            <td>
-                                                Obtained 01/03/2019
-                                            </td>
-                                            <td class="project-actions text-right">
-                                                <a class="btn btn-primary btn-sm" href="../examples/Badge-detail.html">
-                                                    <i class="fas fa-folder">
-                                                    </i>
-                                                    View
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <a>
+                                                        @item.Title winner
+                                                    </a>
+                                                    <br />
+                                                </td>
+                                                <td>
+                                                    <img alt="Avatar" class="table-avatar" src="/theme/dist/img/badge.png">
+                                                </td>
+                                                <td>
+                                                    Obtained @item.ObtainDate
+                                                </td>
+                                                <td class="project-actions text-right">
+
+                                                    <a class="btn btn-primary btn-sm" href="@Url.Action("Details","badge", new {idBadge = item.Id})">
+
+
+                                                        View
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                        }
                                     </tbody>
                                 </table>
+                               
                             </div>
                         </div>
                     </div>

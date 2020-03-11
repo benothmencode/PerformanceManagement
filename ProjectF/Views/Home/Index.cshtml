@@ -22,19 +22,19 @@
                 </div><!-- /.container-fluid -->
             </section>
 
-            <!-- Main content -->
+            
             <section class="content">
 
-                <!-- Default box -->
+           
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">News</h3>
 
 
                         <div class="card-body">
-                            <!-- The timeline -->
+                       
                             <div class="timeline timeline-inverse">
-                                <!-- timeline time label -->
+                          
                                 @foreach (var item in Model)
                                 {
                                     <div class="time-label">
@@ -42,8 +42,7 @@
                                             @item.Date
                                         </span>
                                     </div>
-                                    <!-- /.timeline-label -->
-                                    <!-- timeline item -->
+                                   
 
 
                                     @foreach (var iitem in item.DayEvents)
@@ -58,13 +57,12 @@
                                                 </div>
                                                 <div class="timeline-footer">
                                                     <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <!-- END timeline item -->
-                                        <!-- timeline item -->
+                                      
 
 
                                         <div>
@@ -78,19 +76,10 @@
                                         </div>
                                     }
 
-                                    <!-- END timeline item -->
-                                    <!-- timeline item -->
+                                   
 
-
-                                    <div class="time-label">
-                                        <span class="bg-danger">
-
-                                            @item.Date
-
-
-                                        </span>
-                                    </div>
-
+                                   
+                                    
                                    @foreach (var iitem in item.DayEvents)
                                     {
                                         <div>
@@ -106,8 +95,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- END timeline item -->
-                                        <!-- timeline time label -->
+                                      
 
                                         <div>
                                             <i class="fas fa-envelope bg-primary"></i>
@@ -119,18 +107,17 @@
                                                 </div>
                                                 <div class="timeline-footer">
                                                     <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                   
                                                 </div>
                                             </div>
-                                        </div>}}
-                                <!-- /.timeline-label -->
-                                <!-- timeline item -->
-                                <!-- END timeline item -->
+                                        </div>}
+                                
+                                }
+                               
 
                             </div>
-                        </div> }
-                        <!-- /.card-body -->
-                        <!-- /.card-footer-->
+                        </div> 
+                        
                     </div>
 
 

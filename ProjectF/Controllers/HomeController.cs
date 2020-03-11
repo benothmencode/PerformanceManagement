@@ -24,7 +24,7 @@ namespace ProjectF.Controllers
             users.Add(new User() { Id = 2, Username = "Wijden" });
             var events = new List<Event>();
             var DayEvents = new List<DayEvent>();
-
+            var DayEvents2 = new List<DayEvent>();
             DayEvents.Add(new DayEvent
             {
                 Id = 2,
@@ -33,6 +33,7 @@ namespace ProjectF.Controllers
                 User = users.FirstOrDefault(user => user.Id == 1),
                 Action = "Commented your photo",
                 TimeLeft = new System.TimeSpan()
+
             });
             DayEvents.Add(new DayEvent
             {
@@ -47,8 +48,26 @@ namespace ProjectF.Controllers
             events.Add(new Event
             {
 
-                Date = new System.DateTime(2020, 05, 03),
+                Date = new System.DateTime(2020, 05, 03).ToString("dd/MM/yyyy"),
                 DayEvents = DayEvents
+
+            });
+
+            DayEvents2.Add(new DayEvent
+            {
+                Id = 3,
+                Title = "second",
+                Description = "this is a description",
+                User = users.FirstOrDefault(user => user.Id == 1),
+                Action = "Commented your photo",
+                TimeLeft = new System.TimeSpan()
+
+            });
+            events.Add(new Event
+            {
+
+                Date = new System.DateTime(2030, 10,5).ToString("dd/MM/yyyy"),
+                DayEvents = DayEvents2
 
             });
 

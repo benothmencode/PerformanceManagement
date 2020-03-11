@@ -8,7 +8,17 @@ namespace ProjectF.ViewModel
 {
     public class VoteViewModel
     {
-        public IEnumerable<User> Users { get; set; }
-        public IEnumerable<Vote> Votes { get; set; }
+        
+        public IList<User> Users { get; set; }
+        public IList<Vote> Votes { get; set; }
+        public VoteViewModel(IList<User> users, IList<Vote> votes)
+        {
+            Users = users;
+            Votes = votes;
+        }
+
+        public VoteViewModel()
+        {
+        }
     }
 }

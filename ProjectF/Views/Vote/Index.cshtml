@@ -62,11 +62,11 @@
                                                         <ul class="users-list clearfix">
                                                             @foreach (var iitem in Model.Users)
                                                             {
-                                                                <li>
-                                                                    <img src="~/theme/dist/img/@iitem.Userimage" alt="User Image">
-                                                                    <a class="users-list-name" href="#">@iitem.Username</a>
+                                                            <li>
+                                                                <img src="~/theme/dist/img/@iitem.Userimage" alt="User Image">
+                                                                @Html.ActionLink(@iitem.Username, "Awards","Vote", new { idUser = iitem.Id , idVote= item.Id  })
 
-                                                                </li>
+                                                            </li>
                                                             }
                                                            
                                                         </ul>
@@ -85,78 +85,6 @@
 
 
 
-                @*<div class="row">
-            <div class="card-body">
-                <h2>Awards </h2>
-                <hr>
-                <table class="table table-striped projects">
-                    <thead>
-                    <th style="width: 20%">
-                        Votes
-                    </th>
-                    <th>
-                        Given to
-                    </th>
-
-                    <th> Offered in </th>
-
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td> Helpful </td>
-                            <td>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <a href="#"><img alt="Avatar" class="table-avatar" src="../../dist/img/user1-128x128.jpg"></a>
-                                    </li>
-
-                                </ul>
-
-
-                            </td>
-
-                            <td> 12Feb.2020</td>
-
-                        </tr>
-                        <tr>
-                            <td>Smart </td>
-                            <td>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="../../dist/img/user8-128x128.jpg">
-                                    </li>
-
-                                </ul>
-                            </td>
-                            <td> 30Jan.2020</td>
-                        </tr>
-
-
-                        <tr>
-                            <td> Helpful </td>
-                            <td>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        <img alt="Avatar" class="table-avatar" src="../../dist/img/user8-128x128.jpg">
-                                    </li>
-
-                                </ul>
-
-
-                            </td>
-
-                            <td> 15July.2020</td>
-
-                        </tr>
-
-                    </tbody>
-                </table>
-
-            </div>
-
-
-
-        </div>*@
 
 
                 <!-- Vote Cards -->

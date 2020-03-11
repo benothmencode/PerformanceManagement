@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ProjectF.ViewModel.AwardViewModel>
+@{
+    ViewData["Title"] = "Awards";
+}
+
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Profile</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">User Profile</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card-body">
+                    <h2>Awards </h2>
+                    <hr>
+                    <table class="table table-striped projects">
+                        <thead>
+                        <th style="width: 20%">
+                            Votes
+                        </th>
+                        <th>
+                            Given to
+                        </th>
+
+                        <th> Offered in </th>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td> @item.vote.Title </td>
+                                    <td>
+                                        <img alt="Avatar" class="table-avatar" src="~/theme/dist/img/@item.user.Userimage" />
+                                    </td>
+                                    <td> @DateTime.Today.ToString("dd/MM/yyyy")</td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table><br />
+                    <div>
+                        <a asp-action="Index" role="button" class="btn btn-outline-primary"> Back to Vote Page</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

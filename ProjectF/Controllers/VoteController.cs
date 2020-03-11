@@ -8,24 +8,35 @@ namespace ProjectF.Controllers
 {
     public class VoteController : Controller
     {
+       public static VoteViewModel vm ;
+        public static IList<AwardViewModel> ListAm = new List<AwardViewModel>();
         public static IList<Vote> votes = new List<Vote>() { new Vote() { Id = 1, Title = "helpful", Quantity = 3 },
             new Vote() { Id = 2, Title = "Smart", Quantity = 1 } };
 
-        public IActionResult Index(VoteViewModel vm)
+        public IActionResult Index()
         {
+            vm = new VoteViewModel();
             vm.Users = UserController.users;
             vm.Votes = votes;
             return View(vm);
         }
 
         [HttpGet]
-        public IActionResult Awards([FromQuery] int idVote , [FromQuery] int idUserr)
+        public IActionResult Awards([FromQuery] int idVote , [FromQuery] int idUser )
         {
-            var user = UserController.users.FirstOrDefault(u => u.Id == idUserr);
-            var vote = votes.FirstOrDefault(v => v.Id == idVote);
-            vote.user = user;
-            return View("index",vote);
-           
+            
+            ProjectF.Models.User user = UserController.users.FirstOrDefault(u => u.Id == idUser);
+            Vote vote = votes.FirstOrDefault(v => v.Id == idVote);
+            if (user != null && vote != null)
+            {
+                vote.Quantity = vote.Quantity - 1;
+                AwardViewModel Am = new AwardViewModel(user,vote);
+                
+                ListAm.Add(Am);
+                return View(ListAm);
+            }
+
+            return RedirectToAction("index");
             
         }
 

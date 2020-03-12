@@ -17,6 +17,12 @@
     <ProjectReference Include="..\PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj" />
   </ItemGroup>
 
+ 
+
+  <ItemGroup>
+    <Folder Include="Profiles\" />
+  </ItemGroup>
+
 
 
 </Project>

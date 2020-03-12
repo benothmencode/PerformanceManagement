@@ -41,16 +41,6 @@ namespace ProjectF.Controllers
             
         }
 
-        //dynamic mymodel = new ExpandoObject();
-        //mymodel = votes ;
-        //    IList<Vote> Awardss = new List<Vote>();
-        //IList<User> users = new List<User>();
-        //var Votee = votes.FirstOrDefault(v => v.Id == idVote);
-        //Awardss.Add(Votee);
-        //    mymodel = Awardss;
-        //    User user = UserController.users.FirstOrDefault(u => u.Id == idUserr);
-        //users.Add(user);
-        //    mymodel = users;
         
         
     }

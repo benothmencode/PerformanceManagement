@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace ProjectF.Models
 {
-    public class Event
+    public class DayEvent
     {
 
         public int Id { get; set; }
         public string Date { get; set; }
 
-        public List<DayEvent> DayEvents { get; set; }
+        public List<Event> Events { get; set; }
 
 
 

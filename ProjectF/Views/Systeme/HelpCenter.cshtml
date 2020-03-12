@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ProjectF.Models.Systeme>
+@{
+    ViewData["Title"] = "HelpCenter";
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Help-Center</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="col-lg">
+            <!--Card-->
+            <div class="card hoverable" style="overflow: visible;">
+                <div class="card-content">
+                    <h2>HelpCenter</h2>
+                </div>
+                <div class="card-action">
+                    <p>
+                        <hr>
+                        <h5 class="text-info">To see all Badge-system and discover all challenges :</h5>
+                        <strong> Please Select A System :</strong>
+                        <div>
+                            </br>
+                            <select class="btn btn-info">
+                                <option>Select</option>
+                                @foreach (var item in Model)
+                                {
+
+                                    <option value="@item.SystemName">@item.SystemName</option>
+                                }
+                            </select>
+                        </div>
+                    </p>
+                </div>
+                <div>
+                    @foreach(var item2 in Model) { 
+                    <div class="@item2.SystemName GFG">
+                        <p>System Description :@item2.Description</p>
+                        <div class="row">
+                            @foreach (var item3 in item2.Badges)
+                            {
+                            <div class="col-md-3">
+                                <div class="card h-100" style="width : 15rem;">
+                                    <img class="card-img-top h-5" src="~/theme/dist/img/badge.PNG" alt="Card image cap" width="10%"><hr>
+                                    <div class="card-body">
+                                        <strong><h5 class="text-center">@item3.Title</h5></strong>
+                                        <span class="users-list-date text-center ">Created : @item3.StartedAt</span>
+                                        <p class="text-center">Badge description :@item3.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    @section Scripts {
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("select").on('change', function () {
+                                    $(this).find("option:selected").each(function () {
+                                        var geeks = $(this).attr("value");
+                                        if (geeks) {
+                                            $(".GFG").not("." + geeks).hide();
+                                            $("." + geeks).show();
+                                        } else {
+                                            $(".GFG").hide();
+                                        }
+
+                                    });
+                                }).change();
+                            });
+                        </script>
+                    }
+                </div>
+                <!--Card-->
+            </div>
+            </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

@@ -76,7 +76,7 @@ namespace ProjectF.Controllers
             }
         };
         
-
+        
         // GET: User
         public ActionResult Profile(int idUser)
         {

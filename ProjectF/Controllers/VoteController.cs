@@ -27,10 +27,11 @@ namespace ProjectF.Controllers
             
             ProjectF.Models.User user = UserController.users.FirstOrDefault(u => u.Id == idUser);
             Vote vote = votes.FirstOrDefault(v => v.Id == idVote);
+            string voteT = vote.Title;
             if (user != null && vote != null)
             {
                 vote.Quantity = vote.Quantity - 1;
-                AwardViewModel Am = new AwardViewModel(user,vote);
+                AwardViewModel Am = new AwardViewModel(user, voteT);
                 
                 ListAm.Add(Am);
                 return View(ListAm);

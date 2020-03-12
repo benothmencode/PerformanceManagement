@@ -11,7 +11,7 @@ namespace PerformanceManagement.ENTITIES
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
@@ -19,6 +19,6 @@ namespace PerformanceManagement.ENTITIES
         [Required]
         public string Description { get; set; }
         public int BadgesCriteria { get; set; }
-        public ICollection<UserBadge> UserBadges { get; set; }
+      
     }
 }

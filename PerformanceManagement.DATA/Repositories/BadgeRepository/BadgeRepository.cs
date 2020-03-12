@@ -18,59 +18,59 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         }
 
 
-        public void Create(Badge badge)
-        {
-            if (_context.Badges.Any(x => x.Title == badge.Title))
-                throw new Exception("Badge \"" + badge.Title + "\" exists already ");
+        //public void Create(Badge badge)
+        //{
+        //    if (_context.Badges.Any(x => x.Title == badge.Title))
+        //        throw new Exception("Badge \"" + badge.Title + "\" exists already ");
 
-            badge.Id = new Guid();
-            badge.Title = badge.Title;
-            badge.Description = badge.Description;
-            badge.BadgesCriteria = badge.BadgesCriteria;
-            badge.Icon = badge.Icon;
+        //    badge.Id = 1;
+        //    badge.Title = badge.Title;
+        //    badge.Description = badge.Description;
+        //    badge.BadgesCriteria = badge.BadgesCriteria;
+        //    badge.Icon = badge.Icon;
 
-            _context.Badges.Add(badge);
-            _context.SaveChanges();
+        //    _context.Badges.Add(badge);
+        //    _context.SaveChanges();
 
-        }
+        //}
 
-        public void Update(Badge badgeParam/*, string password = null*/)
-        {
-            var badge = _context.Badges.Find(badgeParam.Id);
-            if (badge == null)
-                throw new Exception("Badge does not exist");
+        //public void Update(Badge badgeParam/*, string password = null*/)
+        //{
+        //    var badge = _context.Badges.Find(badgeParam.Id);
+        //    if (badge == null)
+        //        throw new Exception("Badge does not exist");
 
-            // update Badge if it has changed
-            if (!string.IsNullOrWhiteSpace(badgeParam.Title) && badgeParam.Title != badge.Title)
-            {
-                // throw error if the new badge is already taken
-                if (_context.Badges.Any(x => x.Title == badgeParam.Title))
-                    throw new Exception("the Title of the badge  " + badgeParam.Title + " is already taken");
+        //    // update Badge if it has changed
+        //    if (!string.IsNullOrWhiteSpace(badgeParam.Title) && badgeParam.Title != badge.Title)
+        //    {
+        //        // throw error if the new badge is already taken
+        //        if (_context.Badges.Any(x => x.Title == badgeParam.Title))
+        //            throw new Exception("the Title of the badge  " + badgeParam.Title + " is already taken");
 
-                badge.Title = badgeParam.Title;
-            }
-            // update badge properties if provided
-            if (!string.IsNullOrWhiteSpace(badgeParam.Description))
-                badge.Description = badgeParam.Description;
+        //        badge.Title = badgeParam.Title;
+        //    }
+        //    // update badge properties if provided
+        //    if (!string.IsNullOrWhiteSpace(badgeParam.Description))
+        //        badge.Description = badgeParam.Description;
 
             
-                badge.BadgesCriteria = badgeParam.BadgesCriteria;
+        //        badge.BadgesCriteria = badgeParam.BadgesCriteria;
 
-            _context.Badges.Update(badge);
-            _context.SaveChanges();
+        //    _context.Badges.Update(badge);
+        //    _context.SaveChanges();
 
 
-        }
+        //}
 
-        public void Delete(Guid BadgeId)
-        {
-            var badge = _context.Badges.Find(BadgeId);
-            if (badge != null)
-            {
-                _context.Badges.Remove(badge);
-                _context.SaveChanges();
-            }
-        }
+        //public void Delete(Guid BadgeId)
+        //{
+        //    var badge = _context.Badges.Find(BadgeId);
+        //    if (badge != null)
+        //    {
+        //        _context.Badges.Remove(badge);
+        //        _context.SaveChanges();
+        //    }
+        //}
 
 
     }

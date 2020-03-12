@@ -7,10 +7,10 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 {
    public interface IBadgeRepository
     {
-        public void Create(Badge badge);
+        //public void Create(Badge badge);
 
-        public void Update(Badge badgeParam);
-        void Delete(Guid BadgeId);
+        //public void Update(Badge badgeParam);
+        //void Delete(Guid BadgeId);
 
 
     }

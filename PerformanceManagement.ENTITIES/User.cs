@@ -10,18 +10,27 @@ namespace PerformanceManagement.ENTITIES
     public class User
     {
         [Key]
-       // [Required]
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-        //[Required]
+        public int Id { get; set; }
+        [Required]
         public string Email { get; set; }
-        //[Required]
+        [Required]
         public string FirstName { get; set; }
-       // [Required]
+        [Required]
         public string LastName { get; set; }
-        //[Required]
+        [Required]
         public string Username { get; set; }
-        
+
+        [Required]
+        public string Userimage { get; set; }
+
+        public string Job { get; set; }
+        public string Description { get; set; }
+
+        public string Location { get; set; }
+        public string Skills { get; set; }
+
         public byte[] PasswordSalt { get; set; }
       
         public byte[] PasswordHash { get; set; }
@@ -30,10 +39,14 @@ namespace PerformanceManagement.ENTITIES
      
         public DateTime Modified { get; set; }
        
-        [Required]
- 
-        public ICollection<UserBadge> UserBadges { get; set; }
-        public ICollection<User_system> User_Systems { get; set; }
+        
+
+
+
+
+        
+        
+        
 
     }
 }

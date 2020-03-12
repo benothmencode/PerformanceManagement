@@ -20,5 +20,7 @@ namespace PerformanceManagement.ENTITIES
         public string Description { get; set; }
         public int BadgesCriteria { get; set; }
         public ICollection<UserBadge> UserBadges { get; set; }
+
+
     }
 }

@@ -36,11 +36,13 @@ namespace PerformanceManagement.ENTITIES
 
         //public byte[] PasswordHash { get; set; }
 
-        [Required]
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime Created { get; set; } 
 
-        public DateTime Created { get; set; }
-
-        [Required]
+        public User()
+        {
+            Created = DateTime.Now;
+        }
 
         public DateTime Modified { get; set; }
        

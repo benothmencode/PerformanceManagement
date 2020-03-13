@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.ENTITIES;
-using ProjectF.Models;
+using ProjectF.ViewModels.BadgeEntityModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PerformanceManagement.ENTITIES;
-using ProjectF.Models;
+using ProjectF.ViewModels.BadgeEntityModel;
 
 namespace ProjectF.Profiles
 {

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ProjectF.ViewModels;
+using System;
 using System.Collections.Generic;
 
-namespace ProjectF.Models
+namespace ProjectF.ViewModels
 {
     public class DayEvent
     {

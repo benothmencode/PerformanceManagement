@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjectF.Models;
-using ProjectF.ViewModel;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;

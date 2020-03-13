@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjectF.Models
+namespace ProjectF.ViewModels
 {
     public class Systeme
     {

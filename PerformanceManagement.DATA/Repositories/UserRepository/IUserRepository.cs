@@ -9,10 +9,10 @@ namespace PerformanceManagement.DATA.Repositories
     {
         IEnumerable<User> GetUsers();
 
-        User GetUserById(int userId);
+        User GetUserById(int? userId);
 
         User GetUserByUsername(string username);
 
-        IEnumerable<Badge> GetAllUserbadgesForAuser();
+        IEnumerable<Badge> GetAllUserbadgesForAuser(int userId);
     }
 }

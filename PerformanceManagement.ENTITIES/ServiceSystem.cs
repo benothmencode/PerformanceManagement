@@ -12,6 +12,6 @@ namespace PerformanceManagement.ENTITIES
 
         public string BasePath { get; set; }
 
-        public List<Resource> ResourceList { get; set; }
+        //public List<Resource> ResourceList { get; set; }
     }
 }

@@ -11,6 +11,6 @@ namespace ProjectF.Models
         public string SystemName { get; set; }
         public string Description { get; set; }
         public string urlUserSystemAccount { get; set; }
-        public IList<Badge> Badges { get; set; }
+        //public IList<Badge> Badges { get; set; }
     }
 }

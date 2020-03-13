@@ -18,6 +18,14 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         }
 
 
+
+        public IEnumerable<Badge> GetAll()
+        {
+            return _context.Badges;
+        }
+
+
+
         //public void Create(Badge badge)
         //{
         //    if (_context.Badges.Any(x => x.Title == badge.Title))
@@ -53,7 +61,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         //    if (!string.IsNullOrWhiteSpace(badgeParam.Description))
         //        badge.Description = badgeParam.Description;
 
-            
+
         //        badge.BadgesCriteria = badgeParam.BadgesCriteria;
 
         //    _context.Badges.Update(badge);

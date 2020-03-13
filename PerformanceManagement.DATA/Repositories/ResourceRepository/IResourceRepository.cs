@@ -6,7 +6,7 @@ namespace PerformanceManagement.DATA.Repositories.ResourceRepository
 {
     public interface IResourceRepository
     {
-        void AddResource(Guid SystemId , ENTITIES.Resource resource);
+        //void AddResource(Guid SystemId , ENTITIES.Resource resource);
 
 
     }

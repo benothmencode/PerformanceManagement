@@ -13,5 +13,8 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         //void Delete(Guid BadgeId);
 
 
+        public IEnumerable<Badge> GetAll();
+
+
     }
 }

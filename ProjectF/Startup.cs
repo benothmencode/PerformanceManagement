@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories.BadgeRepository;
+using System;
 
 namespace ProjectF
 {
@@ -23,6 +26,9 @@ namespace ProjectF
             services.AddControllersWithViews();
             string connectionString = this.Configuration.GetConnectionString("DefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
+
+            services.AddScoped<IBadgeRepository, BadgeRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
         }

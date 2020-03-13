@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PerformanceManagement.DATA.Repositories.SystemRepository
 {
-    class SystemRepository : ISystemRepository
+    class SystemRepository /*: ISystemRepository*/
     {
         private readonly PerformanceManagementDBContext _context;
         public SystemRepository(PerformanceManagementDBContext context)
@@ -13,15 +13,15 @@ namespace PerformanceManagement.DATA.Repositories.SystemRepository
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void AddSystem(ENTITIES.ServiceSystem system)
-        {
+        //public void AddSystem(ENTITIES.ServiceSystem system)
+        //{
 
-            if (system == null)
-                throw new ArgumentNullException(nameof(system));
+        //    if (system == null)
+        //        throw new ArgumentNullException(nameof(system));
 
-            system.Id = Guid.NewGuid();
-            _context.ServiceSystems.Add(system);
+        //    system.Id = Guid.NewGuid();
+        //    _context.ServiceSystems.Add(system);
 
-        }
+        //}
     }
 }

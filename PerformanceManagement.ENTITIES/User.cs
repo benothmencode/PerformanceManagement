@@ -6,11 +6,10 @@ using System.Text;
 
 namespace PerformanceManagement.ENTITIES
 {
-    [Table("User")]
+  
     public class User
     {
         [Key]
-        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
@@ -24,19 +23,25 @@ namespace PerformanceManagement.ENTITIES
 
         [Required]
         public string Userimage { get; set; }
-
+        [Required]
         public string Job { get; set; }
+        [Required]
         public string Description { get; set; }
-
+        [Required]
         public string Location { get; set; }
+        [Required]
         public string Skills { get; set; }
 
-        public byte[] PasswordSalt { get; set; }
-      
-        public byte[] PasswordHash { get; set; }
-       
+        //public byte[] PasswordSalt { get; set; }
+
+        //public byte[] PasswordHash { get; set; }
+
+        [Required]
+
         public DateTime Created { get; set; }
-     
+
+        [Required]
+
         public DateTime Modified { get; set; }
        
         

@@ -7,12 +7,12 @@ namespace PerformanceManagement.DATA.Repositories
 {
     public interface IUserRepository 
     {
-        public void Create(User user);
-        void Delete(Guid UserId);
-        public User GetById(Guid UserId);
-        public IEnumerable<User> GetAll();
-        public void Update(User userParam, string password = null);
-        
+        IEnumerable<User> GetUsers();
 
+        User GetUserById(int userId);
+
+        User GetUserByUsername(string username);
+
+        IEnumerable<Badge> GetAllUserbadgesForAuser();
     }
 }

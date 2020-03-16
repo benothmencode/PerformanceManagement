@@ -28,6 +28,7 @@ namespace ProjectF
             string connectionString = this.Configuration.GetConnectionString("DefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVoteRightsRepository, VoteRightsRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

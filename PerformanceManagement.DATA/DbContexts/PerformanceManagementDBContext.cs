@@ -31,6 +31,7 @@ namespace PerformanceManagement.DATA.DbContexts
         public DbSet<User> Users { get; set; }
         public DbSet<Badge> Badges { get; set; }
         public DbSet<UserBadge> userBadges { get; set; }
+        public DbSet<VoteRights> VoteRights { get; set; }
 
 
        

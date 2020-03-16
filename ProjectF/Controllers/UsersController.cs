@@ -85,8 +85,6 @@ namespace ProjectF.Controllers
                 user = model,
                 badges = model2
             };
-           
-
             return View(userProfileviewModel);
         }
 

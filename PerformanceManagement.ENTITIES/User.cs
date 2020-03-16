@@ -31,6 +31,8 @@ namespace PerformanceManagement.ENTITIES
         public string Location { get; set; }
         [Required]
         public string Skills { get; set; }
+
+        public List<VoteRights> VoteRights { get; set; }
         public List<UserBadge> UserBadges { get; set; }
 
         //public byte[] PasswordSalt { get; set; }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PerformanceManagement.ENTITIES;
-using ProjectF.Models;
+using ProjectF.ModelsDTOS;
+using ProjectF.ViewModels.BadgeEntityModel;
 
 namespace ProjectF.Profiles
 {
@@ -9,8 +10,8 @@ namespace ProjectF.Profiles
         public BadgeProfile()
         {
 
-            //CreateMap<Badge,Badge>();
-            //CreateMap<Badge, Badge>();
+            CreateMap<Badge, BadgeEntityDto>();
+            CreateMap<BadgeEntityDto, Badge>();
 
 
         }

@@ -31,16 +31,19 @@ namespace PerformanceManagement.ENTITIES
         public string Location { get; set; }
         [Required]
         public string Skills { get; set; }
+        public List<UserBadge> UserBadges { get; set; }
 
         //public byte[] PasswordSalt { get; set; }
 
         //public byte[] PasswordHash { get; set; }
 
-        [Required]
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime Created { get; set; } 
 
-        public DateTime Created { get; set; }
-
-        [Required]
+        public User()
+        {
+            Created = DateTime.Now;
+        }
 
         public DateTime Modified { get; set; }
        

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ProjectF.ModelsDTOS.UserEntityDto>
+@{
+    ViewData["Title"] = "Employees";
+}
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Employees</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="col-lg">
+            <!-- USERS LIST -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title"><strong>IyaSoft Members</strong> </h2>
+                    <br> <br>
+                    <!-- SEARCH FORM -->
+                    <form class="form-inline">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control" type="search" placeholder="Search Employee By Name"
+                                   aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    <ul class="users-list clearfix">
+                        @foreach (var item in Model)
+                        {
+                            <li>
+                                <img src="~/theme/dist/img/@item.Userimage" alt="User Image"><br />
+                                @Html.ActionLink(@item.Username, "Profile", new { idUser = @item.Id })
+                                <span class="users-list-date">Today</span>
+                            </li>
+                        }
+                    </ul>
+                    <!-- /.users-list -->
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!--/.card -->
+        </div>
+
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

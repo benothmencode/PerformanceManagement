@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using System;
 
@@ -26,7 +27,7 @@ namespace ProjectF
             services.AddControllersWithViews();
             string connectionString = this.Configuration.GetConnectionString("DefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
-
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

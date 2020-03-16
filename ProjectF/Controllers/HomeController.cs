@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ProjectF.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

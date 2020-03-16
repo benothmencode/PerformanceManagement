@@ -15,10 +15,12 @@ namespace PerformanceManagement.ENTITIES
         [Required]
         public string Title { get; set; }
         [Required]
-        public byte Icon { get; set; }
+        public string Icon { get; set; }
         [Required]
         public string Description { get; set; }
         public int BadgesCriteria { get; set; }
-      
+
+        public List<UserBadge> UserBadges { get; set; }
+
     }
 }

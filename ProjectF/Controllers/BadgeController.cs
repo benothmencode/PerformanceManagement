@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.ENTITIES;
-using ProjectF.Models;
+using ProjectF.ModelsDTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,7 +72,7 @@ namespace ProjectF.Controllers
         public IActionResult GetAll()
         {
             var badges = _BadgeRepository.GetAll();
-            var model = _mapper.Map<IList<Models.Badge>>(badges);
+            var model = _mapper.Map<IList<BadgeEntityDto>>(badges);
             return Ok(model);
         }
 

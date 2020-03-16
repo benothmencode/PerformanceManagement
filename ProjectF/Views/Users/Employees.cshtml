@@ -49,7 +49,7 @@
                         @foreach (var item in Model)
                         {
                             <li>
-                                <img src="~/theme/dist/img/@item.Userimage " alt="User Image"><br />
+                                <img src="~/theme/dist/img/@item.Userimage" alt="User Image"><br />
                                 @Html.ActionLink(@item.Username, "Profile", new { idUser = @item.Id })
                                 <span class="users-list-date">Today</span>
                             </li>

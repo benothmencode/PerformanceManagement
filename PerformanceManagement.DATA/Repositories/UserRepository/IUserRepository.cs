@@ -13,6 +13,6 @@ namespace PerformanceManagement.DATA.Repositories
 
         User GetUserByUsername(string username);
 
-        IEnumerable<Badge> GetAllUserbadgesForAuser(int userId);
+        IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId);
     }
 }

@@ -1,4 +1,161 @@
-﻿@model ProjectF.ModelsDTOS.UserEntityDto
+﻿@model ProjectF.ViewModels.UserProfileViewModel
 @{
     ViewData["Title"] = "Profile";
 }
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Profile</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">User Profile</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <!-- Profile Image -->
+                    <div class="card card-primary card-outline h-100">
+                        <div class="card-body box-profile">
+                            <div class="text-center">
+                                <img class="profile-user-img img-fluid img-circle" src="~/theme/dist/img/@Model.user.Userimage"
+                                     alt="User profile picture">
+                            </div>
+
+                            <h3 class="profile-username text-center">@Model.user.Username</h3>
+
+                            <p class="text-muted text-center">@Model.user.Job</p>
+
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Total Badges</b> <a class="float-right">@Model.badges.Count()</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Total Votes</b> <a class="float-right">543</a>
+                                </li>
+                                <br>
+                                <br>
+                                <!-- <li class="list-group-item">
+                                  <b>Friends</b> <a class="float-right">13,287</a>
+                                </li> -->
+                            </ul>
+
+                            <!-- <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a> -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <div class="col-lg-9 mb-4 ">
+                    <!-- About Me Box -->
+                    <div class="card card-primary h-100">
+                        <div class="card-header">
+                            <h3 class="card-title">About Me</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <strong><i class="fas fa-book mr-1"></i> Description</strong>
+
+                            <p class="text-muted">
+                                @Model.user.Description
+                            </p>
+
+                            <hr>
+
+                            <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+
+                            <p class="text-muted">@Model.user.Location</p>
+
+                            <hr>
+
+                            <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+
+                            <p class="text-muted">
+                                <span class="tag tag-danger">@Model.user.Skills</span>
+
+                            </p>
+
+                            <hr>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-3 mb-4"> </div>
+                <div class="col-lg-9 mb-4">
+                    <div class="card card-primary h-100">
+                        <div class="card-header p-2">
+                            <h2 class="card-title">This Month achievement</h2>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10px"></th>
+                                            <th>Challenges</th>
+                                            <th>Your progress</th>
+                                            <th style="width: 80px">Label</th>
+                                            <th style="width: 20%">Started</th>
+                                            <th style="width: 20%">Badge-deadline</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.badges)
+                                        {
+                                            @foreach (var item2 in item.UserBadges)
+                                            {
+                                            <tr>
+                                                <td></td>
+                                                <td>@item.Title </td>
+                                                <td>
+                                                    <div class="progress progress-xs">
+                                                        <div class="progress-bar progress-bar-danger" style="width: @item2.UserProgression%"></div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-danger">@item2.UserProgression%</span></td>
+                                                <td>@item2.StartedAt</td>
+                                                <td>@item2.BadgeDeadline</td>
+                                            </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+
+                                <!-- /.tab-pane -->
+
+
+                            </div>
+                            <!-- /.tab-content -->
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div><!-- /.container-fluid -->
+
+            </div>
+        </div>
+    </section>
+
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

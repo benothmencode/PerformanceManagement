@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.ENTITIES;
 using ProjectF.ModelsDTOS;
+using ProjectF.ViewModels;
 
 namespace ProjectF.Controllers
 {
@@ -17,8 +20,9 @@ namespace ProjectF.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly IWebHostEnvironment WebHostEnvironment;
 
-        public UsersController(IMapper mapper ,IUserRepository userRepository)
+        public UsersController(IMapper mapper ,IUserRepository userRepository , IWebHostEnvironment webHostEnvironment )
         {
 
             _mapper = mapper ??
@@ -40,6 +44,22 @@ namespace ProjectF.Controllers
            
         }
 
+        //private string UploadFile(UserEntityDto userEntity)
+        //{
+        //    string fileName = null;
+        //    if (userEntity.Userimage != null)
+        //    {
+        //        string uploadDir = Path.Combine(WebHostEnvironment.WebRootPath, "theme/dist/img");
+        //        fileName = Guid.NewGuid().ToString() + "-" + userEntity.Userimage.FileName;
+        //        string filePath = Path.Combine(uploadDir, fileName);
+        //        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            userEntity.Userimage.CopyTo(fileStream);
+        //        }
+        //    }
+        //    return fileName;
+        //}
+
         // GET: Users/Details/5
         public IActionResult Profile(int? idUser)
         {
@@ -47,14 +67,27 @@ namespace ProjectF.Controllers
             {
                 return NotFound();
             }
-
             var user = _userRepository.GetUserById(idUser);
             if (user == null)
             {
                 return NotFound();
             }
             var model = _mapper.Map<UserEntityDto>(user);
-            return View(model);
+            var Badges = _userRepository.GetAllUserbadgesForAuser(idUser);
+            if (Badges.Count() <= 0)
+            {
+                ViewBag.BadgeMessage = $"{user.Username} has no Badges yet ";
+            }
+            var model2 = _mapper.Map<IList<BadgeEntityDto>>(Badges);
+
+            var userProfileviewModel = new UserProfileViewModel()
+            {
+                user = model,
+                badges = model2
+            };
+           
+
+            return View(userProfileviewModel);
         }
 
        

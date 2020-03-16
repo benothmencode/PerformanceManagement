@@ -1,4 +1,5 @@
-﻿using PerformanceManagement.DATA.DbContexts;
+﻿using Microsoft.EntityFrameworkCore;
+using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
@@ -17,14 +18,14 @@ namespace PerformanceManagement.DATA.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IEnumerable<Badge> GetAllUserbadgesForAuser(int userId)
+        public IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId)
         {
-            throw new NotImplementedException();
+            return _context.userBadges.Where(u => u.UserId == userId).Select(b => b.Badge).ToList();
         }
 
         public User GetUserById(int? userId)
         {
-            return _context.Users.Where(u => u.Id == userId).FirstOrDefault();
+            return _context.Users.Include(u => u.UserBadges).Where(u => u.Id == userId).FirstOrDefault();
         }
 
         public User GetUserByUsername(string username)

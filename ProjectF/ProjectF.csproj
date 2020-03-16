@@ -4,6 +4,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\BadgeEntityModel\**" />
+    <Content Remove="Models\BadgeEntityModel\**" />
+    <EmbeddedResource Remove="Models\BadgeEntityModel\**" />
+    <None Remove="Models\BadgeEntityModel\**" />
+  </ItemGroup>
+
  
 
  
@@ -29,12 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\PerformanceManagement.DATA\PerformanceManagement.DATA.csproj" />
     <ProjectReference Include="..\PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj" />
-  </ItemGroup>
-
- 
-
-  <ItemGroup>
-    <Folder Include="Models\BadgeEntityModel\" />
   </ItemGroup>
 
 

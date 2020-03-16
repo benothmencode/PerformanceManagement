@@ -9,8 +9,8 @@ namespace ProjectF.Profiles
         public BadgeProfile()
         {
 
-            CreateMap<Badge,BadgeViewModel>();
-            CreateMap<BadgeViewModel, Badge>();
+            //CreateMap<Badge,Badge>();
+            //CreateMap<Badge, Badge>();
 
 
         }

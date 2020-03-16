@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProjectF.Models
 {
-    public class BadgeViewModel
+    public class Badge
     {
-        public BadgeViewModel() { }
+        public Badge() { }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Challenge { get; set; }

@@ -72,7 +72,7 @@ namespace ProjectF.Controllers
         public IActionResult GetAll()
         {
             var badges = _BadgeRepository.GetAll();
-            var model = _mapper.Map<IList<BadgeViewModel>>(badges);
+            var model = _mapper.Map<IList<Models.Badge>>(badges);
             return Ok(model);
         }
 

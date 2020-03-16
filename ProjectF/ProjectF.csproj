@@ -31,6 +31,12 @@
     <ProjectReference Include="..\PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj" />
   </ItemGroup>
 
+ 
+
+  <ItemGroup>
+    <Folder Include="Models\BadgeEntityModel\" />
+  </ItemGroup>
+
 
 
 </Project>

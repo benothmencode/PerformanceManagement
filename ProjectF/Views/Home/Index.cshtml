@@ -2,7 +2,7 @@
     ViewData["Title"] = "Home Page";
    
 }
-@model IEnumerable<ProjectF.Models.Event> 
+@model IEnumerable<ProjectF.Models.DayEvent> 
    
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -45,7 +45,7 @@
                                    
 
 
-                                    @foreach (var iitem in item.DayEvents)
+                                    @foreach (var iitem in item.Events)
                                     {
                                         <div>
                                             <i class="fas fa-envelope bg-primary"></i>
@@ -80,7 +80,7 @@
 
                                    
                                     
-                                   @foreach (var iitem in item.DayEvents)
+                                   @foreach (var iitem in item.Events)
                                     {
                                         <div>
                                             <i class="fas fa-comments bg-warning"></i>

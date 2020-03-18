@@ -27,8 +27,7 @@ namespace PerformanceManagement.ENTITIES
         {
             Created = DateTime.Now;
         }
-        public DateTime BadgeDeadline { get; set; }
-        public DateTime ObtainDate { get; set; }
+  
         public List<UserBadge> UserBadges { get; set; }
 
     }

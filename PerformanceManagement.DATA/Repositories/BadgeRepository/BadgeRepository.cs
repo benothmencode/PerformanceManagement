@@ -1,4 +1,5 @@
-﻿using PerformanceManagement.DATA.DbContexts;
+﻿using Microsoft.EntityFrameworkCore;
+using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,20 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         {
             return _context.Badges;
         }
+
+        public IEnumerable<Badge> GetUserBadge(int? userId)
+        {
+            return _context.userBadges.Where(u => u.UserId == userId).Where(ub => DateTime.Compare(ub.StartedAt, ub.BadgeDeadline) < 0).Select(b => b.Badge).ToList();
+          
+        }
+
+        public Badge GetBadgeById(int? badgeId)
+        {
+            return _context.Badges.Include(b => b.UserBadges).Where(b => b.Id == badgeId).FirstOrDefault();
+        }
+
+
+
 
 
 

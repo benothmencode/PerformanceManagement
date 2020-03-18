@@ -8,6 +8,8 @@ using ProjectF.ModelsDTOS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ProjectF.ViewModels;
+using PerformanceManagement.DATA.Repositories;
 
 namespace ProjectF.Controllers
 {
@@ -15,7 +17,8 @@ namespace ProjectF.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IBadgeRepository _BadgeRepository;
-        public BadgeController(IBadgeRepository badgeRepository, IMapper mapper, IConfiguration configuration)
+        private readonly IUserRepository _userRepository;
+        public BadgeController(IBadgeRepository badgeRepository, IUserRepository userRepository,IMapper mapper, IConfiguration configuration)
         {
             
 
@@ -25,62 +28,50 @@ namespace ProjectF.Controllers
             _BadgeRepository = badgeRepository ??
                 throw new ArgumentNullException(nameof(badgeRepository));
 
-            
+            _userRepository = userRepository ??
+                throw new ArgumentNullException(nameof(badgeRepository));
+
+
         }
 
-        //public static List<Badge> badges = new List<Badge>()
-        //{
+     
 
-        //        new Badge
-        //        {
-        //            Id=1,
-
-        //           Challenge= "50 Commit",
-        //         Title = "100Commit",
-        //          UserProgression = 50,
-        //           StartedAt = new DateTime(2020, 12, 05).ToString("dd/MM/yyyy"),
-        //           BadgeDeadline = new DateTime(2021, 02, 06).ToString("dd/MM/yyyy"),
-        //         ObtainDate = new DateTime(2020, 01, 06).ToString("dd/MM/yyyy"),
-        //            Description="The challenge is simple , " +
-        //            "for the month of january and february," +
-        //            "By using Gitlab you need to commit 1000 times !Don't miss it work hard to earn this badge !",
-        //            BadgeCriteria=1000,
-        //            System="GitLab"
-        //       },
-        //        new Badge
-        //      {   Id=2,
-        //            Challenge = "30 Todos",
-        //           Title="First Commit",
-        //           UserProgression = 70,
-        //          StartedAt = new DateTime(2020, 01, 05).ToString("dd/MM/yyyy"),
-        //            BadgeDeadline = new DateTime(2020, 02, 06).ToString("dd/MM/yyyy"),
-        //            ObtainDate = new DateTime(2020, 07, 09).ToString("dd/MM/yyyy"),
-        //            Description="The challenge is simple , for the month of january and february,By using Gitlab you need to commit 1000 times !Don't miss it work hard to earn this badge !",
-        //            BadgeCriteria=1000,
-        //            System="Redmine"
-
-        //      },
-
-
-
-        //};
-
-
-
-        [HttpGet()]
-        [ActionName("GetAll")]
-        public IActionResult GetAll()
+     
+     
+        public IActionResult Index(int? idUser)
         {
+
+
             var badges = _BadgeRepository.GetAll();
-            var model = _mapper.Map<IList<BadgeEntityDto>>(badges);
-            return Ok(model);
+            var userbadges = _BadgeRepository.GetUserBadge(idUser);
+            if (idUser == null)
+            {
+                return NotFound();
+            }
+            var user = _userRepository.GetUserById(idUser);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var model = _mapper.Map<UserEntityDto>(user);
+            var Badges = _userRepository.GetAllUserbadgesForAuser(idUser);
+            if (Badges.Count() <= 0)
+            {
+                ViewBag.BadgeMessage = $"{user.Username} has no Badges yet ";
+            }
+            var model2 = _mapper.Map<IList<BadgeEntityDto>>(Badges);
+
+            var userProfileviewModel = new UserProfileViewModel()
+            {
+                user = model,
+                badges = model2
+            };
+            return View(userProfileviewModel);
+
+           
         }
 
-        public IActionResult Index()
-        {
 
-            return View(/*badges*/);
-        }
 
 
 

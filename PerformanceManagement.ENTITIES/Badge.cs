@@ -12,14 +12,23 @@ namespace PerformanceManagement.ENTITIES
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
         public string Title { get; set; }
-        [Required]
-        public string Icon { get; set; }
-        [Required]
+        public string System { get; set; }
         public string Description { get; set; }
-        public int BadgesCriteria { get; set; }
+        public string Icon { get; set; }
+        public int BadgeCriteria { get; set; }
+     
+        public string Challenge { get; set; }
 
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime StartedAt { get; set; }
+        public DateTime Created { get; set; }
+        public Badge()
+        {
+            Created = DateTime.Now;
+        }
+        public DateTime BadgeDeadline { get; set; }
+        public DateTime ObtainDate { get; set; }
         public List<UserBadge> UserBadges { get; set; }
 
     }

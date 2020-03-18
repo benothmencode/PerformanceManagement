@@ -12,7 +12,7 @@ namespace ProjectF.ModelsDTOS
         public string Userimage { get; set; }
         public string Job { get; set; }
         public string Description { get; set; }
-
+       
         public string Location { get; set; }
         public string Skills { get; set; }
         public DateTime Created { get; set; }

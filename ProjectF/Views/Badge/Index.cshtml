@@ -19,7 +19,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item active">badges</li>
-                    </ol>c
+                    </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -118,30 +118,31 @@
                                     <tbody>
                                         @foreach (var item in Model.badges)
                                         {
-                                            <tr>
-                                                <td>
-                                                </td>
-                                                <td>
-                                                    <a>
-                                                        @item.Title winner
-                                                    </a>
-                                                    <br />
-                                                </td>
-                                                <td>
-                                                    <img alt="Avatar" class="table-avatar" src="/theme/dist/img/badge.png">
-                                                </td>
-                                                <td>
-                                                    Obtained @*@item.ObtainDate*@
-                                                </td>
-                                                <td class="project-actions text-right">
+                                            @foreach (var item2 in item.UserBadges) { 
+                                                <tr>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        <a>
+                                                            @item.Title winner
+                                                        </a>
+                                                        <br />
+                                                    </td>
+                                                    <td>
+                                                        <img alt="Avatar" class="table-avatar" src="/theme/dist/img/badge.png">
+                                                    </td>
+                                                    <td>
+                                                        Obtained @item2.ObtainedAt
+                                                    </td>
+                                                    <td class="project-actions text-right">
 
-                                                    <a class="btn btn-primary btn-sm" href="@Url.Action("Details","badge", new {idBadge = item.Id})">
+                                                        <a class="btn btn-primary btn-sm" href="@Url.Action("Details", "badge", new { idBadge = item.Id })">
 
 
-                                                        View
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                            View
+                                                        </a>
+                                                    </td>
+                                                </tr>}
 
                                         }
                                     </tbody>

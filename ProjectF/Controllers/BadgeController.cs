@@ -34,15 +34,15 @@ namespace ProjectF.Controllers
 
         }
 
-     
+       
 
-     
-     
+
+
         public IActionResult Index(int? idUser)
         {
 
-
             var badges = _BadgeRepository.GetAll();
+
             var userbadges = _BadgeRepository.GetUserBadge(idUser);
             if (idUser == null)
             {
@@ -78,11 +78,13 @@ namespace ProjectF.Controllers
         public IActionResult Details(int? idBadge)
         {
 
-            //Badge badge = badges.FirstOrDefault(b =>b.Id ==idBadge); 
+            var badges = _BadgeRepository.GetAll();
+            var model = _mapper.Map < IList<BadgeEntityDto>>(badges);
+            BadgeEntityDto badge = model.FirstOrDefault(b =>b.Id ==idBadge); 
             
 
 
-            return View(/*badge*/);
+            return View(badge);
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
@@ -66,34 +67,15 @@ namespace ProjectF.Controllers
                 UserChosenId = idUserChosen,
                 VoteRightsId = idVote
             };
-            voteHistory.UserOwner = _userRepository.GetUserById(UserId);
-            voteHistory.UserChosen = _userRepository.GetUserById(idUserChosen);
+            //voteHistory.UserOwner = _userRepository.GetUserById(UserId);
+            //voteHistory.UserChosen = _userRepository.GetUserById(idUserChosen);
             voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");
             _context.VoteHistories.Add(voteHistory);
             _context.SaveChanges();
-            List<VoteHistory> Vlist = _context.VoteHistories.ToList();
-            return Json(Vlist);
+            return Json(_context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ThenInclude(v=>v.VoteRights).ToList());
         }
 
-        // [HttpGet]
-        // public IActionResult Awards([FromQuery] int idVote , [FromQuery] int idUser )
-        // {
-
-        //     ProjectF.Models.User user = UserController.users.FirstOrDefault(u => u.Id == idUser);
-        //     Vote vote = votes.FirstOrDefault(v => v.Id == idVote);
-        //     string voteT = vote.Title;
-        //     if (user != null && vote != null)
-        //     {
-        //         vote.Quantity = vote.Quantity - 1;
-        //         AwardViewModel Am = new AwardViewModel(user, voteT);
-
-        //         ListAm.Add(Am);
-        //         return View(ListAm);
-        //     }
-
-        //     return RedirectToAction("index");
-
-        // }
+       
 
 
 

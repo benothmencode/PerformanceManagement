@@ -124,10 +124,17 @@
             <tbody>
                 {{#Vlist}}
                 <tr>
-                    <td>voteTitle</td>
+                    {{#userOwner}}
+                    {{#voteRights}}
+                    <td>{{title}}</td>
+                    {{/voteRights}}
+                    {{/userOwner}}
                     {{#userChosen}}
                     <td>
-                        <img alt="Avatar" class="table-avatar" src="/theme/dist/img/{{{userimage}}}" />
+                        <figure class="figure">
+                            <img alt="Avatar" class="table-avatar" src="/theme/dist/img/{{{userimage}}}" />
+                            <figcaption class="figure-caption text-center">{{username}}</figcaption>
+                        </figure>
                     </td>
                     {{/userChosen}}
                     <td>{{dateOfVote}}</td>

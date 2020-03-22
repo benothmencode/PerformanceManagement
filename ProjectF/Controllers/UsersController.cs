@@ -44,6 +44,16 @@ namespace ProjectF.Controllers
            
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Employees(string Empsearch)
+        {
+            ViewData["GetEmployeedetails"] = Empsearch;
+            var empquery = await _userRepository.GetUserByUsername(Empsearch);
+            var modell =  _mapper.Map<IList<UserEntityDto>>(empquery);
+            return View(modell);
+        
+        }
+
         //private string UploadFile(UserEntityDto userEntity)
         //{
         //    string fileName = null;

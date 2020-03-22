@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PerformanceManagement.DATA.Repositories
 {
@@ -11,7 +12,7 @@ namespace PerformanceManagement.DATA.Repositories
 
         User GetUserById(int? userId);
 
-        User GetUserByUsername(string username);
+        Task<IList<User>> GetUserByUsername(string username);
 
         IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId);
     }

@@ -21,7 +21,7 @@ namespace PerformanceManagement.ENTITIES
         public string Challenge { get; set; }
 
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime StartedAt { get; set; }
+        
         public DateTime Created { get; set; }
         public Badge()
         {

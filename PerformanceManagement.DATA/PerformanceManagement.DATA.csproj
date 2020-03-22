@@ -27,8 +27,4 @@
     <ProjectReference Include="..\PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\VoteRepositories\" />
-  </ItemGroup>
-
 </Project>

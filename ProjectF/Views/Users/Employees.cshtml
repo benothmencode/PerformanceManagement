@@ -31,9 +31,9 @@
                     <h2 class="card-title"><strong>IyaSoft Members</strong> </h2>
                     <br> <br>
                     <!-- SEARCH FORM -->
-                    <form class="form-inline">
+                    <form class="form-inline" method="get" asp-action="Employees">
                         <div class="input-group input-group-sm">
-                            <input class="form-control" type="search" placeholder="Search Employee By Name"
+                            <input class="form-control" type="search" placeholder="Search Employee By Name" value="@ViewData["GetEmployeedetails"]"
                                    aria-label="Search">
                             <div class="input-group-append">
                                 <button class="btn btn-navbar" type="submit">

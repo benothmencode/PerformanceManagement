@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PerformanceManagement.DATA.Repositories
 {
@@ -29,9 +30,15 @@ namespace PerformanceManagement.DATA.Repositories
             return _context.Users.Include(u => u.UserBadges).Where(u => u.Id == userId).FirstOrDefault();
         }
 
-        public User GetUserByUsername(string username)
+        public async Task<IList<User>> GetUserByUsername(string Empsearch)
         {
-            return _context.Users.Where(u => u.Username == username).FirstOrDefault();
+            var empquery = from x in _context.Users select x;
+            if (!string.IsNullOrEmpty(Empsearch))
+            {
+                empquery = empquery.Where(x => x.Username.Contains(Empsearch) || x.FirstName.Contains(Empsearch));
+            }
+
+            return await empquery.AsNoTracking().ToListAsync();
         }
 
         public IEnumerable<User> GetUsers()

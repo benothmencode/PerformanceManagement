@@ -24,8 +24,6 @@
 
         <div class="content">
             <div class="container-fluid">
-
-
                 <div class="row">
                     <div class="card-body">
                         <h2>Votes </h2>
@@ -64,8 +62,8 @@
                                                             {
                                                                 <li>
                                                                     <img src="~/theme/dist/img/@iitem.Userimage" alt="User Image">
-                                                                    @Html.ActionLink(@iitem.Username, "Awards", "Vote", new { idUser = iitem.Id, idVote = item.Id })
-
+                                                                    @*@Html.ActionLink(@iitem.Username, "Awards", "Vote", new { idUserChosen = iitem.Id, idVote = item.Id, idUserOwner = item.UserId })*@
+                                                                    <input type="button" onclick="PassingData(@iitem.Id,@item.Id,@item.UserId)" class="text-dark" style="border:none; background-color:transparent" value="@iitem.Username" />
                                                                 </li>
                                                             }
 
@@ -86,16 +84,13 @@
 
 
 
+                <div id="details">
+                    <!-- mustachejs output goas here -->
+                </div>
 
                 <!-- Vote Cards -->
                 <!-- Awards Cards -->
                 <hr>
-
-
-
-
-
-
             </div>
         </div>
 
@@ -111,3 +106,59 @@
     </section>
 </div>
 <!-- ./wrapper -->
+<script id="DetailTemplate" type="text/mustache">
+    <div class="card-body">
+        <h2>Awards </h2>
+        <hr>
+        <table class="table table-striped projects">
+            <thead>
+            <th style="width: 20%">
+                Votes
+            </th>
+            <th>
+                Given to
+            </th>
+
+            <th> Offered in </th>
+            </thead>
+            <tbody>
+                {{#Vlist}}
+                <tr>
+                    <td>voteTitle</td>
+                    {{#userChosen}}
+                    <td>
+                        <img alt="Avatar" class="table-avatar" src="/theme/dist/img/{{{userimage}}}" />
+                    </td>
+                    {{/userChosen}}
+                    <td>{{dateOfVote}}</td>
+                </tr>
+                {{/Vlist}}
+            </tbody>
+        </table><br />
+    </div>
+</script>
+
+@section scripts {
+
+    <script src="~/Scripts/mustache.js"></script>
+    <script type="text/javascript">
+        function PassingData(Id1, Id2, Id3) {
+            $.ajax({
+                url: "/VoteRights/VoteRegistration",
+                type: "GET",
+                dataType: "json",
+                data: { idUserChosen: Id1, idVote: Id2, UserId: Id3 },
+                success: function (data) {
+                   var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data });
+                        $("#details").html(html);
+                },
+                error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                        alert(status);
+                        alert(error);
+                    }
+            });
+        }
+    </script>
+
+}

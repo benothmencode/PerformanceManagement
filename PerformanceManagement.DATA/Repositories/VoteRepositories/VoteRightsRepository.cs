@@ -1,4 +1,5 @@
-﻿using PerformanceManagement.DATA.DbContexts;
+﻿using Microsoft.EntityFrameworkCore;
+using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace ProjectF.ViewModels
 {
-    public class AwardViewModel
+    public class VoteHistoryViewModel
     {
         public UserEntityDto user { get; set; }
         public string voteTitle { get; set; }
 
-        public AwardViewModel()
+        public VoteHistoryViewModel()
         {
         }
 
-        public AwardViewModel(UserEntityDto user, string voteT)
+        public VoteHistoryViewModel(UserEntityDto user, string voteT)
         {
             this.user = user;
             this.voteTitle = voteT;

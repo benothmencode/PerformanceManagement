@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.ENTITIES;
 using ProjectF.ModelsDTOS;
 using ProjectF.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Dynamic;
 using System.Linq;
 namespace ProjectF.Controllers
@@ -15,8 +18,9 @@ namespace ProjectF.Controllers
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly IVoteRightsRepository _voteRightsRepository;
+        private readonly PerformanceManagementDBContext _context;
 
-        public VoteRightsController(IMapper mapper, IUserRepository userRepository, IVoteRightsRepository voteRightsRepository)
+        public VoteRightsController(IMapper mapper, IUserRepository userRepository, IVoteRightsRepository voteRightsRepository , PerformanceManagementDBContext context)
         {
 
             _mapper = mapper ??
@@ -25,6 +29,7 @@ namespace ProjectF.Controllers
                 throw new ArgumentNullException(nameof(userRepository));
             _voteRightsRepository = voteRightsRepository ??
                 throw new ArgumentNullException(nameof(voteRightsRepository));
+            _context = context;
         }
 
         //public static VoteViewModel vm ;
@@ -51,7 +56,24 @@ namespace ProjectF.Controllers
             };
             return View(voteRightsviewmodel);
         
-    }
+          }
+
+        public JsonResult VoteRegistration(int idUserChosen , int idVote , int UserId)
+        {
+            VoteHistory voteHistory = new VoteHistory()
+            {
+                UserOwnerId = UserId,
+                UserChosenId = idUserChosen,
+                VoteRightsId = idVote
+            };
+            voteHistory.UserOwner = _userRepository.GetUserById(UserId);
+            voteHistory.UserChosen = _userRepository.GetUserById(idUserChosen);
+            voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");
+            _context.VoteHistories.Add(voteHistory);
+            _context.SaveChanges();
+            List<VoteHistory> Vlist = _context.VoteHistories.ToList();
+            return Json(Vlist);
+        }
 
         // [HttpGet]
         // public IActionResult Awards([FromQuery] int idVote , [FromQuery] int idUser )

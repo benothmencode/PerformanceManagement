@@ -61,18 +61,22 @@ namespace ProjectF.Controllers
 
         public JsonResult VoteRegistration(int idUserChosen , int idVote , int UserId)
         {
+
+            var voteR = _context.VoteRights.FirstOrDefault(v => v.Id == idVote);
+            string TitleVoteChosen = voteR.Title;
             VoteHistory voteHistory = new VoteHistory()
             {
                 UserOwnerId = UserId,
                 UserChosenId = idUserChosen,
-                VoteRightsId = idVote
+                VoteRightsId = idVote,
+                VoteTitle    = TitleVoteChosen
             };
             //voteHistory.UserOwner = _userRepository.GetUserById(UserId);
             //voteHistory.UserChosen = _userRepository.GetUserById(idUserChosen);
             voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");
             _context.VoteHistories.Add(voteHistory);
             _context.SaveChanges();
-            return Json(_context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ThenInclude(v=>v.VoteRights).ToList());
+            return Json(_context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList());
         }
 
        

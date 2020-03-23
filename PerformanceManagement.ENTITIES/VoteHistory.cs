@@ -22,6 +22,7 @@ namespace PerformanceManagement.ENTITIES
 
 
         public int VoteRightsId { get; set; }
+        public string VoteTitle { get; set; }
         public string DateOfVote { get; set; }
     }
 }

@@ -1,0 +1,134 @@
+﻿@model ProjectF.ViewModels.EventViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Feeds</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+
+    <section class="content">
+
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">News</h3>
+
+
+                <div class="card-body">
+
+                    <div class="timeline timeline-inverse">
+
+                        @foreach (var item in Model.events)
+                        {
+                            <div class="time-label">
+                                <span class="bg-danger">
+                                    @item.Date
+                                </span>
+                            </div>
+
+
+
+                            @foreach (var iitem in item.DayEvents)
+                            {
+                                <div>
+                                    <i class="fas fa-envelope bg-primary"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="far fa-clock"></i>@iitem.TimeLeft ago</span>
+                                        <h3 class="timeline-header"><a href="#">@iitem.User.Username</a> @iitem.Action</h3>
+                                        <div class="timeline-body">
+                                            @iitem.Description
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div>
+                                    <i class="fas fa-user bg-info"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="far fa-clock"></i>@iitem.TimeLeft</span>
+                                        <h3 class="timeline-header border-0">
+                                            <a href="#">@iitem.User.Username  </a>@iitem.Description
+                                        </h3>
+                                    </div>
+                                </div>
+                            }
+
+
+
+
+
+                            @foreach (var iitem in item.DayEvents)
+                            {
+                                <div>
+                                    <i class="fas fa-comments bg-warning"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="far fa-clock"></i>@iitem.TimeLeft</span>
+                                        <h3 class="timeline-header"><a href="#">@iitem.User.Username</a> @iitem.Action</h3>
+                                        <div class="timeline-body">
+                                            @iitem.Description
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <i class="fas fa-envelope bg-primary"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="far fa-clock"></i>@iitem.TimeLeft</span>
+                                        <h3 class="timeline-header"><a href="#">@iitem.User.Username</a> @iitem.Action</h3>
+                                        <div class="timeline-body">
+                                            @iitem.Description
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+
+                                        </div>
+                                    </div>
+                                </div>}
+
+                        }
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+</div>
+
+

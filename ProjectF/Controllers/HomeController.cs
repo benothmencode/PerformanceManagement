@@ -1,7 +1,14 @@
 ﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PerformanceManagement.DATA.Repositories.HomeRepository;
+using ProjectF.Models;
+using ProjectF.ModelsDTOS;
+using ProjectF.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,80 +16,50 @@ namespace ProjectF.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _logger;
+        private readonly IMapper _mapper;
+        private readonly IHomeRepository _HomeRepository;
+      
+        public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository, IMapper mapper, IConfiguration configuration)
+        {
+         _logger = logger;
 
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
+            _mapper = mapper ??
+              throw new ArgumentNullException(nameof(mapper));
 
-        //public IActionResult Index()
-        //{
-        //    var users = new List<User>();
-        //    users.Add(new User() { Id = 1, Username = "Racha" });
-        //    users.Add(new User() { Id = 2, Username = "Wijden" });
-        //    var events = new List<Event>();
-        //    var DayEvents = new List<DayEvent>();
-        //    var DayEvents2 = new List<DayEvent>();
-        //    DayEvents.Add(new DayEvent
-        //    {
-        //        Id = 2,
-        //        Title = "first",
-        //        Description = "this is a description",
-        //        User = users.FirstOrDefault(user => user.Id == 1),
-        //        Action = "Commented your photo",
-        //        TimeLeft = new System.TimeSpan()
+            _HomeRepository = homeRepository ??
+                throw new ArgumentNullException(nameof(homeRepository));
 
-        //    });
-        //    DayEvents.Add(new DayEvent
-        //    {
-        //        Id = 1,
-        //        Title = "Second",
-        //        Description = "this is a description",
-        //        User = users.FirstOrDefault(user => user.Id == 2),
-        //        Action = "Commented your photo"
-        //    });
+        }
 
 
-        //    events.Add(new Event
-        //    {
+       
 
-        //        Date = new System.DateTime(2020, 05, 03).ToString("dd/MM/yyyy"),
-        //        DayEvents = DayEvents
+        public IActionResult Index()
+        {
 
-        //    });
+            var events = _HomeRepository.GetAll();
+            var dayevents = _HomeRepository.GetAlldayevents();
+            var model = _mapper.Map< IList<EventEntityDto>>(events);
+            var model2 = _mapper.Map<IList<DayEventEntityDto>>(dayevents);
+            var eventviewModel = new EventViewModel()
+            {
+                events = model,
+                dayevents = model2
+            };
 
-        //    DayEvents2.Add(new DayEvent
-        //    {
-        //        Id = 3,
-        //        Title = "second",
-        //        Description = "this is a description",
-        //        User = users.FirstOrDefault(user => user.Id == 1),
-        //        Action = "Commented your photo",
-        //        TimeLeft = new System.TimeSpan()
+            return View(eventviewModel);
+        }
 
-        //    });
-        //    events.Add(new Event
-        //    {
+        public IActionResult Privacy()
+        {
+            return View();
+        }
 
-        //        Date = new System.DateTime(2030, 10,5).ToString("dd/MM/yyyy"),
-        //        DayEvents = DayEvents2
-
-        //    });
-
-
-        //    return View(events);
-        //}
-
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+           return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

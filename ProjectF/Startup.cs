@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
+using PerformanceManagement.DATA.Repositories.HomeRepository;
 using System;
 
 namespace ProjectF
@@ -29,13 +30,15 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
 
-            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoteRightsRepository, VoteRightsRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
-            
+            services.AddScoped<IHomeRepository, HomeRepository>();
+
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 

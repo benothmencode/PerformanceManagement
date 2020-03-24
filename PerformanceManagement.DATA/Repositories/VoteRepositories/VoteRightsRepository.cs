@@ -20,5 +20,12 @@ namespace PerformanceManagement.DATA.Repositories
         {
             return _context.VoteRights.Where(v => v.UserId == idUser).ToList(); 
         }
+
+        public VoteRights GetVoteRights(int id)
+        {
+            return _context.VoteRights.FirstOrDefault(vr => vr.Id == id);
+        }
+
+        
     }
 }

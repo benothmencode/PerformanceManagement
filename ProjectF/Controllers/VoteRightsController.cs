@@ -62,7 +62,7 @@ namespace ProjectF.Controllers
         public JsonResult VoteRegistration(int idUserChosen , int idVote , int UserId)
         {
 
-            var voteR = _context.VoteRights.FirstOrDefault(v => v.Id == idVote);
+            var voteR = _voteRightsRepository.GetVoteRights(idVote);
             string TitleVoteChosen = voteR.Title;
             VoteHistory voteHistory = new VoteHistory()
             {
@@ -71,15 +71,32 @@ namespace ProjectF.Controllers
                 VoteRightsId = idVote,
                 VoteTitle    = TitleVoteChosen
             };
-            //voteHistory.UserOwner = _userRepository.GetUserById(UserId);
-            //voteHistory.UserChosen = _userRepository.GetUserById(idUserChosen);
+
             voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");
             _context.VoteHistories.Add(voteHistory);
             _context.SaveChanges();
             return Json(_context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList());
         }
 
-       
+
+        //public JsonResult VoteRegistration(int idUserChosen, int idVote, int UserId)
+        //{
+
+        //    var voteR = _voteRightsRepository.GetVoteRights(idVote);
+        //    string TitleVoteChosen = voteR.Title;
+        //    VoteHistory voteHistory = new VoteHistory()
+        //    {
+        //        UserOwnerId = UserId,
+        //        UserChosenId = idUserChosen,
+        //        VoteRightsId = idVote,
+        //        VoteTitle = TitleVoteChosen
+        //    };
+
+        //    voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");
+        //    _context.VoteHistories.Add(voteHistory);
+        //    _context.SaveChanges();
+        //    return Json(_context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList());
+        //}
 
 
 

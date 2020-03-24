@@ -35,13 +35,15 @@ namespace PerformanceManagement.ENTITIES
         public List<VoteRights> VoteRights { get; set; }
         public List<UserBadge> UserBadges { get; set; }
 
-    
+        public List<DayEvent> dayEvents { get; set; }
 
-    //public byte[] PasswordSalt { get; set; }
 
-    //public byte[] PasswordHash { get; set; }
 
-    [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        //public byte[] PasswordSalt { get; set; }
+
+        //public byte[] PasswordHash { get; set; }
+
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Created { get; set; } 
 
         public User()

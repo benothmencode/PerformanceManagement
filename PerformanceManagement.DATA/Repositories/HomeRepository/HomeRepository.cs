@@ -1,4 +1,5 @@
-﻿using PerformanceManagement.DATA.DbContexts;
+﻿using Microsoft.EntityFrameworkCore;
+using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,12 @@ namespace PerformanceManagement.DATA.Repositories.HomeRepository
 
         public IEnumerable<Event> GetAll()
         {
-            return _context.Events;
+            return _context.Events.Include(e => e.DayEvent).ToList();
         }
 
         public IEnumerable<DayEvent> GetAlldayevents()
         {
-            return _context.DayEvents;
+            return _context.DayEvents.Include(De => De.User).ToList();
         }
 
 

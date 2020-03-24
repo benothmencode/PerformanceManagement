@@ -10,7 +10,7 @@ namespace ProjectF.ModelsDTOS
 
         public int Id { get; set; }
 
-        public List<DayEventEntityDto> DayEvents { get; set; }
+        public List<DayEventEntityDto> DayEvent { get; set; }
 
         public DateTime Date { get; set; }
 

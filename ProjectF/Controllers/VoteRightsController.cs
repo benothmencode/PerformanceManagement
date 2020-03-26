@@ -18,19 +18,18 @@ namespace ProjectF.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        private readonly IVoteRightsRepository _voteRightsRepository;
-        private readonly PerformanceManagementDBContext _context;
+        private readonly IVoteRepository _voteRepository;
 
-        public VoteRightsController(IMapper mapper, IUserRepository userRepository, IVoteRightsRepository voteRightsRepository , PerformanceManagementDBContext context)
+        public VoteRightsController(IMapper mapper, IUserRepository userRepository, IVoteRepository voteRightsRepository)
         {
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
             _userRepository = userRepository ??
                 throw new ArgumentNullException(nameof(userRepository));
-            _voteRightsRepository = voteRightsRepository ??
+            _voteRepository = voteRightsRepository ??
                 throw new ArgumentNullException(nameof(voteRightsRepository));
-            _context = context;
+          
         }
 
         //public static VoteViewModel vm ;
@@ -44,7 +43,7 @@ namespace ProjectF.Controllers
          {
             var users = _userRepository.GetUsers();
            
-              var  Votes = _voteRightsRepository.GetUserVoteRights(userId);
+              var  Votes = _voteRepository.GetUserVoteRights(userId);
            
             var votesmodel = _mapper.Map<IList<VoteRightsEntityDto>>(Votes);
 
@@ -61,43 +60,11 @@ namespace ProjectF.Controllers
 
         public JsonResult VoteRegistration(int idUserChosen , int idVote , int UserId)
         {
-
-            var voteR = _voteRightsRepository.GetVoteRights(idVote);
-            string TitleVoteChosen = voteR.Title;
-            VoteHistory voteHistory = new VoteHistory()
-            {
-                UserOwnerId = UserId,
-                UserChosenId = idUserChosen,
-                VoteRightsId = idVote,
-                VoteTitle    = TitleVoteChosen
-            };
-
-            voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");
-            _context.VoteHistories.Add(voteHistory);
-            _context.SaveChanges();
-            return Json(_context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList());
+            _voteRepository.CreateVoteHistory(idUserChosen, idVote, UserId);
+            return Json(_voteRepository.GetVoteHistory());
         }
 
-
-        //public JsonResult VoteRegistration(int idUserChosen, int idVote, int UserId)
-        //{
-
-        //    var voteR = _voteRightsRepository.GetVoteRights(idVote);
-        //    string TitleVoteChosen = voteR.Title;
-        //    VoteHistory voteHistory = new VoteHistory()
-        //    {
-        //        UserOwnerId = UserId,
-        //        UserChosenId = idUserChosen,
-        //        VoteRightsId = idVote,
-        //        VoteTitle = TitleVoteChosen
-        //    };
-
-        //    voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");
-        //    _context.VoteHistories.Add(voteHistory);
-        //    _context.SaveChanges();
-        //    return Json(_context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList());
-        //}
-
+        
 
 
     }

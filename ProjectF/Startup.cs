@@ -34,7 +34,7 @@ namespace ProjectF
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IVoteRightsRepository, VoteRightsRepository>();
+            services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
 

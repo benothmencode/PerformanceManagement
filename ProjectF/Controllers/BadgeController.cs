@@ -41,9 +41,6 @@ namespace ProjectF.Controllers
         public IActionResult Index(int? idUser)
         {
 
-            var badges = _BadgeRepository.GetAll();
-
-            var userbadges = _BadgeRepository.GetUserBadge(idUser);
             if (idUser == null)
             {
                 return NotFound();
@@ -54,7 +51,7 @@ namespace ProjectF.Controllers
                 return NotFound();
             }
             var model = _mapper.Map<UserEntityDto>(user);
-            var Badges = _userRepository.GetAllUserbadgesForAuser(idUser);
+            var Badges = _BadgeRepository.GetUserBadge(idUser);
             if (Badges.Count() <= 0)
             {
                 ViewBag.BadgeMessage = $"{user.Username} has no Badges yet ";

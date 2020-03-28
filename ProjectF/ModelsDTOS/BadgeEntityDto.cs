@@ -16,7 +16,9 @@ namespace ProjectF.ModelsDTOS
         public int BadgeCriteria { get; set; }
       
         public string Challenge { get; set; }
-      
+
+        public SystemeEntityDto Systeme { get; set; }
+
         public List<UserBadge> UserBadges { get; set; }
     }
 }

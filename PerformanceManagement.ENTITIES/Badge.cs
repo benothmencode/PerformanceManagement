@@ -13,7 +13,6 @@ namespace PerformanceManagement.ENTITIES
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
-        public string System { get; set; }
         public string Description { get; set; }
         public string Icon { get; set; }
         public int BadgeCriteria { get; set; }
@@ -27,7 +26,10 @@ namespace PerformanceManagement.ENTITIES
         {
             Created = DateTime.Now;
         }
-  
+
+        [ForeignKey("SystemeId")]
+        public int SystemeId { get; set; }
+        public Systeme Systeme { get; set; }
         public List<UserBadge> UserBadges { get; set; }
 
     }

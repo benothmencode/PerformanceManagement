@@ -30,7 +30,7 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
 
-            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
             services.AddScoped<IUserRepository, UserRepository>();

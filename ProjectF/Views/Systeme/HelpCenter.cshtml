@@ -1,0 +1,130 @@
+﻿@model ProjectF.ViewModels.SystemeViewModel
+@{
+    ViewData["Title"] = "HelpCenter";
+}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Help-Center</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="col-lg">
+            <!--Card-->
+            <div class="card hoverable" style="overflow: visible;">
+                <div class="card-content">
+                    <h2>HelpCenter</h2>
+                </div>
+                <div class="card-body">
+                    <hr>
+                    <h5 class="text-info">To see all Badge-system and discover all challenges :</h5>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label asp-for="SystemeSelectListItems">Systemes:</label>
+                            <select asp-for="SystemeId" asp-items="@Model.SystemeSelectListItems">
+                                <option value="" selected disabled>-- Select Systeme Name --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="row d-flex align-items-stretch" id="details">
+                        <!-- mustachejs output goes here -->
+                    </div>
+                </div>
+
+
+            </div>
+            <!--Card-->
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+
+<script id="DetailTemplate2" type="text/mustache">
+    {{#Systeme}}
+        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+            <ul class="list-inline col-lg">
+                <li class="list-group"><strong>SystemeName:</strong> {{systemName}}</li>
+                <li class="list-group"><strong>Description:</strong>{{description}}</li>
+                <li class="list-group"><strong>Your Account:</strong>{{urlUserSystemAccount}}</li>
+            </ul>
+        </div>
+        {{#Systeme.badges}}
+        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+            <div class="card bg-light">
+                <div class="card-header text-muted border-bottom-0">
+                    {{title}}
+                </div>
+                <div class="card-body pt-0">
+                    <div class="row">
+                        <div class="col-7">
+                            <h2 class="lead"><b>Nicole Pearson</b></h2>
+                            <p class="text-muted text-sm"><b>Badge description: </b> {{description}} </p>
+                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Created At :{{created}}</li>
+                                @*<li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: + 800 - 12 12 23 52</li>*@
+                            </ul>
+                        </div>
+                        <div class="col-5 text-center">
+                            <img src="/theme/dist/img/badge.PNG" alt="" class="img-circle img-fluid">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="text-right">
+                        <a href="#" class="btn btn-sm bg-teal">
+                            <i class="fas fa-comments"></i>
+                        </a>
+                        <a asp-controller="Badge" asp-action="Details" asp-route-idBadge="{{id}}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-user"></i> View Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/Systeme.badges}}
+        {{/Systeme}}
+</script>
+
+@section scripts{
+
+    <script src="~/Scripts/mustache.js"></script>
+    <script>
+        $('#SystemeId').change(function () {
+            var textValue = $('#SystemeId option:selected').val();
+            var id1 = parseInt(textValue);
+            $.ajax({
+                url: "/Systeme/SystemDetail",
+                type: "GET",
+                dataType: "json",
+                data: { SystemId: id1 },
+                success: function (data) {
+                    var html = Mustache.to_html($("#DetailTemplate2").html(), { Systeme: data });
+                    $("#details").html(html);
+                },
+                error: function (xhr, status, error) {
+                    alert(xhr.responseText);
+                    alert(status);
+                    alert(error);
+                }
+            });
+        })
+    </script>
+}

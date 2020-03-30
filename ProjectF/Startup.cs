@@ -9,6 +9,7 @@ using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.HomeRepository;
+using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using System;
 
 namespace ProjectF
@@ -34,9 +35,10 @@ namespace ProjectF
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IVoteRightsRepository, VoteRightsRepository>();
+            services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
+            services.AddScoped<ISystemeRepository, SystemeRepository>();
 
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

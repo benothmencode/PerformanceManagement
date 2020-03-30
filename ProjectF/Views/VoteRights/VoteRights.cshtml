@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <h2>Votes </h2>
                         <hr>
-                        <table class="table table-striped projects">
+                        <table class="table table-striped projects" id="list">
                             <thead>
                             <th style="width:20%">
                                 Votes
@@ -54,15 +54,15 @@
                                                     <a class="nav-link" data-toggle="dropdown" href="#">
                                                         <span class="badge badge-warning">Offer</span>
                                                     </a>
-                                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu">
+                                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu"  >
                                                         <span class="dropdown-item dropdown-header">List of Employees To choose from</span>
+                                                        <input type="search" class="search" placeholder="search employee" />
                                                         <div class="dropdown-divider"></div>
-                                                        <ul class="users-list clearfix">
+                                                        <ul class="users-list clearfix list1">
                                                             @foreach (var iitem in Model.UsersDtos)
                                                             {
-                                                                <li>
+                                                                <li class="loop">
                                                                     <img src="~/theme/dist/img/@iitem.Userimage" alt="User Image">
-                                                                    @*@Html.ActionLink(@iitem.Username, "Awards", "Vote", new { idUserChosen = iitem.Id, idVote = item.Id, idUserOwner = item.UserId })*@
                                                                     <input type="button" onclick="PassingData(@iitem.Id,@item.Id,@item.UserId)" class="text-dark" style="border:none; background-color:transparent" value="@iitem.Username" />
                                                                 </li>
                                                             }
@@ -124,9 +124,7 @@
             <tbody>
                 {{#Vlist}}
                 <tr>
-                    
                     <td>{{voteTitle}}</td>
-                   
                     {{#userChosen}}
                     <td>
                         <figure class="figure">
@@ -165,5 +163,21 @@
             });
         }
     </script>
-
+    <script>
+           
+             $(".search").on("keyup", function () {
+                 var datasearch = $(this).val().toLowerCase();
+                 $("tr ul.list1").each(function () {
+                     $(this).children("li.loop").each(function (j) {
+                    var stringdata = $(this).find('input.text-dark:button').attr('value').toLowerCase();
+                        if (stringdata.indexOf(datasearch) !== 0 && stringdata.indexOf(datasearch) < 0) {
+                           $(this).hide();
+                        }
+                        else {
+                            $(this).show();
+                        }
+                     });
+                });
+       });
+    </script>
 }

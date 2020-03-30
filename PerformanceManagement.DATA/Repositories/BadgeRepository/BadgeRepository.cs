@@ -22,7 +22,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
         public IEnumerable<Badge> GetAll()
         {
-            return _context.Badges;
+            return _context.Badges.Include(b => b.Systeme).ToList();
         }
 
         public IEnumerable<Badge> GetUserBadge(int? userId)

@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <label asp-for="SystemeSelectListItems">Systemes:</label>
-                            <select asp-for="SystemeId" asp-items="@Model.SystemeSelectListItems">
+                            <select type="button" class="btn btn-md btn-secondary"  asp-for="SystemeId" asp-items="@Model.SystemeSelectListItems">
                                 <option value="" selected disabled>-- Select Systeme Name --</option>
                             </select>
                         </div>
@@ -70,12 +70,12 @@
         <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
             <div class="card bg-light">
                 <div class="card-header text-muted border-bottom-0">
-                    {{title}}
+                    Title
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
                         <div class="col-7">
-                            <h2 class="lead"><b>Nicole Pearson</b></h2>
+                            <h2 class="lead"><b>{{title}}</b></h2>
                             <p class="text-muted text-sm"><b>Badge description: </b> {{description}} </p>
                             <ul class="ml-4 mb-0 fa-ul text-muted">
                                 <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Created At :{{created}}</li>
@@ -92,8 +92,8 @@
                         <a href="#" class="btn btn-sm bg-teal">
                             <i class="fas fa-comments"></i>
                         </a>
-                        <a asp-controller="Badge" asp-action="Details" asp-route-idBadge="{{id}}" class="btn btn-sm btn-primary">
-                            <i class="fas fa-user"></i> View Detail
+                        <a asp-controller="Badge" asp-action="Details" asp-route-idBadge="{{id}}" class="btn btn-sm btn-secondary">
+                            <div class="text-white">View Detail</div>
                         </a>
                     </div>
                 </div>

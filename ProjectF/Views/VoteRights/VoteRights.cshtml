@@ -49,28 +49,27 @@
                                             @item.Quantity
                                         </td>
                                         <td>
-                                            <ul class="navbar-nav ml-auto">
-                                                <li class="nav-item dropdown">
-                                                    <a class="nav-link" data-toggle="dropdown" href="#">
-                                                        <span class="badge badge-warning">Offer</span>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu"  >
-                                                        <span class="dropdown-item dropdown-header">List of Employees To choose from</span>
-                                                        <input type="search" class="search" placeholder="search employee" />
-                                                        <div class="dropdown-divider"></div>
-                                                        <ul class="users-list clearfix list1">
-                                                            @foreach (var iitem in Model.UsersDtos)
-                                                            {
-                                                                <li class="loop">
-                                                                    <img src="~/theme/dist/img/@iitem.Userimage" alt="User Image">
-                                                                    <input type="button" onclick="PassingData(@iitem.Id,@item.Id,@item.UserId)" class="text-dark" style="border:none; background-color:transparent" value="@iitem.Username" />
-                                                                </li>
-                                                            }
+                                        
+                                            <div class="btn-group dropright">
+                                                <button type="button" class="badge badge-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Offer
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-lg dropdown-menu">
+                                                    <span class="dropdown-item dropdown-header">List of Employees To choose from</span>
+                                                    <input type="search" class="search" placeholder="search employee" />
+                                                    <div class="dropdown-divider"></div>
+                                                    <ul class="users-list clearfix list1">
+                                                        @foreach (var iitem in Model.UsersDtos)
+                                                        {
+                                                            <li class="loop">
+                                                                <img src="~/theme/dist/img/@iitem.Userimage" alt="User Image">
+                                                                <input type="button" onclick="PassingData(@iitem.Id,@item.Id,@item.UserId)" class="text-dark" style="border:none; background-color:transparent" value="@iitem.Username" />
+                                                            </li>
+                                                        }
 
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 }

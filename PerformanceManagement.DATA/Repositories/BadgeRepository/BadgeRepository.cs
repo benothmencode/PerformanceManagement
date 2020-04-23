@@ -27,9 +27,14 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
         public IEnumerable<Badge> GetUserBadge(int? userId)
         {
-            return _context.userBadges.Where(u => u.UserId == userId).Where(ub => DateTime.Compare(ub.StartedAt, ub.BadgeDeadline) < 0).Select(b => b.Badge).ToList();
-          
+            throw new NotImplementedException();
         }
+
+        //public IEnumerable<Badge> GetUserBadge(int? userId)
+        //{
+        //    return _context.userBadges.Where(u => u.UserId == userId).Where(ub => DateTime.Compare(ub.StartedAt, ub.BadgeDeadline) < 0).Select(b => b.Badge).ToList();
+          
+        //}
 
         public Badge GetBadgeById(int? badgeId)
         {

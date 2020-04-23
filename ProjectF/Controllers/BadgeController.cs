@@ -54,7 +54,7 @@ namespace ProjectF.Controllers
             var Badges = _BadgeRepository.GetUserBadge(idUser);
             if (Badges.Count() <= 0)
             {
-                ViewBag.BadgeMessage = $"{user.Username} has no Badges yet ";
+                //ViewBag.BadgeMessage = $"{user.Username} has no Badges yet ";
             }
             var model2 = _mapper.Map<IList<BadgeEntityDto>>(Badges);
 

@@ -5,8 +5,15 @@
     ViewData["Title"] = "Index";
 }
 
-
-
+@section head{
+    <style>
+        .scrollable-menu {
+            height: auto;
+            max-height: 200px;
+            overflow-x: hidden;
+        }
+    </style>
+}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -18,7 +25,6 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
 
@@ -26,7 +32,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="card-body">
-                        <h2>Votes </h2>
+                        <h2> Votes </h2>
                         <hr>
                         <table class="table table-striped projects" id="list">
                             <thead>
@@ -39,7 +45,7 @@
                             <th>
                                 Offer To
                             </th>
-                            </thead>
+                            </thead >
                             <tbody>
                                 @foreach (var item in Model.VoteRightsDtos)
                                 {
@@ -49,15 +55,14 @@
                                             @item.Quantity
                                         </td>
                                         <td>
-                                        
+
                                             <div class="btn-group dropright">
                                                 <button type="button" class="badge badge-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Offer
                                                 </button>
-                                                <div class="dropdown-menu dropdown-menu-lg dropdown-menu">
-                                                    <span class="dropdown-item dropdown-header">List of Employees To choose from</span>
-                                                    <input type="search" class="search" placeholder="search employee" />
-                                                    <div class="dropdown-divider"></div>
+                                                <div class="dropdown-menu dropdown-menu-lg scrollable-menu">
+                                                    <span class="dropdown-item dropdown-header"> List of Employees To choose from</span>
+                                                    <input type="search" class="search" placeholder="search employee" style='width:auto' />
                                                     <ul class="users-list clearfix list1">
                                                         @foreach (var iitem in Model.UsersDtos)
                                                         {
@@ -66,14 +71,12 @@
                                                                 <input type="button" onclick="PassingData(@iitem.Id,@item.Id,@item.UserId)" class="text-dark" style="border:none; background-color:transparent" value="@iitem.Username" />
                                                             </li>
                                                         }
-
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 }
-
                             </tbody>
                         </table>
                     </div>
@@ -86,16 +89,11 @@
                 <div id="details">
                     <!-- mustachejs output goas here -->
                 </div>
-
                 <!-- Vote Cards -->
                 <!-- Awards Cards -->
                 <hr>
             </div>
         </div>
-
-
-
-
         <!-- /.content-wrapper -->
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -107,7 +105,7 @@
 <!-- ./wrapper -->
 <script id="DetailTemplate" type="text/mustache">
     <div class="card-body">
-        <h2>Awards </h2>
+        <h2> Awards </h2>
         <hr>
         <table class="table table-striped projects">
             <thead>
@@ -119,7 +117,7 @@
             </th>
 
             <th> Offered in </th>
-            </thead>
+            </thead >
             <tbody>
                 {{#Vlist}}
                 <tr>
@@ -151,32 +149,32 @@
                 dataType: "json",
                 data: { idUserChosen: Id1, idVote: Id2, UserId: Id3 },
                 success: function (data) {
-                   var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data });
-                        $("#details").html(html);
+                    var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data });
+                    $("#details").html(html);
                 },
                 error: function (xhr, status, error) {
-                        alert(xhr.responseText);
-                        alert(status);
-                        alert(error);
-                    }
+                    alert(xhr.responseText);
+                    alert(status);
+                    alert(error);
+                }
             });
         }
     </script>
     <script>
-           
-             $(".search").on("keyup", function () {
-                 var datasearch = $(this).val().toLowerCase();
-                 $("tr ul.list1").each(function () {
-                     $(this).children("li.loop").each(function (j) {
+
+        $(".search").on("keyup", function () {
+            var datasearch = $(this).val().toLowerCase();
+            $("tr ul.list1").each(function () {
+                $(this).children("li.loop").each(function (j) {
                     var stringdata = $(this).find('input.text-dark:button').attr('value').toLowerCase();
-                        if (stringdata.indexOf(datasearch) !== 0 && stringdata.indexOf(datasearch) < 0) {
-                           $(this).hide();
-                        }
-                        else {
-                            $(this).show();
-                        }
-                     });
+                    if (stringdata.indexOf(datasearch) !== 0 && stringdata.indexOf(datasearch) < 0) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
                 });
-       });
+            });
+        });
     </script>
 }

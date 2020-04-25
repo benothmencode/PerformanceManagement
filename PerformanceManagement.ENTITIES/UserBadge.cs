@@ -6,9 +6,8 @@ namespace PerformanceManagement.ENTITIES
 {
     public class UserBadge
     {
-        public int UserId { get; set; }
-        public int BadgeId { get; set; }
 
+        public int Id { get; set; }
 
         public int UserProgression { get; set; }
 

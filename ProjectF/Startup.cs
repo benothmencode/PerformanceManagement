@@ -37,8 +37,8 @@ namespace ProjectF
             string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
-
-            //services.AddScoped<IUserRepository, UserRepository>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
@@ -46,8 +46,9 @@ namespace ProjectF
 
             services.AddIdentity<User, AppRole>()
             .AddDefaultUI()
-            .AddEntityFrameworkStores<PerformanceManagementDBContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<PerformanceManagementDBContext>();
+            
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

@@ -32,13 +32,9 @@ namespace ProjectF.Controllers
           
         }
 
-        //public static VoteViewModel vm ;
-        // public static IList<AwardViewModel> ListAm = new List<AwardViewModel>();
-        // public static IList<Vote> votes = new List<Vote>() { new Vote() { Id = 1, Title = "helpful", Quantity = 3 },
-        //     new Vote() { Id = 2, Title = "Smart", Quantity = 1 } };
 
-        [Route("votes/User/")]
-        [HttpGet("{userId}")]
+       
+        
         public IActionResult VoteRights([FromQuery] int userId)
          {
             var users = _userRepository.GetUsers();
@@ -61,7 +57,7 @@ namespace ProjectF.Controllers
         public JsonResult VoteRegistration(int idUserChosen , int idVote , int UserId)
         {
             _voteRepository.CreateVoteHistory(idUserChosen, idVote, UserId);
-            return Json(_voteRepository.GetVoteHistory());
+            return Json(_voteRepository.GetVoteHistory(UserId));
         }
 
         

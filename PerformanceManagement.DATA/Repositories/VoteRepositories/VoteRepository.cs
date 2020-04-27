@@ -44,9 +44,9 @@ namespace PerformanceManagement.DATA.Repositories
 
         }
 
-        public IEnumerable<VoteHistory> GetVoteHistory()
+        public IEnumerable<VoteHistory> GetVoteHistory(int UserId)
         {
-           return _context.VoteHistories.Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList();
+           return _context.VoteHistories.Where(vh => vh.UserOwnerId == UserId).Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList();
         }
         
     }

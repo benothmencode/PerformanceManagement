@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using PerformanceManagement.ENTITIES
+@using Microsoft.AspNetCore.Http;
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -202,47 +208,80 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                        with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Home" class="nav-link">
-                                <i class="nav-icon fa fa-fw fa-home"></i>
-                                <p>
-                                    Home
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa fa-fw fa-user"></i>
-                                <p>
-                                    Profile
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-action="Index" asp-controller="Badge" class="nav-link">
-                                <i class="nav-icon fas fa-award"></i>
-                                <p>
-                                    Badges
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-action="ListEmployees" asp-controller="User" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Employees
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-action="HelpCenter" asp-controller="Systeme" class="nav-link">
-                                <i class="nav-icon fas fa-question-circle"></i>
-                                <p>
-                                    HelpCenter
-                                </p>
-                            </a>
-                        </li>
+    with font-awesome or any other icon font library -->
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a asp-action="Index" asp-controller="Home" class="nav-link">
+                                    <i class="nav-icon fa fa-fw fa-home"></i>
+                                    <p>
+                                        Home
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Profile" asp-controller="Users" asp-route-idUser="@UserManager.GetUserId(User)" class="nav-link">
+
+                                    <i class="nav-icon fa fa-fw fa-user"></i>
+                                    <p>
+                                        Profile
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Index" asp-controller="Badge" asp-route-idUser="@UserManager.GetUserId(User)" class="nav-link">
+
+                                    <i class="nav-icon fas fa-award"></i>
+                                    <p>
+                                        Badges
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="VoteRights" asp-controller="VoteRights" asp-route-userId="@UserManager.GetUserId(User)" class="nav-link">
+
+                                    <i class="nav-icon fas fa-award"></i>
+                                    <p>
+                                        VoteRights
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Employees" asp-controller="Users" class="nav-link">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Employees
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="HelpCenter" asp-controller="Systeme" class="nav-link">
+                                    <i class="nav-icon fas fa-question-circle"></i>
+                                    <p>
+                                        HelpCenter
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                            </li>
+                            <li class="nav-item">
+                                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                        }
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

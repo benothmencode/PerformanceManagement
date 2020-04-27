@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PerformanceManagement.DATA;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
@@ -37,8 +38,8 @@ namespace ProjectF
             string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
-
-            //services.AddScoped<IUserRepository, UserRepository>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
@@ -46,14 +47,20 @@ namespace ProjectF
 
             services.AddIdentity<User, AppRole>()
             .AddDefaultUI()
-            .AddEntityFrameworkStores<PerformanceManagementDBContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            .AddRoles<AppRole>()
+            .AddEntityFrameworkStores<PerformanceManagementDBContext>();
+            
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
+            UserManager<User> userManager,
+            RoleManager<AppRole> roleManager
+            )
         {
             if (env.IsDevelopment())
             {
@@ -72,7 +79,7 @@ namespace ProjectF
             app.UseAuthentication();
 
             app.UseAuthorization();
-
+            SeedData.Seed(userManager, roleManager);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

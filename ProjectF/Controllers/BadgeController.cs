@@ -10,15 +10,21 @@ using System.Collections.Generic;
 using System.Linq;
 using ProjectF.ViewModels;
 using PerformanceManagement.DATA.Repositories;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using System.Web;
 
 namespace ProjectF.Controllers
 {
+ 
     public class BadgeController : Controller
     {
         private readonly IMapper _mapper;
         private readonly IBadgeRepository _BadgeRepository;
-        private readonly IUserRepository _userRepository;
-        public BadgeController(IBadgeRepository badgeRepository, IUserRepository userRepository,IMapper mapper, IConfiguration configuration)
+        private readonly IUserRepository _UserRepository;
+
+        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IConfiguration configuration, IUserRepository userRepository)
         {
             
 
@@ -27,25 +33,15 @@ namespace ProjectF.Controllers
 
             _BadgeRepository = badgeRepository ??
                 throw new ArgumentNullException(nameof(badgeRepository));
-
-            _userRepository = userRepository ??
-                throw new ArgumentNullException(nameof(badgeRepository));
+            _UserRepository = userRepository;
 
 
         }
 
-       
-
-
-
-        public IActionResult Index(int? idUser)
+        
+        public IActionResult Index(int idUser)
         {
-
-            if (idUser == null)
-            {
-                return NotFound();
-            }
-            var user = _userRepository.GetUserById(idUser);
+            var user = _UserRepository.GetUserById(idUser);
             if (user == null)
             {
                 return NotFound();
@@ -54,7 +50,7 @@ namespace ProjectF.Controllers
             var Badges = _BadgeRepository.GetUserBadge(idUser);
             if (Badges.Count() <= 0)
             {
-                //ViewBag.BadgeMessage = $"{user.Username} has no Badges yet ";
+                ViewBag.BadgeMessage = $"{user.UserName} has no Badges yet ";
             }
             var model2 = _mapper.Map<IList<BadgeEntityDto>>(Badges);
 

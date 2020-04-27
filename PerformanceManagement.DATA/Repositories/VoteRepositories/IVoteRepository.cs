@@ -12,7 +12,7 @@ namespace PerformanceManagement.DATA.Repositories
 
         void CreateVoteHistory(int idUserChosen, int idVote, int UserId);
 
-        IEnumerable<VoteHistory> GetVoteHistory();
+        IEnumerable<VoteHistory> GetVoteHistory(int UserId);
 
     }
 }

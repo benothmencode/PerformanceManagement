@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace PerformanceManagement.ENTITIES
@@ -15,7 +16,10 @@ namespace PerformanceManagement.ENTITIES
         public DateTime? ObtainedAt { get; set; }
         public DateTime BadgeDeadline { get; set; }
 
-
+        [ForeignKey("UserId")]
+        public int UserId { get; set; }
+        [ForeignKey("BadgeId")]
+        public int BadgeId { get; set; }
         public User User { get; set; }
         public Badge Badge { get; set; }
     }

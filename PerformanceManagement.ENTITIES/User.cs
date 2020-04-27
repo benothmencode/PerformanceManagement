@@ -2,8 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 
 namespace PerformanceManagement.ENTITIES
 {
@@ -13,6 +12,7 @@ namespace PerformanceManagement.ENTITIES
        
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        //public string Username { get; set; }
         public string Userimage { get; set; }
         public string Job { get; set; }
         public string Description { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace PerformanceManagement.ENTITIES
 {
-    public class Badge
+    public class Badge 
     {
         [Key]
         [Required]
@@ -16,7 +17,9 @@ namespace PerformanceManagement.ENTITIES
         public string Description { get; set; }
         public string Icon { get; set; }
         public int BadgeCriteria { get; set; }
-     
+
+        //public  periodicity { get; set; }
+
         public string Challenge { get; set; }
 
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
@@ -31,6 +34,8 @@ namespace PerformanceManagement.ENTITIES
         public int SystemeId { get; set; }
         public Systeme Systeme { get; set; }
         public List<UserBadge> UserBadges { get; set; }
+
+        //public bool is_user { get; set; }(parsyst wala par user)
 
     }
 }

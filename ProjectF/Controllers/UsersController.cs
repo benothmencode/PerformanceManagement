@@ -22,7 +22,7 @@ namespace ProjectF.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IWebHostEnvironment WebHostEnvironment;
 
-        public UsersController(IMapper mapper ,IUserRepository userRepository , IWebHostEnvironment webHostEnvironment )
+        public UsersController(IMapper mapper, IUserRepository userRepository, IWebHostEnvironment webHostEnvironment)
         {
 
             _mapper = mapper ??
@@ -34,14 +34,14 @@ namespace ProjectF.Controllers
         // GET: Users
         public IActionResult Employees()
         {
-            var users =  _userRepository.GetUsers();
-            if(users.Count() <= 0)
+            var users = _userRepository.GetUsers();
+            if (users.Count() <= 0)
             {
                 ViewBag.Message = "there was a prob retrieving users";
             }
             var model = _mapper.Map<IList<UserEntityDto>>(users);
-            return  View(model);
-           
+            return View(model);
+
         }
 
         [HttpGet]
@@ -49,9 +49,9 @@ namespace ProjectF.Controllers
         {
             ViewData["GetEmployeedetails"] = Empsearch;
             var empquery = await _userRepository.GetUserByUsername(Empsearch);
-            var modell =  _mapper.Map<IList<UserEntityDto>>(empquery);
+            var modell = _mapper.Map<IList<UserEntityDto>>(empquery);
             return View(modell);
-        
+
         }
 
         //private string UploadFile(UserEntityDto userEntity)
@@ -98,7 +98,7 @@ namespace ProjectF.Controllers
             return View(userProfileviewModel);
         }
 
-       
+
 
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PerformanceManagement.DATA;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
@@ -47,6 +48,7 @@ namespace ProjectF
             services.AddIdentity<User, AppRole>()
             .AddDefaultUI()
             .AddDefaultTokenProviders()
+            .AddRoles<AppRole>()
             .AddEntityFrameworkStores<PerformanceManagementDBContext>();
             
 
@@ -54,7 +56,11 @@ namespace ProjectF
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
+            UserManager<User> userManager,
+            RoleManager<AppRole> roleManager
+            )
         {
             if (env.IsDevelopment())
             {
@@ -73,7 +79,7 @@ namespace ProjectF
             app.UseAuthentication();
 
             app.UseAuthorization();
-
+            SeedData.Seed(userManager, roleManager);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

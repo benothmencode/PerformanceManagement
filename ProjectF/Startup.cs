@@ -38,6 +38,7 @@ namespace ProjectF
             string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
+            services.AddHttpClient();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();

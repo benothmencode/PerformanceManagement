@@ -59,51 +59,55 @@
                                         <hr />
                                         <div asp-validation-summary="All" class="text-danger"></div>
                                         <div class="input-group mb-3">
-                                            <input asp-for="Input.Email" class="form-control"  placeholder="Email"/>
+                                            <input asp-for="Input.Email" class="form-control" placeholder="Email" />
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <span asp-validation-for="Input.Email" class="fas fa-envelope"></span>
 
                                                 </div>
                                             </div>
-                                            </div>
-                                            <div class="input-group mb-3">
-                                               
-                                                <input asp-for="Input.Password" class="form-control" placeholder="Password" />
-                                                <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text">
-                                                        <span class="fas fa-lock"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-8">
-                                                    <div class="icheck-primary">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input asp-for="Input.UserName" class="form-control" placeholder="Username" />
+                                            
+                                        </div>
+                                        <div class="input-group mb-3">
 
-                                                        <label asp-for="Input.RememberMe">
-                                                            <input asp-for="Input.RememberMe" />
-                                                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                                        </label>
-                                                    </div>
+                                            <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-8">
-                                                <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                                                <div class="icheck-primary">
+
+                                                    <label asp-for="Input.RememberMe">
+                                                        <input asp-for="Input.RememberMe" />
+                                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                                    </label>
+                                                </div>
                                             </div>
-                                            <br />
-                                            <div class="form-group">
-                                                <p class="mb-1">
-                                                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                                                </p>
-                                                <p class="mb-0">
-                                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                                                </p>
-                                                <p class="mb-0">
-                                                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                                                </p>
-                                            </div>
-</form>
+                                        </div>
+                                        <div class="col-8">
+                                            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                                        </div>
+                                        <br />
+                                        <div class="form-group">
+                                            <p class="mb-1">
+                                                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                                            </p>
+                                            <p class="mb-0">
+                                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                                            </p>
+                                            <p class="mb-0">
+                                                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                                            </p>
+                                        </div>
+                                    </form>
                                 </section>
                             </div>
 

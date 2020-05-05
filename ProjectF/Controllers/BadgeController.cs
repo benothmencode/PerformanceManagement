@@ -81,8 +81,23 @@ namespace ProjectF.Controllers
 
         }
 
+        [Authorize(Roles ="Administrator")]
+        public IActionResult Listofbadges()
+        {
+            var badges = _BadgeRepository.GetAll();
+            var model = _mapper.Map<IList<BadgeEntityDto>>(badges);
 
+            return View(model);
+        }
 
+        [Authorize(Roles = "Administrator")]
+        public IActionResult Create(Badge badge)
+        {
+            _BadgeRepository.Create(badge);
+           
+
+            return View();
+        }
 
 
     }

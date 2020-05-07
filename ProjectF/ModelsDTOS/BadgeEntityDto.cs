@@ -20,5 +20,6 @@ namespace ProjectF.ModelsDTOS
         public SystemeEntityDto Systeme { get; set; }
 
         public List<UserBadge> UserBadges { get; set; }
+        public String Created { get; set; }
     }
 }

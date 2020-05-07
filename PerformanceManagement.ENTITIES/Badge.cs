@@ -13,14 +13,18 @@ namespace PerformanceManagement.ENTITIES
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
+        
         public string Icon { get; set; }
+        [Required]
         public int BadgeCriteria { get; set; }
 
         //public  periodicity { get; set; }
 
-        public string Challenge { get; set; }
+     
 
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         

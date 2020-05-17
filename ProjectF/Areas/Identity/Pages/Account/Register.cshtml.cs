@@ -17,7 +17,7 @@ using PerformanceManagement.ENTITIES;
 
 namespace ProjectF.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "Administrator")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;

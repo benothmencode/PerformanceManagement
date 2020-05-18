@@ -23,12 +23,14 @@ namespace PerformanceManagement.ENTITIES
 
         public List<DayEvent> dayEvents { get; set; }
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Created { get; set; } 
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
         public User()
         {
-            Created = DateTime.Now;
+            this.Created = DateTime.UtcNow.Date;
+            this.Modified = DateTime.UtcNow.Date;
         }
-        public DateTime Modified { get; set; }
+      
        
         
 

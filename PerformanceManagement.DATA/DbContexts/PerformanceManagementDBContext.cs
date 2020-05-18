@@ -13,6 +13,16 @@ namespace PerformanceManagement.DATA.DbContexts
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
+            modelBuilder.Entity<SystemeUser>()
+         .HasKey(Us => new { Us.SystemeId, Us.UserId });
+            modelBuilder.Entity<SystemeUser>()
+                .HasOne(Us => Us.User)
+                .WithMany(u => u.SystemeUsers)
+                .HasForeignKey(Us => Us.UserId);
+            modelBuilder.Entity<SystemeUser>()
+                .HasOne(Us => Us.Systeme)
+                .WithMany(s => s.SystemeUsers)
+                .HasForeignKey(Us => Us.SystemeId);
             modelBuilder.Entity<User>().HasIndex(s => s.Email).IsUnique();
             base.OnModelCreating(modelBuilder);
 

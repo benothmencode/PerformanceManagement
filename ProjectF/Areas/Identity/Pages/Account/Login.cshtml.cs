@@ -51,7 +51,6 @@ namespace ProjectF.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name = "UserName")]
             public string UserName { get; set; }
-
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }

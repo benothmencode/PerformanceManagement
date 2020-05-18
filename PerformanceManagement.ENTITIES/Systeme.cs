@@ -13,10 +13,11 @@ namespace PerformanceManagement.ENTITIES
         public int Id { get; set; }
         public string SystemName { get; set; }
         public string Description { get; set; }
-        public string UrlUserSystemAccount { get; set; }
         public IList<Badge> Badges { get; set; }
-    
-}
+        public List<SystemeUser> SystemeUsers { get; set; }
+
+    }
+
 }
 
 //commit counter = yconecty aal gitlab mettre a jour la table user badge avec config mta3 badge ychouf l periodicité

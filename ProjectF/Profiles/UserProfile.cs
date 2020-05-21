@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProjectF.ModelsDTOS;
+using System.Reflection;
 
 namespace ProjectF.Profiles
 {
@@ -14,5 +15,6 @@ namespace ProjectF.Profiles
         {
             CreateMap<User, UserEntityDto>();
         }
+
     }
 }

@@ -19,6 +19,8 @@ namespace PerformanceManagement.DATA.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        
+
         public IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId)
         {
             return _context.userBadges.Where(u => u.UserId == userId).Where(ub => DateTime.Compare(ub.StartedAt, ub.BadgeDeadline) < 0).Select(b => b.Badge).ToList();
@@ -44,6 +46,12 @@ namespace PerformanceManagement.DATA.Repositories
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.OrderBy(u => u.Created).ToList();
+        }
+
+        public void Edit(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
     }
 }

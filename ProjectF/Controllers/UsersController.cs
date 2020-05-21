@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,17 +20,27 @@ namespace ProjectF.Controllers
 {
     public class UsersController : Controller
     {
+       
         private readonly IMapper _mapper;
+
+        private readonly IWebHostEnvironment _WebHostEnvironment;
+
+        private UserManager<User> _userManager;
+
         private readonly IUserRepository _userRepository;
-        private readonly IWebHostEnvironment WebHostEnvironment;
 
-        public UsersController(IMapper mapper, IUserRepository userRepository, IWebHostEnvironment webHostEnvironment)
+        public UsersController(IWebHostEnvironment webHostEnvironment , IMapper mapper, 
+            IUserRepository userRepository,
+            UserManager<User> userManager)
         {
-
+            _WebHostEnvironment = webHostEnvironment;
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
             _userRepository = userRepository ??
-                throw new ArgumentNullException(nameof(userRepository)); ;
+                throw new ArgumentNullException(nameof(userRepository));
+            _userManager = userManager ??
+             throw new ArgumentNullException(nameof(userManager));
+
         }
 
         // GET: Users
@@ -54,21 +66,7 @@ namespace ProjectF.Controllers
 
         }
 
-        //private string UploadFile(UserEntityDto userEntity)
-        //{
-        //    string fileName = null;
-        //    if (userEntity.Userimage != null)
-        //    {
-        //        string uploadDir = Path.Combine(WebHostEnvironment.WebRootPath, "theme/dist/img");
-        //        fileName = Guid.NewGuid().ToString() + "-" + userEntity.Userimage.FileName;
-        //        string filePath = Path.Combine(uploadDir, fileName);
-        //        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //        {
-        //            userEntity.Userimage.CopyTo(fileStream);
-        //        }
-        //    }
-        //    return fileName;
-        //}
+        
 
         // GET: Users/Details/5
         public IActionResult Profile(int? idUser)
@@ -98,6 +96,66 @@ namespace ProjectF.Controllers
             return View(userProfileviewModel);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> EditProfile(string UserId)
+        {
+            var user = await _userManager.FindByIdAsync(UserId);
+            
+            var userViewModel = new UserViewModel()
+            {
+                Id = user.Id,
+                Description = user.Description,
+                FirstName = user.FirstName,
+                Job = user.Job,
+                LastName = user.LastName,
+                Location = user.Location,
+                Skills = user.Skills,
+            };
+            return View(userViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(UserViewModel vm)
+        {
+            var stringFileName = UploadFile(vm);
+            if (vm != null)
+            {
+                var user = new User
+                {
+                    Id = vm.Id,
+                    Description = vm.Description,
+                    FirstName = vm.FirstName,
+                    Job = vm.Job,
+                    LastName = vm.LastName,
+                    Location = vm.Location,
+                    Skills = vm.Skills,
+                    Userimage = stringFileName,
+                };
+                _userRepository.Edit(user);
+                    return RedirectToAction("Profile");
+               
+             
+            }
+            return RedirectToAction("Profile");
+
+        }
+
+        private string UploadFile(UserViewModel vm)
+        {
+            string fileName = null;
+            if (vm.Userimage != null)
+            {
+                string uploadDir = Path.Combine(_WebHostEnvironment.WebRootPath , "theme/dist/img");
+                fileName = Guid.NewGuid().ToString() + "-" + vm.Userimage.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    vm.Userimage.CopyTo(fileStream);
+                }
+            }
+            return fileName;
+        }
 
 
     }

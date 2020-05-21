@@ -72,7 +72,7 @@ namespace ProjectF.Controllers
         {
 
             var badges = _BadgeRepository.GetAll();
-            var model = _mapper.Map < IList<BadgeEntityDto>>(badges);
+            var model = _mapper.Map <IList<BadgeEntityDto>>(badges);
             BadgeEntityDto badge = model.FirstOrDefault(b =>b.Id ==idBadge); 
             
 

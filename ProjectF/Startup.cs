@@ -55,7 +55,7 @@ namespace ProjectF
             .AddEntityFrameworkStores<PerformanceManagementDBContext>();
             
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(Startup));
             services.AddMvcCore(options =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

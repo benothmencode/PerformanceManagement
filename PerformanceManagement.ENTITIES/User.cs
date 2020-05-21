@@ -28,18 +28,9 @@ namespace PerformanceManagement.ENTITIES
         public User()
         {
             this.Created = DateTime.UtcNow.Date;
-            this.Modified = DateTime.UtcNow.Date;
+           
         }
+
       
-       
-        
-
-
-
-
-        
-        
-        
-
     }
 }

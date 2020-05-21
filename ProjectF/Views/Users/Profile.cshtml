@@ -1,4 +1,8 @@
 ﻿@model ProjectF.ViewModels.UserProfileViewModel
+@using Microsoft.AspNetCore.Identity
+@using PerformanceManagement.ENTITIES
+
+@inject UserManager<User> UserManager
 @{
     ViewData["Title"] = "Profile";
 }
@@ -91,6 +95,15 @@
                             <hr>
                         </div>
                         <!-- /.card-body -->
+                        <div class="card-footer">
+                            <a class="btn btn-primary btn-sm" href="@Url.Action("EditProfile", "Users", new { UserId = @UserManager.GetUserId(User) })">
+                                <div class="btn btn-default btn-flat float-right">EditProfile</div>
+                            </a>
+                        </div>
+
+
+
+
                     </div>
                     <!-- /.card -->
                 </div>
@@ -124,18 +137,18 @@
                                         {
                                             @foreach (var item2 in item.UserBadges)
                                             {
-                                            <tr>
-                                                <td></td>
-                                                <td>@item.Title </td>
-                                                <td>
-                                                    <div class="progress progress-xs">
-                                                        <div class="progress-bar progress-bar-danger" style="width: @item2.UserProgression%"></div>
-                                                    </div>
-                                                </td>
-                                                <td><span class="badge bg-danger">@item2.UserProgression%</span></td>
-                                                <td>@item2.StartedAt</td>
-                                                <td>@item2.BadgeDeadline</td>
-                                            </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>@item.Title </td>
+                                                    <td>
+                                                        <div class="progress progress-xs">
+                                                            <div class="progress-bar progress-bar-danger" style="width: @item2.UserProgression%"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-danger">@item2.UserProgression%</span></td>
+                                                    <td>@item2.StartedAt</td>
+                                                    <td>@item2.BadgeDeadline</td>
+                                                </tr>
                                             }
                                         }
                                     </tbody>

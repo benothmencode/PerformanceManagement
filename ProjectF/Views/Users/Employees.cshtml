@@ -31,9 +31,9 @@
                     <h2 class="card-title"><strong>IyaSoft Members</strong> </h2>
                     <br> <br>
                     <!-- SEARCH FORM -->
-                    <form class="form-inline" method="get" asp-action="Employees">
+                    <form class="form-inline">
                         <div class="input-group input-group-sm">
-                            <input class="form-control" type="search" placeholder="Search Employee By Name" value="@ViewData["GetEmployeedetails"]"
+                            <input class="form-control" id="search" type="search" placeholder="Search Employee By Name" 
                                    aria-label="Search">
                             <div class="input-group-append">
                                 <button class="btn btn-navbar" type="submit">
@@ -49,7 +49,7 @@
                         @foreach (var item in Model)
                         {
                             <li>
-                                <img src="~/theme/dist/img/@item.Userimage" alt="User Image"><br />
+                                <img src="~/theme/dist/img/@item.Userimage" alt="User Image" width="100" height="250"><br />
                                 @Html.ActionLink(@item.Username, "Profile", new { idUser = @item.Id })
                                 <span class="users-list-date">Today</span>
                             </li>
@@ -68,3 +68,22 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+@section scripts {
+    <script>
+           $(".search").on("keyup", function () {
+            var datasearch = $(this).val().toLowerCase();
+            $("tr ul.list1").each(function () {
+                $(this).children("li.loop").each(function (j) {
+                    var stringdata = $(this).find('input.text-dark:button').attr('value').toLowerCase();
+                    if (stringdata.indexOf(datasearch) !== 0 && stringdata.indexOf(datasearch) < 0) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                });
+            });
+        });
+    </script>
+}

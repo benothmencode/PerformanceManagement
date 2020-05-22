@@ -56,8 +56,8 @@ namespace ProjectF.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Employees(string Empsearch)
+        [HttpPost]
+        public async Task<IActionResult> EmployeesSearch(string Empsearch)
         {
             ViewData["GetEmployeedetails"] = Empsearch;
             var empquery = await _userRepository.GetUserByUsername(Empsearch);
@@ -119,24 +119,26 @@ namespace ProjectF.Controllers
         public async Task<IActionResult> EditProfile(UserViewModel vm)
         {
             var stringFileName = UploadFile(vm);
-            if (vm != null)
-            {
-                var user = new User
+            
+                var user = await _userManager.FindByIdAsync(vm.Id.ToString());
+                if (user != null)
                 {
-                    Id = vm.Id,
-                    Description = vm.Description,
-                    FirstName = vm.FirstName,
-                    Job = vm.Job,
-                    LastName = vm.LastName,
-                    Location = vm.Location,
-                    Skills = vm.Skills,
-                    Userimage = stringFileName,
-                };
-                _userRepository.Edit(user);
-                    return RedirectToAction("Profile");
+                user.Description = vm.Description;
+                user.FirstName = vm.FirstName;
+                user.Job = vm.Job;
+                user.LastName = vm.LastName;
+                user.Location = vm.Location;
+                user.Skills = vm.Skills;
+                user.Userimage = stringFileName;
                
-             
-            }
+               var result = await _userManager.UpdateAsync(user);
+                   if(result.Succeeded) return RedirectToAction("Profile","Users", routeValues: new { idUser = user.Id });
+
+                ModelState.AddModelError("", "User not updated , something went wrong");
+                return View(user);
+                }
+
+
             return RedirectToAction("Profile");
 
         }

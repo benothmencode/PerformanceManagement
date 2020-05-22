@@ -1,4 +1,4 @@
-﻿
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PerformanceManagement.ENTITIES;
@@ -6,7 +6,7 @@ using PerformanceManagement.ENTITIES;
 
 namespace PerformanceManagement.DATA.DbContexts
 {
-    public class PerformanceManagementDBContext : IdentityDbContext<User, AppRole, int>
+    public class PerformanceManagementDBContext : IdentityDbContext<User, AppRole, int, IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>,IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public PerformanceManagementDBContext(DbContextOptions<PerformanceManagementDBContext> options) : base(options)
         {
@@ -24,6 +24,9 @@ namespace PerformanceManagement.DATA.DbContexts
                 .WithMany(s => s.SystemeUsers)
                 .HasForeignKey(Us => Us.SystemeId);
             modelBuilder.Entity<User>().HasIndex(s => s.Email).IsUnique();
+
+           
+
             base.OnModelCreating(modelBuilder);
 
 

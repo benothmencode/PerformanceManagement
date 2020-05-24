@@ -43,12 +43,6 @@
     <ProjectReference Include="..\PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj" />
   </ItemGroup>
 
- 
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Images\" />
-  </ItemGroup>
-
 
 
 </Project>

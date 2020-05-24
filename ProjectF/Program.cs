@@ -12,24 +12,6 @@ namespace ProjectF
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-
-
-            //Redmine
-            string host = "";
-            string apiKey = "";
-
-            var manager = new RedmineManager(host, apiKey);
-
-            var parameters = new NameValueCollection { { "status_id", "*" } };
-            foreach (var issue in manager.GetObjects<Issue>(parameters))
-            {
-                Console.WriteLine("#{0}: {1}", issue.Id, issue.Subject);
-            }
-
-            //Create a issue.
-            //var newIssue = new Issue { Subject = "test", Project = new IdentifiableName { Name="New"} };
-            //manager.CreateObject(newIssue);
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

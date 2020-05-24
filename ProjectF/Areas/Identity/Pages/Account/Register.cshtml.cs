@@ -5,15 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.ENTITIES;
+using ProjectF.Components;
+using ProjectF.ModelsDTOS;
+using ProjectF.ViewModels;
 
 namespace ProjectF.Areas.Identity.Pages.Account
 {
@@ -24,24 +31,37 @@ namespace ProjectF.Areas.Identity.Pages.Account
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly PerformanceManagementDBContext _context;
+        private readonly ISystemeRepository _systemeRepository;
+        private readonly IMapper _mapper;
+
 
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            PerformanceManagementDBContext context,
+            ISystemeRepository systemeRepository,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
+            _systemeRepository = systemeRepository;
+            _mapper = mapper;
         }
+
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public UserSystemsVm UserSystemsvm { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -75,12 +95,30 @@ namespace ProjectF.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name = "UserName")]
             public string UserName { get; set; }
+            
+            [DataType(DataType.Text)]
+            [Display(Name = "IdGitlab")]
+            public int Identifier { get; set; }
+          
+            [DataType(DataType.Text)]
+            [Display(Name = "UrlAccount")]
+            public string UrlAccount { get; set; }
+
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var Systemes = _systemeRepository.GetSystemes();
+            var SystemeModel = _mapper.Map<IList<SystemeEntityDto>>(Systemes);
+            var systemeList = new SystemesList(SystemeModel.ToList());
+            UserSystemsvm = new UserSystemsVm
+            {
+                systemes = systemeList.GetSystemesList()
+            };
+           
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -89,13 +127,35 @@ namespace ProjectF.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.UserName, Email = Input.Email , FirstName = Input.FirstName , LastName =Input.LastName };
+                var user = new User { UserName = Input.UserName, Email = Input.Email , FirstName = Input.FirstName , LastName =Input.LastName , Userimage= "avatar04.png" };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                
                 if (result.Succeeded)
                 {
                     _userManager.AddToRoleAsync(user, "Employee").Wait();
+                    UserSystemsvm.UserId = user.Id;
+                    UserSystemsvm.SelectedSystemesID = UserSystemsvm.SelectedSystemesID;
+                    if(UserSystemsvm != null)
+                    {
+                        User userselected = await _userManager.FindByIdAsync(UserSystemsvm.UserId.ToString());
+                        var Systemselected = _systemeRepository.GetSystemeById(UserSystemsvm.SelectedSystemesID);
+                        var UserSystem = new SystemeUser()
+                        {
+                            User = userselected,
+                            UserId = UserSystemsvm.UserId,
+                            Systeme = Systemselected,
+                            SystemeId = UserSystemsvm.SelectedSystemesID,
+                            Identifier = Input.Identifier,
+                            UrlUserSystemAccount = Input.UrlAccount,
+
+                        };
+                        if (UserSystem != null)
+                        {
+                            _context.Add(UserSystem);
+                            _context.SaveChanges();
+                        }
+                    }
                     _logger.LogInformation("User created a new account with password.");
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                     
                 }
@@ -104,6 +164,9 @@ namespace ProjectF.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+           
+
 
             // If we got this far, something failed, redisplay form
             return Page();

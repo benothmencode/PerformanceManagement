@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProjectF.ExernalServices
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CommitsController : ControllerBase
     {

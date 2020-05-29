@@ -14,17 +14,17 @@ namespace ProjectF
             CreateHostBuilder(args).Build().Run();
 
 
-            //Redmine
-            string host = "";
-            string apiKey = "";
+            ////Redmine
+            //string host = "localhost:3000";
+            //string apiKey = "11b9a54a46850052e067141f514a96830b882399";
 
-            var manager = new RedmineManager(host, apiKey);
+            //var manager = new RedmineManager(host, apiKey);
 
-            var parameters = new NameValueCollection { { "status_id", "*" } };
-            foreach (var issue in manager.GetObjects<Issue>(parameters))
-            {
-                Console.WriteLine("#{0}: {1}", issue.Id, issue.Subject);
-            }
+            //var parameters = new NameValueCollection { { "status_id", "*" } };
+            //foreach (var issue in manager.GetObjects<Issue>(parameters))
+            //{
+            //    Console.WriteLine("#{0}: {1}", issue.Id, issue.Subject);
+            //}
 
             //Create a issue.
             //var newIssue = new Issue { Subject = "test", Project = new IdentifiableName { Name="New"} };

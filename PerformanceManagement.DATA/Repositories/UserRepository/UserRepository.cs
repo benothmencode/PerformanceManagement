@@ -53,5 +53,23 @@ namespace PerformanceManagement.DATA.Repositories
             _context.Users.Add(user);
             _context.SaveChanges();
         }
+
+        public int GetIdUserGitlab(User user)
+        {
+            var IdGitlab = _context.SystemeUsers.Where(su => su.User == user).Where(su => su.Systeme.SystemName == "Gitlab").Select(su => su.Identifier).First();
+            return IdGitlab;
+        }
+       
+        public UserBadge GetUserBadge(int UserId , int BadgeId)
+        {
+            return _context.userBadges.Where(u => u.BadgeId == BadgeId).Where(u => u.UserId == UserId).FirstOrDefault();
+        }
+
+        public bool UpdateUserProgression(UserBadge userBadge)
+        {
+            _context.Update(userBadge);
+            var saved = _context.SaveChanges();
+            return saved >= 0 ? true : false;
+        }
     }
 }

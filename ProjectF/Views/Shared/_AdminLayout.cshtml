@@ -155,7 +155,7 @@
 
                                 <p>
                                     Wijden - Software Engineer
-                                    <small>Member since @userConnected.Created </small>
+                                    <small>Member since @userConnected.Created.ToString("dd/MM/yyyy") </small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -244,29 +244,37 @@
                                     </p>
                                 </a>
                             </li>
-                            @*<li class="nav-item has-treeview">
-                                <a asp-action="UserManagement" asp-controller="Admin" class="nav-link">
-                                    <i class="nav-icon fas fa-circle"></i>
+                            <li class="nav-item">
+                                <a asp-action="SystemManagement" asp-controller="Admin" class="nav-link">
+                                    <i class="nav-icon fa fa-fw fa-home"></i>
                                     <p>
-                                        Manage users
-                                        <i class="right fas fa-angle-left"></i>
+                                        Manage Systemes
                                     </p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Add User</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Level 3</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>*@
+                            </li>
+                            @*<li class="nav-item has-treeview">
+                <a asp-action="UserManagement" asp-controller="Admin" class="nav-link">
+                    <i class="nav-icon fas fa-circle"></i>
+                    <p>
+                        Manage users
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Add User</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Level 3</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>*@
                         }
                     </ul>
                 </nav>

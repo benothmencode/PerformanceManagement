@@ -13,6 +13,8 @@ namespace PerformanceManagement.ENTITIES
         public int Id { get; set; }
         public string SystemName { get; set; }
         public string Description { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
         public IList<Badge> Badges { get; set; }
         public List<SystemeUser> SystemeUsers { get; set; }
 

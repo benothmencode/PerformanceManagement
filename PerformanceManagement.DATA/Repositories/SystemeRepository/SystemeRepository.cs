@@ -19,7 +19,7 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
 
         public IEnumerable<Systeme> GetSystemes()
         {
-            return _context.Systemes.ToList();
+            return _context.Systemes.Include(s => s.Badges).Include(s => s.SystemeUsers).ToList();
         }
         
         //public IEnumerable<Badge> GetBadges(int SystemeId)
@@ -28,7 +28,26 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         //}
         public Systeme GetSystemeById(int SystemeId)
         {
-            return _context.Systemes.Include(s => s.Badges).Where(s => s.Id == SystemeId).FirstOrDefault();
+            return _context.Systemes.Include(s => s.Badges).Include(s => s.SystemeUsers).Where(s => s.Id == SystemeId).FirstOrDefault();
+        }
+        public void CreateSysteme(Systeme systeme)
+        {
+            //IList<Badge> badges = _context.Badges.Where(b => BadgeIds.Contains(b.Id)).ToList();
+            //systeme.Badges = badges;
+            _context.Add(systeme);
+            _context.SaveChanges();
+        }
+
+        public void UpdateSysteme(Systeme systeme)
+        {
+            _context.Update(systeme);
+            _context.SaveChanges();
+        }
+
+        public void DeleteSysteme(Systeme systeme)
+        {
+            _context.Remove(systeme);
+            _context.SaveChanges();
         }
 
     }

@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Web;
+using PerformanceManagement.DATA.Repositories.SystemeRepository;
+using ProjectF.Components;
 
 namespace ProjectF.Controllers
 {
@@ -24,7 +26,9 @@ namespace ProjectF.Controllers
         private readonly IBadgeRepository _BadgeRepository;
         private readonly IUserRepository _UserRepository;
 
-        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IConfiguration configuration, IUserRepository userRepository)
+        private readonly ISystemeRepository _systemeRepository;
+
+        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IConfiguration configuration, IUserRepository userRepository , ISystemeRepository systemeRepository)
         {
             
 
@@ -33,6 +37,8 @@ namespace ProjectF.Controllers
 
             _BadgeRepository = badgeRepository ??
                 throw new ArgumentNullException(nameof(badgeRepository));
+            _systemeRepository = systemeRepository ??
+                throw new ArgumentNullException(nameof(systemeRepository));
             _UserRepository = userRepository;
 
 
@@ -91,12 +97,13 @@ namespace ProjectF.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        public IActionResult Create(Badge badge)
+        public IActionResult Create()
         {
-            _BadgeRepository.Create(badge);
-           
-
-            return View();
+            var Systemes = _systemeRepository.GetSystemes();
+            var SystemeModel = _mapper.Map<IList<SystemeEntityDto>>(Systemes);
+            var systemeList = new SystemesList(SystemeModel.ToList());
+            BadgeForCreationDto BadgeForCreationDto = new BadgeForCreationDto { systemes = systemeList.GetSystemesList() };
+            return View(BadgeForCreationDto);
         }
 
 

@@ -21,6 +21,6 @@ namespace PerformanceManagement.DATA.Repositories
         UserBadge GetUserBadge(int UserId, int BadgeId);
         bool UpdateUserProgression(UserBadge userBadge);
 
-
+        bool UserExists(int userId);
     }
 }

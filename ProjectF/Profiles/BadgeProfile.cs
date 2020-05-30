@@ -10,6 +10,7 @@ namespace ProjectF.Profiles
         {
 
             CreateMap<Badge, BadgeEntityDto>();
+            CreateMap<BadgeForCreationDto, Badge>();
           
 
         }

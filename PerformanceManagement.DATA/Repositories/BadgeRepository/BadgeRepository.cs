@@ -42,19 +42,29 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
 
 
-        public void Create(Badge badge)
-        { 
+        public bool Create(int SystemeId , Badge badge , UserBadge userBadge)
+        {
             if (_context.Badges.Any(x => x.Title == badge.Title))
-               throw new Exception("Badge \"" + badge.Title + "\" exists already ");
-
-            
-            
-
+                throw new Exception("Badge \"" + badge.Title + "\" exists already ");
+            var Systeme = _context.Systemes.Where(s => s.Id == SystemeId).FirstOrDefault();
+            badge.SystemeId = SystemeId;
+            badge.Systeme = Systeme;
+            var Users = _context.Users.ToList();
+            foreach(var user in Users)
+            {
+                var UserB= new UserBadge()
+                {
+                    Badge = badge,
+                    User = user,
+                    BadgeDeadline = userBadge.BadgeDeadline,
+                    StartedAt = badge.Created
+                };
+                _context.Add(UserB);
+            }
           _context.Badges.Add(badge);
-          _context.SaveChanges();
-          
-
-       }
+            var saved = _context.SaveChanges();
+            return saved >= 0 ? true : false;
+        }
 
         public void Update(Badge badgeParam/*, string password = null*/)
         {

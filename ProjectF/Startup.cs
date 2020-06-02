@@ -39,7 +39,7 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
             services.AddHangfire(configuration => configuration

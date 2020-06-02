@@ -13,6 +13,8 @@ namespace PerformanceManagement.ENTITIES
         public int UserProgression { get; set; }
 
         public DateTime StartedAt { get; set; }
+        public DateTime? LastUpdate { get; set; }
+
         public DateTime? ObtainedAt { get; set; }
         public DateTime BadgeDeadline { get; set; }
 

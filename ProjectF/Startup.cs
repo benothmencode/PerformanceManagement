@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,9 +39,27 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
+           
+            services.AddHangfire(configuration => configuration
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                    {
+                      CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                      SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                      QueuePollInterval = TimeSpan.Zero,
+                      UseRecommendedIsolationLevel = true,
+                      UsePageLocksOnDequeue = true,
+                      DisableGlobalLocks = true
+                    }));
+            services.AddHangfireServer();
 
+
+
+            services.AddControllersWithViews();
             services.AddHttpClient();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -85,7 +105,7 @@ namespace ProjectF
 
             app.UseRouting();
             app.UseAuthentication();
-
+            app.UseHangfireDashboard("/mydashboard");
             app.UseAuthorization();
             SeedData.Seed(userManager, roleManager);
             app.UseEndpoints(endpoints =>

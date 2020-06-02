@@ -11,11 +11,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h3 class="text-primary"><i class="fas fa-info-circle"></i>  Register Page</h3>
+                    <h3 class="text-primary"><i class="fas fa-info-circle"></i>Add new Employee </h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"> <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Register">RegisterPage/</a></li>
+                        <li class="breadcrumb-item"> <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Register"></a></li>
                     </ol>
                 </div>
             </div>
@@ -27,12 +27,12 @@
         <div class="login-box">
             <div class="card">
                 <div class="card-body login-card-body">
-                    <p class="login-box-msg">Sign in to start your session</p>
+                   
                     <div class="row">
                         <div class="col-xl-12">
                             <section>
                                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                                    <h4>Create a new account.</h4>
+                                    <h4>Create a new Employee account.</h4>
                                     <hr />
                                     <div asp-validation-summary="All" class="text-danger"></div>
                                     <div class="input-group mb-3">
@@ -90,6 +90,32 @@
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="UserSystemsvm.systemes">Systemes:</label>
+                                        <select type="button" class="btn btn-md btn-secondary" asp-for="UserSystemsvm.SelectedSystemesID" asp-items="@Model.UserSystemsvm.systemes">
+                                            <option value="" selected disabled>-- Select Systeme Name --</option>
+                                        </select>
+                                        <span asp-validation-for="UserSystemsvm.SelectedSystemesID" class="text-danger"></span>
+                                        
+                                    </div>
+                                    <div class="input-group mb-3">
+
+                                        <input asp-for="Input.Identifier" class="form-control" placeholder="Systeme Identifier" />
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span asp-validation-for="Input.Identifier" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+
+                                        <input asp-for="Input.UrlAccount" class="form-control" placeholder="User UrlAccount" />
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span asp-validation-for="Input.UrlAccount" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>

@@ -17,6 +17,10 @@ namespace PerformanceManagement.DATA.Repositories
         IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId);
         void Edit(User user);
 
+        int GetIdUserGitlab(User user);
+        UserBadge GetUserBadge(int UserId, int BadgeId);
+        bool UpdateUserProgression(UserBadge userBadge);
+
 
     }
 }

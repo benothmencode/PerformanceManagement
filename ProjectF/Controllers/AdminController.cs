@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.ENTITIES;
 using ProjectF.ViewModels;
 
@@ -16,14 +17,17 @@ namespace ProjectF.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly ISystemeRepository _SystemeRepository;
 
-        public AdminController(UserManager<User> userManager , RoleManager<AppRole> roleManager)
+        public AdminController(UserManager<User> userManager , RoleManager<AppRole> roleManager , ISystemeRepository systemeRepository)
         {
             _userManager =userManager ??
               throw new ArgumentNullException(nameof(userManager));
 
             _roleManager = roleManager ??
              throw new ArgumentNullException(nameof(roleManager));
+            _SystemeRepository = systemeRepository ??
+             throw new ArgumentNullException(nameof(systemeRepository));
 
         }
 
@@ -53,5 +57,27 @@ namespace ProjectF.Controllers
             return resultifnull;
                 
          }
+
+        public IActionResult SystemManagement()
+        {
+            var Systemes = _SystemeRepository.GetSystemes();
+            return View(Systemes);
+        }
+
+        public IActionResult CreateSysteme()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateSysteme(Systeme systeme)
+        {
+            if (ModelState.IsValid)
+            {
+                _SystemeRepository.CreateSysteme(systeme);
+                return RedirectToAction(nameof(SystemManagement));
+            }
+            return View(systeme);
+        }
+
     }
 }

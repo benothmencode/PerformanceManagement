@@ -1,5 +1,4 @@
 ﻿using PerformanceManagement.ENTITIES;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +8,10 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
     {
         IEnumerable<Systeme> GetSystemes();
         //IEnumerable<Badge> GetBadges(int SystemeId);
-        Systeme GetSystemeById(int SystemeId);
+        Systeme GetSystemeById(int ServiceId);
+
+        void CreateSysteme(Systeme Systeme);
+        void UpdateSysteme(Systeme Systeme);
+        void DeleteSysteme(Systeme Systeme);
     }
 }

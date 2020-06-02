@@ -27,6 +27,7 @@ namespace PerformanceManagement.ENTITIES
         public User()
         {
             this.Created = DateTime.UtcNow.Date;
+      
            
         }
 

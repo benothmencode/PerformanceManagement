@@ -44,9 +44,9 @@
                 </div>
             </div>
             <div class="card-body p-0">
-                <p>
-                    <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Url.Action("UserManagement", "Admin", new { area = "" })">Add new Employee</a>
-                </p>
+                <br />
+                <a class="btn btn-primary btn-sm" id="register" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Url.Action("UserManagement", "Admin", new { area = "" })">  Add new Employee</a>
+                <hr style="width:40%" />
                 <table class="table table-striped projects">
                     <thead>
                         <tr>
@@ -67,59 +67,60 @@
                         {
                             @foreach (var role in @user.RolesHeld)
                             {
-                        <tr>
-                            <td>
-                                <a>
-                                    @user.UserName
-                                </a>
-                                <br />
-                                <small>
-                                    Created @user.Created
-                                </small>
-                            </td>
-                            <td>
-                                <center><img alt="Avatar" class="table-avatar" src="~/theme/dist/img/@user.Userimage"></center>
-                            </td>
-                            @if (role.Equals("Administrator") && user.UserId.ToString() == UserManager.GetUserId(User))
-                            {
-                        <td class="project-state">
-                            <span class="badge badge-danger">@role</span>
-                            <br />
-                            <small>
-                                It's YOU !
-                            </small>
-                        </td>
-                            }
-                            else if(role.Equals("Administrator")){
-                            <td class="project-state">
-                                <span class="badge badge-danger">@role</span>
+                                <tr>
+                                    <td>
+                                        <a>
+                                            @user.UserName
+                                        </a>
+                                        <br />
+                                        <small>
+                                            Created @user.Created
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <center><img alt="Avatar" class="table-avatar" src="~/theme/dist/img/@user.Userimage"></center>
+                                    </td>
+                                    @if (role.Equals("Administrator") && user.UserId.ToString() == UserManager.GetUserId(User))
+                                    {
+                                        <td class="project-state">
+                                            <span class="badge badge-danger">@role</span>
+                                            <br />
+                                            <small>
+                                                It's YOU !
+                                            </small>
+                                        </td>
+                                    }
+                                    else if (role.Equals("Administrator"))
+                                    {
+                                        <td class="project-state">
+                                            <span class="badge badge-danger">@role</span>
 
-                            </td>
-                            }
-                            else
-                            {
-                            <td class="project-state">
-                                <span class="badge badge-success">@role</span>
-                            </td>
-                            }
-                            <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="#">
-                                    <i class="fas fa-folder">
-                                    </i>
-                                    View
-                                </a>
-                                <a class="btn btn-info btn-sm" href="#">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Edit
-                                </a>
-                                <a class="btn btn-danger btn-sm" href="#">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                    Delete
-                                </a>
-                            </td>
-                        </tr>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="project-state">
+                                            <span class="badge badge-success">@role</span>
+                                        </td>
+                                    }
+                                    <td class="project-actions text-right">
+                                        <a class="btn btn-primary btn-sm" href="#">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            View
+                                        </a>
+                                        <a class="btn btn-info btn-sm" href="#">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Edit
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" href="#">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
                             }
                         }
                     </tbody>

@@ -1,16 +1,10 @@
-﻿@model ProjectF.ModelsDTOS.BadgeForCreationDto
-@using Microsoft.AspNetCore.Identity
-@using PerformanceManagement.ENTITIES
-@using Microsoft.AspNetCore.Http;
+﻿@model PerformanceManagement.ENTITIES.Systeme
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
 @{
-    ViewData["Title"] = "Create";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "CreateSysteme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Create</h1>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -45,26 +39,12 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form asp-action="Create" asp-controller="Badge">
+                        <form asp-action="CreateSysteme">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
                             <div class="form-group">
-                                <label asp-for="systemes">Systemes:</label>
-                                <select type="button" class="btn btn-md btn-secondary" asp-for="SelectedSystemesID" asp-items="@Model.systemes">
-                                    <option value="" selected disabled>-- Select Systeme Name --</option>
-                                </select>
-                                <span asp-validation-for="SelectedSystemesID" class="text-danger"></span>
-
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Title" class="control-label"></label>
-                                <input asp-for="Title" class="form-control" />
-                                <span asp-validation-for="Title" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="BadgeCriteria" class="control-label"></label>
-                                <input asp-for="BadgeCriteria" class="fa-sort-numeric-asc" placeholder="BadgeCriteria" />
-                                <span asp-validation-for="BadgeCriteria" class="text-danger"></span>
+                                <label asp-for="SystemName" class="control-label"></label>
+                                <input asp-for="SystemName" class="form-control" />
+                                <span asp-validation-for="SystemName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Description" class="control-label"></label>
@@ -94,15 +74,7 @@
 <!-- /.content-wrapper -->
 
 
-
-
-
-
-
-
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 

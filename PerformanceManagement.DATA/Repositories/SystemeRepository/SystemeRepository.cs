@@ -50,5 +50,11 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
             _context.SaveChanges();
         }
 
+
+        public bool SystemeExists(int systemeId)
+        {
+            return _context.Systemes.Any(a => a.Id == systemeId);
+        }
+
     }
 }

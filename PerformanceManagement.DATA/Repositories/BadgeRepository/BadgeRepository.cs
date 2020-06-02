@@ -28,7 +28,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
        
         public IEnumerable<Badge> GetUserBadge(int userId)
         {
-            return _context.userBadges.Where(u => u.UserId == userId).Where(ub => DateTime.Compare(ub.StartedAt, ub.BadgeDeadline) < 0).Select(b => b.Badge).ToList();
+            return _context.userBadges.Where(u => u.UserId == userId).Select(b => b.Badge).ToList();
 
         }
 
@@ -42,19 +42,30 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
 
 
-        public void Create(Badge badge)
-        { 
+        public bool Create(int SystemeId , Badge badge , UserBadge userBadge)
+        {
             if (_context.Badges.Any(x => x.Title == badge.Title))
-               throw new Exception("Badge \"" + badge.Title + "\" exists already ");
-
-            
-            
-
+                throw new Exception("Badge \"" + badge.Title + "\" exists already ");
+            var Systeme = _context.Systemes.Where(s => s.Id == SystemeId).FirstOrDefault();
+            badge.SystemeId = SystemeId;
+            badge.Systeme = Systeme;
+            var Users = _context.Users.ToList();
+            foreach(var user in Users)
+            {
+                var UserB = new UserBadge()
+                {
+                    Badge = badge,
+                    User = user,
+                    BadgeDeadline = userBadge.BadgeDeadline,
+                    StartedAt = badge.Created,
+                    LastUpdate = badge.Created
+                };
+                _context.Add(UserB);
+            }
           _context.Badges.Add(badge);
-          _context.SaveChanges();
-          
-
-       }
+            var saved = _context.SaveChanges();
+            return saved >= 0 ? true : false;
+        }
 
         public void Update(Badge badgeParam/*, string password = null*/)
         {
@@ -93,6 +104,21 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                 _context.Badges.Remove(badge);
                 _context.SaveChanges();
             }
+        }
+
+        public List<UserBadge> GetUsersBadge(Badge badge)
+        {
+            return _context.userBadges.Where(ub => ub.Badge == badge).ToList();
+        } 
+        
+        public List<UserBadge> GetUserBadges()
+        {
+            return _context.userBadges.ToList();
+        } 
+
+        public Badge GetBadgeByTitle(string title)
+        {
+            return _context.Badges.Where(b => b.Title == title).FirstOrDefault();
         }
 
 

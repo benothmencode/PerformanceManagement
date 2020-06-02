@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.ENTITIES;
+using ProjectF.ExernalServices;
 using ProjectF.ViewModels;
 
 namespace ProjectF.Controllers
@@ -18,8 +21,12 @@ namespace ProjectF.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly ISystemeRepository _SystemeRepository;
+        private readonly IBadgeRepository _BadgeRepository;
 
-        public AdminController(UserManager<User> userManager , RoleManager<AppRole> roleManager , ISystemeRepository systemeRepository)
+        private readonly ICommitsController _CommitsController;
+
+        public AdminController(UserManager<User> userManager , RoleManager<AppRole> roleManager , ISystemeRepository systemeRepository 
+            , IBadgeRepository badgeRepository , ICommitsController commitsController)
         {
             _userManager =userManager ??
               throw new ArgumentNullException(nameof(userManager));
@@ -28,6 +35,8 @@ namespace ProjectF.Controllers
              throw new ArgumentNullException(nameof(roleManager));
             _SystemeRepository = systemeRepository ??
              throw new ArgumentNullException(nameof(systemeRepository));
+            _BadgeRepository = badgeRepository;
+            _CommitsController = commitsController;
 
         }
 
@@ -78,6 +87,15 @@ namespace ProjectF.Controllers
             }
             return View(systeme);
         }
+
+        // BackgroundJob.Enqueue(() => _CommitsController.CountCommitsUser(Ub.BadgeId, Ub.UserId));
+        //public IActionResult TrackUserBadge()
+        //{
+        //    var UserBadges = _BadgeRepository.GetUserBadges();
+        //    HangfireRecurringJobScheduler scheduler = new HangfireRecurringJobScheduler(_BadgeRepository);
+        //    scheduler.ScheduleCommitbadgeTask();
+        //    return View(UserBadges);
+        //}
 
     }
 }

@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Authorization;
 using System.Web;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using ProjectF.Components;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using ProjectF.ExernalServices;
+using Hangfire;
 
 namespace ProjectF.Controllers
 {
@@ -25,10 +29,12 @@ namespace ProjectF.Controllers
         private readonly IMapper _mapper;
         private readonly IBadgeRepository _BadgeRepository;
         private readonly IUserRepository _UserRepository;
-
+        private readonly IWebHostEnvironment _WebHostEnvironment;
         private readonly ISystemeRepository _systemeRepository;
+        private readonly ICommitsController _CommitsController;
 
-        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IConfiguration configuration, IUserRepository userRepository , ISystemeRepository systemeRepository)
+        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, ICommitsController  commitsController,
+            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment)
         {
             
 
@@ -40,7 +46,8 @@ namespace ProjectF.Controllers
             _systemeRepository = systemeRepository ??
                 throw new ArgumentNullException(nameof(systemeRepository));
             _UserRepository = userRepository;
-
+            _WebHostEnvironment = webHostEnvironment;
+            _CommitsController = commitsController;
 
         }
 
@@ -70,10 +77,6 @@ namespace ProjectF.Controllers
            
         }
 
-
-
-
-
         public IActionResult Details(int? idBadge)
         {
 
@@ -88,15 +91,18 @@ namespace ProjectF.Controllers
         }
 
         [Authorize(Roles ="Administrator")]
+        [Route("/Admin/Badges")]
         public IActionResult Listofbadges()
         {
             var badges = _BadgeRepository.GetAll();
             var model = _mapper.Map<IList<BadgeEntityDto>>(badges);
-
             return View(model);
         }
 
+
+
         [Authorize(Roles = "Administrator")]
+        [Route("/Admin/Badge/Create")]
         public IActionResult Create()
         {
             var Systemes = _systemeRepository.GetSystemes();
@@ -105,6 +111,74 @@ namespace ProjectF.Controllers
             BadgeForCreationDto BadgeForCreationDto = new BadgeForCreationDto { systemes = systemeList.GetSystemesList() };
             return View(BadgeForCreationDto);
         }
+
+
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+
+        [Route("/Admin/Badge/Create")]
+        public IActionResult Create(int SystemeID, BadgeForCreationDto badgeForCreation , UserBadge userBadge)
+        {
+            var stringFileName = UploadFile(badgeForCreation);
+            var statusCode = ValidateBadge(SystemeID, badgeForCreation);
+            if (!ModelState.IsValid)
+                return StatusCode(statusCode.StatusCode);
+            if (ModelState.IsValid)
+            {
+                var badge = _mapper.Map<Badge>(badgeForCreation);
+                badge.Icon = stringFileName;
+                if (!_BadgeRepository.Create(SystemeID, badge, userBadge))
+                {
+                    ModelState.AddModelError("", $"Something went wrong saving the badge " +
+                                                $"{badgeForCreation.Title}");
+                    return StatusCode(500, ModelState);
+                }
+
+                return RedirectToAction("Listofbadges");
+            }
+
+            return View(badgeForCreation);
+        }
+
+        private StatusCodeResult ValidateBadge(int SystemId, BadgeForCreationDto badge)
+        {
+            if (badge == null || SystemId <= 0)
+            {
+                ModelState.AddModelError("", "Missing badge, user, or system");
+                return BadRequest();
+            }
+           if (!_systemeRepository.SystemeExists(SystemId))
+           {
+                    ModelState.AddModelError("", "Systeme Not Found");
+                    return StatusCode(404);
+           }
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Critical Error");
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+        private string UploadFile(BadgeForCreationDto badge)
+        {
+            string fileName = null;
+            if (badge.Icon != null)
+            {
+                string uploadDir = Path.Combine(_WebHostEnvironment.WebRootPath, "theme/dist/img");
+                fileName = Guid.NewGuid().ToString() + "-" + badge.Icon.FileName;
+                string filePath = Path.Combine(uploadDir, fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    badge.Icon.CopyTo(fileStream);
+                }
+            }
+            return fileName;
+        }
+
+       
 
 
     }

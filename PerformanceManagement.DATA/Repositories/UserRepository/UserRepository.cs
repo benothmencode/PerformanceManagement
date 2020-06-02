@@ -23,7 +23,7 @@ namespace PerformanceManagement.DATA.Repositories
 
         public IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId)
         {
-            return _context.userBadges.Where(u => u.UserId == userId).Where(ub => DateTime.Compare(ub.StartedAt, ub.BadgeDeadline) < 0).Select(b => b.Badge).ToList();
+            return _context.userBadges.Where(u => u.UserId == userId).Select(b => b.Badge).ToList();
 
         }
 
@@ -54,9 +54,9 @@ namespace PerformanceManagement.DATA.Repositories
             _context.SaveChanges();
         }
 
-        public int GetIdUserGitlab(User user)
+        public int GetIdUserGitlab(int userId)
         {
-            var IdGitlab = _context.SystemeUsers.Where(su => su.User == user).Where(su => su.Systeme.SystemName == "Gitlab").Select(su => su.Identifier).First();
+            var IdGitlab = _context.SystemeUsers.Where(su => su.UserId == userId).Where(su => su.Systeme.SystemName == "Gitlab").Select(su => su.Identifier).First();
             return IdGitlab;
         }
        
@@ -76,5 +76,7 @@ namespace PerformanceManagement.DATA.Repositories
         {
             return _context.Users.Any(a => a.Id == userId);
         }
+
+        public 
     }
 }

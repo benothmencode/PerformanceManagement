@@ -17,6 +17,7 @@ using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.HomeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.ENTITIES;
+using ProjectF.ExernalServices;
 using System;
 
 namespace ProjectF
@@ -40,7 +41,8 @@ namespace ProjectF
                                );
             services.AddRazorPages();
             string connectionString = this.Configuration.GetConnectionString("DefaultContext");
-            services.AddDbContext<PerformanceManagementDBContext>(Options => Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
+            services.AddDbContext<PerformanceManagementDBContext>(Options => 
+            Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
             services.AddHangfire(configuration => configuration
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -56,6 +58,8 @@ namespace ProjectF
                       DisableGlobalLocks = true
                     }));
             services.AddHangfireServer();
+            JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
+
 
 
 
@@ -67,6 +71,8 @@ namespace ProjectF
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
             services.AddScoped<ISystemeRepository, SystemeRepository>();
+            services.AddScoped<ICommitsController, CommitsController>();
+            services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
 
             services.AddIdentity<User, AppRole>()
             .AddDefaultUI()
@@ -87,7 +93,8 @@ namespace ProjectF
         public void Configure(IApplicationBuilder app,
             IWebHostEnvironment env,
             UserManager<User> userManager,
-            RoleManager<AppRole> roleManager
+            RoleManager<AppRole> roleManager,
+            IHangfireRecurringJobScheduler Scheduler
             )
         {
             if (env.IsDevelopment())
@@ -102,6 +109,11 @@ namespace ProjectF
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+
+            //HANGFIRE
+            Scheduler.ScheduleCommitbadgeTask();
+
 
             app.UseRouting();
             app.UseAuthentication();

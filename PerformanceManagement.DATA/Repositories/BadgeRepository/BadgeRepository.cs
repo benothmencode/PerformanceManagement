@@ -28,7 +28,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
        
         public IEnumerable<Badge> GetUserBadge(int userId)
         {
-            return _context.userBadges.Where(u => u.UserId == userId).Where(ub => DateTime.Compare(ub.StartedAt, ub.BadgeDeadline) < 0).Select(b => b.Badge).ToList();
+            return _context.userBadges.Where(u => u.UserId == userId).Select(b => b.Badge).ToList();
 
         }
 
@@ -52,12 +52,13 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             var Users = _context.Users.ToList();
             foreach(var user in Users)
             {
-                var UserB= new UserBadge()
+                var UserB = new UserBadge()
                 {
                     Badge = badge,
                     User = user,
                     BadgeDeadline = userBadge.BadgeDeadline,
-                    StartedAt = badge.Created
+                    StartedAt = badge.Created,
+                    LastUpdate = badge.Created
                 };
                 _context.Add(UserB);
             }
@@ -103,6 +104,21 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                 _context.Badges.Remove(badge);
                 _context.SaveChanges();
             }
+        }
+
+        public List<UserBadge> GetUsersBadge(Badge badge)
+        {
+            return _context.userBadges.Where(ub => ub.Badge == badge).ToList();
+        } 
+        
+        public List<UserBadge> GetUserBadges()
+        {
+            return _context.userBadges.ToList();
+        } 
+
+        public Badge GetBadgeByTitle(string title)
+        {
+            return _context.Badges.Where(b => b.Title == title).FirstOrDefault();
         }
 
 

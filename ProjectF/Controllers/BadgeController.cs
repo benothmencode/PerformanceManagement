@@ -18,6 +18,8 @@ using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using ProjectF.Components;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using ProjectF.ExernalServices;
+using Hangfire;
 
 namespace ProjectF.Controllers
 {
@@ -29,8 +31,9 @@ namespace ProjectF.Controllers
         private readonly IUserRepository _UserRepository;
         private readonly IWebHostEnvironment _WebHostEnvironment;
         private readonly ISystemeRepository _systemeRepository;
+        private readonly ICommitsController _CommitsController;
 
-        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IConfiguration configuration, 
+        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, ICommitsController  commitsController,
             IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment)
         {
             
@@ -44,6 +47,7 @@ namespace ProjectF.Controllers
                 throw new ArgumentNullException(nameof(systemeRepository));
             _UserRepository = userRepository;
             _WebHostEnvironment = webHostEnvironment;
+            _CommitsController = commitsController;
 
         }
 
@@ -92,7 +96,6 @@ namespace ProjectF.Controllers
         {
             var badges = _BadgeRepository.GetAll();
             var model = _mapper.Map<IList<BadgeEntityDto>>(badges);
-
             return View(model);
         }
 
@@ -175,7 +178,7 @@ namespace ProjectF.Controllers
             return fileName;
         }
 
-
+       
 
 
     }

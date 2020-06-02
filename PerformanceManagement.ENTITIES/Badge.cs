@@ -31,7 +31,7 @@ namespace PerformanceManagement.ENTITIES
         public DateTime Created { get; set; }
         public Badge()
         {
-            Created = DateTime.Now;
+            Created = DateTime.Today;
         }
 
         [ForeignKey("SystemeId")]

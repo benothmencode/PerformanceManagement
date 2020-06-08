@@ -106,6 +106,11 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             }
         }
 
+        //public IQueryable<UserBadge> GetBadgeByTitle(String title)
+        //{
+        //    return _context.userBadges.Where(T => T.Badge.Title == title);
+        //}
+
         public List<UserBadge> GetUsersBadge(Badge badge)
         {
             return _context.userBadges.Where(ub => ub.Badge == badge).ToList();

@@ -43,6 +43,11 @@ namespace PerformanceManagement.DATA.Repositories
             return await empquery.AsNoTracking().ToListAsync();
         }
 
+        public float? GetUserProgression(UserBadge userbadge)
+        {
+            return userbadge.UserProgression;
+        }
+
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.OrderBy(u => u.Created).ToList();
@@ -77,6 +82,6 @@ namespace PerformanceManagement.DATA.Repositories
             return _context.Users.Any(a => a.Id == userId);
         }
 
-        public 
+     
     }
 }

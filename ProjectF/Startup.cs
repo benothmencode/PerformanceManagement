@@ -40,7 +40,7 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => 
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
@@ -82,11 +82,11 @@ namespace ProjectF
             
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddMvcCore(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            }).AddXmlSerializerFormatters();
+            //services.AddMvcCore(options =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            //    options.Filters.Add(new AuthorizeFilter(policy));
+            //}).AddXmlSerializerFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

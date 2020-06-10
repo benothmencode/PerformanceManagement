@@ -43,7 +43,7 @@ namespace PerformanceManagement.DATA.Repositories
             return await empquery.AsNoTracking().ToListAsync();
         }
 
-        public float? GetUserProgression(UserBadge userbadge)
+        public int GetUserProgression(UserBadge userbadge)
         {
             return userbadge.UserProgression;
         }

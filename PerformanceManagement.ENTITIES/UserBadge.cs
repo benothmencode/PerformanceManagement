@@ -10,7 +10,7 @@ namespace PerformanceManagement.ENTITIES
 
         public int Id { get; set; }
 
-        public float? UserProgression { get; set; }
+        public int UserProgression { get; set; }
         public string State { get; set; }
 
         public DateTime StartedAt { get; set; }

@@ -65,27 +65,30 @@ namespace ProjectF.ExernalServices
         }
 
         [HttpGet("IssueStatus")]
-        public async Task<IEnumerable<IdentifiableName>> IssueStatus()
+        public async Task<IEnumerable<ProjectStatus>> IssueStatus()
         {
-            var parameters = new NameValueCollection { /*{ RedmineKeys.STATUS_ID, RedmineKeys.ALL }*/ };
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
 
-            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
-            var rep2 = response.Select(T => T.Status);
-            return rep2;
+            var response = await _redmineClient.GetObjectsAsync<Project>(parameters);
+            var rep = response.Select(T => T.Status);
+
+            return rep;
         }
 
         [HttpGet("IssueProgression")]
 
-        public async Task<IEnumerable<float?>> IssueProgression()
+        public async Task/*<IEnumerable<float?>>*/   IssueProgression()
         {
-            var parameters = new NameValueCollection { /*{ RedmineKeys.STATUS_ID, RedmineKeys.ALL }*/ };
-
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL }};
+            
             var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
-            var rep2 = response.TakeWhile(T => T.DoneRatio >= 0).Select(T => T.DoneRatio);
+            var rep3 = response.Select(T => T.DoneRatio);
 
-            return rep2;
-
-
+            foreach (var prog in rep3)
+            {
+               var rep1 = prog.ToString();
+                
+            }
         }
 
 
@@ -101,19 +104,21 @@ namespace ProjectF.ExernalServices
 
 
             var status = IssueStatus().ToString();
+
+            var progression = IssueProgression().ToString();
+           
             foreach (var ub in userBadges)
             {
-
-                ub.UserProgression = IssueProgression();
-                ub.ObtainedAt = DateTime.Today;
-                ub.State = status;
-                _userRepository.UpdateUserProgression(ub);
-
-            }
-            if (status == "Resolved")
-            {
+                if (ub.UserProgression >= 1 && ub.State != "Done")
+                {
+                    progression = ub.UserProgression.ToString();
+                    ub.ObtainedAt = DateTime.Today;
+                    ub.State = status;
+                    _userRepository.UpdateUserProgression(ub);
+                }
 
             }
+          
 
         }
 

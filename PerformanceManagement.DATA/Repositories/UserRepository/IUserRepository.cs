@@ -19,8 +19,10 @@ namespace PerformanceManagement.DATA.Repositories
 
         int GetIdUserGitlab(int userId);
         bool UpdateUserProgression(UserBadge userBadge);
-       public int GetUserProgression(UserBadge userbadge);
+
         bool UserExists(int userId);
+
+
 
 
     }

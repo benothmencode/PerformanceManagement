@@ -13,6 +13,7 @@ using Redmine.Net.Api.Async;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.ENTITIES;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 
 namespace ProjectF.ExernalServices
 {
@@ -23,18 +24,19 @@ namespace ProjectF.ExernalServices
         private static RedmineManager _redmineClient;
         private readonly IUserRepository _userRepository;
         private readonly IBadgeRepository _badgeRepository;
+        private readonly IUserBadgeRepository _UserbadgeRepository;
         public string host = "http://localhost/redmine/";
         public string apiKey = "11b9a54a46850052e067141f514a96830b882399";
         //public String login = "Hassen";
 
 
-        public ToDosController(IUserRepository userRepository, IBadgeRepository badgeRepository)
+        public ToDosController(IUserRepository userRepository, IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository)
         {
 
             _redmineClient = new RedmineManager(host, apiKey/*,login*/);
             _userRepository = userRepository;
             _badgeRepository = badgeRepository;
-
+            _UserbadgeRepository = userBadgeRepository;
             //_redmineClient.ImpersonateUser = login;
         }
 
@@ -99,7 +101,7 @@ namespace ProjectF.ExernalServices
 
             var Badge = _badgeRepository.GetBadgeByTitle("the first featured");
 
-            var userBadges = _badgeRepository.GetUsersBadge(Badge);
+            var userBadges = _UserbadgeRepository.GetUsersBadge(Badge);
 
 
 

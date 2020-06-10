@@ -16,6 +16,7 @@ using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.HomeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
 using ProjectF.ExernalServices;
 using System;
@@ -72,6 +73,7 @@ namespace ProjectF
             services.AddScoped<IHomeRepository, HomeRepository>();
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
+            services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
 
             services.AddIdentity<User, AppRole>()

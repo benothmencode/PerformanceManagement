@@ -60,10 +60,7 @@ namespace PerformanceManagement.DATA.Repositories
             return IdGitlab;
         }
        
-        public UserBadge GetUserBadge(int UserId , int BadgeId)
-        {
-            return _context.userBadges.Where(u => u.BadgeId == BadgeId).Where(u => u.UserId == UserId).FirstOrDefault();
-        }
+      
 
         public bool UpdateUserProgression(UserBadge userBadge)
         {
@@ -77,6 +74,7 @@ namespace PerformanceManagement.DATA.Repositories
             return _context.Users.Any(a => a.Id == userId);
         }
 
-        public 
+
+       
     }
 }

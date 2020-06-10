@@ -37,6 +37,7 @@ namespace PerformanceManagement.DATA.DbContexts
         public DbSet<Systeme> Systemes { get; set; }
         public DbSet<SystemeUser> SystemeUsers { get; set; }
         public DbSet<UserBadge> userBadges { get; set; }
+        public DbSet<Progression> Progressions { get; set; }
         public DbSet<VoteRights> VoteRights { get; set; }
         public DbSet<VoteHistory> VoteHistories { get; set; }
         public DbSet<Event> Events { get; set; }

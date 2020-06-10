@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.ENTITIES;
 using ProjectF.Components;
@@ -33,6 +34,7 @@ namespace ProjectF.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly PerformanceManagementDBContext _context;
         private readonly ISystemeRepository _systemeRepository;
+        private readonly IBadgeRepository _badgeRepository;
         private readonly IMapper _mapper;
 
 
@@ -43,7 +45,8 @@ namespace ProjectF.Areas.Identity.Pages.Account
             IEmailSender emailSender,
             PerformanceManagementDBContext context,
             ISystemeRepository systemeRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IBadgeRepository badgeRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -52,6 +55,7 @@ namespace ProjectF.Areas.Identity.Pages.Account
             _context = context;
             _systemeRepository = systemeRepository;
             _mapper = mapper;
+            _badgeRepository = badgeRepository;
         }
 
 
@@ -156,6 +160,19 @@ namespace ProjectF.Areas.Identity.Pages.Account
                         }
                     }
                     _logger.LogInformation("User created a new account with password.");
+
+                    IEnumerable<Badge> badges = _badgeRepository.GetAll();
+                    foreach(var badge in badges)
+                    {
+                        var ub = new UserBadge()
+                        {
+                            Badge = badge,
+                            User = user,
+
+
+                        };
+                    }
+                    
                     return LocalRedirect(returnUrl);
                     
                 }

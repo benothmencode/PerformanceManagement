@@ -8,7 +8,7 @@ using System.Text;
 
 namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 {
-    public class BadgeRepository : IBadgeRepository
+    public class BadgeRepository : IBadgeRepository 
     {
         private readonly PerformanceManagementDBContext _context;
 
@@ -57,7 +57,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                     Badge = badge,
                     User = user,
                     BadgeDeadline = userBadge.BadgeDeadline,
-                    StartedAt = badge.Created,
+                    StartedAt = DateTime.Today,
                     LastUpdate = badge.Created
                 };
                 _context.Add(UserB);
@@ -106,15 +106,6 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             }
         }
 
-        public List<UserBadge> GetUsersBadge(Badge badge)
-        {
-            return _context.userBadges.Where(ub => ub.Badge == badge).ToList();
-        } 
-        
-        public List<UserBadge> GetUserBadges()
-        {
-            return _context.userBadges.ToList();
-        } 
 
         public Badge GetBadgeByTitle(string title)
         {

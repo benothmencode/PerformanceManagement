@@ -17,6 +17,14 @@
     <Compile Remove="Migrations\20200521205149_UserRoles.Designer.cs" />
     <Compile Remove="Migrations\20200521205431_UserRoles.cs" />
     <Compile Remove="Migrations\20200521205431_UserRoles.Designer.cs" />
+    <Compile Remove="Migrations\20200609171829_progression.cs" />
+    <Compile Remove="Migrations\20200609171829_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200609172120_progression.cs" />
+    <Compile Remove="Migrations\20200609172120_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200609172207_progression.cs" />
+    <Compile Remove="Migrations\20200609172207_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200609172404_progression.cs" />
+    <Compile Remove="Migrations\20200609172404_progression.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

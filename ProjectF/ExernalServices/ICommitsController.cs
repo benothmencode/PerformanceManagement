@@ -7,7 +7,6 @@ namespace ProjectF.ExernalServices
 {
     public interface ICommitsController
     {
-        public Task CountCommitsUser(int idBadge, int iduser);
-        public Task<int> ListProjectsUserMemberof(int userId, int idBadge);
+        public Task<int> nombreCommits(int userId, int idBadge , DateTime? update);
     } 
 }

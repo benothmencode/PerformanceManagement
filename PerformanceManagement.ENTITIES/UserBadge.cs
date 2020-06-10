@@ -25,5 +25,8 @@ namespace PerformanceManagement.ENTITIES
         public int BadgeId { get; set; }
         public User User { get; set; }
         public Badge Badge { get; set; }
+
+        public IList<Progression> Progressions { get; set; }
+
     }
 }

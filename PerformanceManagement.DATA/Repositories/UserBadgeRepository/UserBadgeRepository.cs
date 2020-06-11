@@ -38,13 +38,13 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             return saved >= 0 ? true : false;
         }
 
-        public DateTime? GetLastProgressionofUserbadge(int ubID)
+        public Progression GetLastProgressionofUserbadge(int ubID)
         {
             var progression = _context.Progressions.Where(p => p.UserBadgeId == ubID).ToList().LastOrDefault();
             if (progression != null)
             {
-                var date = progression.DateUserprog;
-                return date;
+               
+                return progression;
             }
             return null;
         }

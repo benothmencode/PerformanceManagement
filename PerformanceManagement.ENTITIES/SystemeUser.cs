@@ -14,6 +14,6 @@ namespace PerformanceManagement.ENTITIES
 
 
         public string UrlUserSystemAccount { get; set; }
-        public int Identifier { get; set; }
+        public int? Identifier { get; set; }
     }
 }

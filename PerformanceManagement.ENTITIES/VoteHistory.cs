@@ -24,5 +24,11 @@ namespace PerformanceManagement.ENTITIES
         public int VoteRightsId { get; set; }
         public string VoteTitle { get; set; }
         public string DateOfVote { get; set; }
+
+        [ForeignKey("TypeVoteId")]
+        public int TypeVoteId { get; set; }
+        public TypeVote TypeVote { get; set; }
+
+
     }
 }

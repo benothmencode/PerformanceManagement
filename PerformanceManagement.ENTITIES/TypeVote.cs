@@ -6,24 +6,15 @@ using System.Text;
 
 namespace PerformanceManagement.ENTITIES
 {
-    public class VoteRights
+    public class TypeVote
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        
-        public string Description { get; set; }
-
-        public int Quantity { get; set; }
-
-        [ForeignKey("UserId")]
-        public int UserId { get; set; }
-
-        [ForeignKey("TypeVoteId")]
-        public int TypeVoteId { get; set; }
-        public TypeVote TypeVote { get; set; }
-
+        public string Libellé { get; set; }
+        public IList<VoteRights> JetonVotes { get; set; }
+        public IList<VoteHistory> VoteHistories { get; set; }
+        public IList<Badge> Badges { get; set; }
 
 
 

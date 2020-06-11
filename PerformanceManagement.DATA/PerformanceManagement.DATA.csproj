@@ -25,6 +25,12 @@
     <Compile Remove="Migrations\20200609172207_progression.Designer.cs" />
     <Compile Remove="Migrations\20200609172404_progression.cs" />
     <Compile Remove="Migrations\20200609172404_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200611123757_AddTypeVoteClass.cs" />
+    <Compile Remove="Migrations\20200611123757_AddTypeVoteClass.Designer.cs" />
+    <Compile Remove="Migrations\20200611124428_AddTypeVoteClassId.cs" />
+    <Compile Remove="Migrations\20200611124428_AddTypeVoteClassId.Designer.cs" />
+    <Compile Remove="Migrations\20200611130145_test.cs" />
+    <Compile Remove="Migrations\20200611130145_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

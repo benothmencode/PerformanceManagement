@@ -8,6 +8,7 @@ namespace PerformanceManagement.DATA.Repositories
 {
     public interface IUserRepository 
     {
+
         IEnumerable<User> GetUsers();
 
         User GetUserById(int? userId);
@@ -17,10 +18,11 @@ namespace PerformanceManagement.DATA.Repositories
         IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId);
         void Edit(User user);
 
-        int GetIdUserGitlab(int userId);
+        int? GetIdUserGitlab(int userId);
         bool UpdateUserProgression(UserBadge userBadge);
 
         bool UserExists(int userId);
+
 
 
 

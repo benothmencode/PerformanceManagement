@@ -58,7 +58,6 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                     User = user,
                     BadgeDeadline = userBadge.BadgeDeadline,
                     StartedAt = DateTime.Today,
-                    LastUpdate = badge.Created
                 };
                 _context.Add(UserB);
             }

@@ -37,7 +37,9 @@ namespace PerformanceManagement.ENTITIES
         public Systeme Systeme { get; set; }
         public List<UserBadge> UserBadges { get; set; }
 
-        //public bool is_user { get; set; }(parsyst wala par user)
+        [ForeignKey("TypeVoteId")]
+        public int? TypeVoteId { get; set; }
+        public TypeVote TypeVote { get; set; }
 
     }
 }

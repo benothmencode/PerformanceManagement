@@ -43,10 +43,10 @@ namespace ProjectF.ExernalServices
         }
 
         [ActionName("VerifyIdUser")]
-        public async Task<int> VerifyIdUser(int userId)
+        public async Task<int?> VerifyIdUser(int userId)
         {
             
-            int idUserGitlab = _userRepository.GetIdUserGitlab(userId);
+            int? idUserGitlab = _userRepository.GetIdUserGitlab(userId);
             var users = await _gitLabClient.Users.GetAsync();
             var user = users.Where(u => u.Id == idUserGitlab).FirstOrDefault();
              if (user == null)
@@ -62,12 +62,12 @@ namespace ProjectF.ExernalServices
         [ActionName("LoadProjectsperUser")]
         public async Task<IList<Project>> ListProjectsPerUser(int userId)
         {
-            int IdsUserGitlab = await VerifyIdUser(userId);
+            int? IdsUserGitlab = await VerifyIdUser(userId);
             IList<Project> AllProjects = await LoadProjects();
             return AllProjects.Where(p => p.CreatorId == IdsUserGitlab).ToList();
         }
 
-        public async Task<GitLabApiClient.Models.Users.Responses.User> ListCommiterName(int projectId , int UserId)
+        public async Task<GitLabApiClient.Models.Users.Responses.User> ListCommiterName(int projectId , int? UserId)
         {
             var users = await _gitLabClient.Projects.GetUsersAsync(projectId);
             var user = users.Where(u => u.Id == UserId).FirstOrDefault();
@@ -79,16 +79,12 @@ namespace ProjectF.ExernalServices
         [ActionName("LoadprojectsMemberofperUser")]
         public async Task<int> nombreCommits(int userId , int idBadge , DateTime? update)
         {
-            
-            
-            
             int nbrCommit = new int();
             IList<Commit> commits = new List<Commit>();
-            int IdsUserGitlab = await VerifyIdUser(userId);
+            int? IdsUserGitlab = await VerifyIdUser(userId);
             IList<Project> userprojects = await LoadProjects();
             var UserBadge = _UserbadgeRepository.GetUserBadge(userId, idBadge);
-            update = UserBadge.LastUpdate;
-            var updateUserprog = _UserbadgeRepository.GetLastProgressionofUserbadge(UserBadge.Id);
+            update = UserBadge.StartedAt;
             foreach (var p in userprojects)
             {
                 commits = await _gitLabClient.Commits.GetAsync(p.Id, c => c.Since = update);
@@ -97,7 +93,7 @@ namespace ProjectF.ExernalServices
                     var Committer = await ListCommiterName(p.Id, IdsUserGitlab);
                     if (Committer != null)
                     {
-                        var UserCommits = commits.Where(c => c.CommitterName == Committer.Name).Where(c => c.CommittedDate >= updateUserprog).ToList();
+                        var UserCommits = commits.Where(c => c.CommitterName == Committer.Name).ToList();/*Where(c => c.CommittedDate >= DateUserprog).*/
                         nbrCommit += UserCommits.Count();
                     }
                     else
@@ -111,16 +107,13 @@ namespace ProjectF.ExernalServices
                 var progression = new Progression()
                 {
                     UserBadgeId = UserBadge.Id,
-                    DateUserprog = DateTime.Now.AddHours(-1),
+                    DateUserprog = DateTime.Now,
                     Userprogression = nbrCommit,
                     UserName = UserBadge.User.UserName
                 };
                 _UserbadgeRepository.UpdateProgression(progression);
-                foreach(var prog in UserBadge.Progressions)
-                {
-                    UserBadge.UserProgression += prog.Userprogression;
-                }
-                UserBadge.LastUpdate = DateTime.Today;
+                var prog = UserBadge.Progressions.ToList().LastOrDefault();
+                UserBadge.UserProgression = prog.Userprogression;
                 var result = _userRepository.UpdateUserProgression(UserBadge);
             }
             return nbrCommit;
@@ -133,7 +126,7 @@ namespace ProjectF.ExernalServices
         {
             int nbrCommit = new int();
             IList<Commit> commits = new List<Commit>();
-            int IdsUserGitlab = await VerifyIdUser(userId);
+            int? IdsUserGitlab = await VerifyIdUser(userId);
             IList<Project> userprojects = await LoadProjects();
             var UserBadge = _UserbadgeRepository.GetUserBadge(userId, idBadge);
             foreach (var p in userprojects)
@@ -171,8 +164,52 @@ namespace ProjectF.ExernalServices
                 }
             }
             return result;
-        } 
+        }
 
+
+
+        [ActionName("counter")]
+        public async Task<int> nbreCommits(int userId, int idBadge, DateTime? update)
+        {
+            int nbrCommit = new int();
+            IList<Commit> commits = new List<Commit>();
+            int? IdsUserGitlab = await VerifyIdUser(userId);
+            IList<Project> userprojects = await LoadProjects();
+            var UserBadge = _UserbadgeRepository.GetUserBadge(userId, idBadge);
+            update = UserBadge.StartedAt;
+            foreach (var p in userprojects)
+            {
+                commits = await _gitLabClient.Commits.GetAsync(p.Id, c => c.Since = update);
+                if (commits.Count() != 0)
+                {
+                    var Committer = await ListCommiterName(p.Id, IdsUserGitlab);
+                    if (Committer != null)
+                    {
+                        var UserCommits = commits.Where(c => c.CommitterName == Committer.Name).ToList();/*Where(c => c.CommittedDate >= DateUserprog).*/
+                        nbrCommit += UserCommits.Count();
+                    }
+                    else
+                    {
+                        nbrCommit += 0;
+                    }
+                }
+            }
+            if (UserBadge.UserProgression == 0 || UserBadge.UserProgression <= UserBadge.Badge.BadgeCriteria)
+            {
+                var progression = new Progression()
+                {
+                    UserBadgeId = UserBadge.Id,
+                    DateUserprog = DateTime.Now,
+                    Userprogression = nbrCommit,
+                    UserName = UserBadge.User.UserName
+                };
+                _UserbadgeRepository.UpdateProgression(progression);
+                var prog = UserBadge.Progressions.ToList().LastOrDefault();
+                UserBadge.UserProgression = prog.Userprogression;
+                var result = _userRepository.UpdateUserProgression(UserBadge);
+            }
+            return nbrCommit;
+        }
 
 
 

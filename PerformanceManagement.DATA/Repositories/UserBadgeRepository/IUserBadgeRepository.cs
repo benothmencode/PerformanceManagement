@@ -11,8 +11,9 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
         public List<UserBadge> GetUserBadges();
 
         bool UpdateProgression(Progression progression);
-        DateTime? GetLastProgressionofUserbadge(int ubID);
+        Progression GetLastProgressionofUserbadge(int ubID);
 
         UserBadge GetUserBadge(int UserId, int BadgeId);
+
     }
 }

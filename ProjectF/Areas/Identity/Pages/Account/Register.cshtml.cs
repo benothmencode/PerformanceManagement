@@ -101,8 +101,8 @@ namespace ProjectF.Areas.Identity.Pages.Account
             public string UserName { get; set; }
             
             [DataType(DataType.Text)]
-            [Display(Name = "IdGitlab")]
-            public int Identifier { get; set; }
+            [Display(Name = "Identifier")]
+            public int? Identifier { get; set; }
           
             [DataType(DataType.Text)]
             [Display(Name = "UrlAccount")]

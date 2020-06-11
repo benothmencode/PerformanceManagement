@@ -54,7 +54,7 @@ namespace PerformanceManagement.DATA.Repositories
             _context.SaveChanges();
         }
 
-        public int GetIdUserGitlab(int userId)
+        public int? GetIdUserGitlab(int userId)
         {
             var IdGitlab = _context.SystemeUsers.Where(su => su.UserId == userId).Where(su => su.Systeme.SystemName == "Gitlab").Select(su => su.Identifier).First();
             return IdGitlab;

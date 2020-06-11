@@ -29,7 +29,7 @@ namespace PerformanceManagement.DATA.Repositories
         public void CreateVoteHistory(int idUserChosen, int idVote, int UserId)
         {
             var voteR = GetVoteRights(idVote);
-            string TitleVoteChosen = voteR.Title;
+            string TitleVoteChosen = voteR.TypeVote.Libellé;
             VoteHistory voteHistory = new VoteHistory()
             {
                 UserOwnerId = UserId,

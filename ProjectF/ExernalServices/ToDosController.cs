@@ -19,7 +19,7 @@ namespace ProjectF.ExernalServices
 {
     [Route("api/todos")]
     [ApiController]
-    public class ToDosController : ControllerBase, IToDosController
+    public class ToDosController : ControllerBase
     {
         private static RedmineManager _redmineClient;
         private readonly IUserRepository _userRepository;
@@ -67,36 +67,50 @@ namespace ProjectF.ExernalServices
         }
 
         [HttpGet("IssueStatus")]
-        public async Task<IEnumerable<ProjectStatus>> IssueStatus()
+        public async Task<IEnumerable<IdentifiableName>> IssueStatus()
         {
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
 
-            var response = await _redmineClient.GetObjectsAsync<Project>(parameters);
+            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
             var rep = response.Select(T => T.Status);
 
             return rep;
         }
 
+        [HttpGet("GetIssueStatus")]
+        public async Task<String> GetIssueStatus()
+        {
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+
+            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
+
+            return response.Last().Status.Name;
+
+        }
         [HttpGet("IssueProgression")]
 
-        public async Task/*<IEnumerable<float?>>*/   IssueProgression()
+        public async Task<String>  IssueProgression()
         {
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL }};
             
             var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
             var rep3 = response.Select(T => T.DoneRatio);
-
+            String rep1 = null;
             foreach (var prog in rep3)
             {
-               var rep1 = prog.ToString();
+                rep1 = prog.ToString();
                 
             }
+
+            return rep1;
+
         }
 
 
 
 
-        public async Task TodosBadge()
+        [HttpGet("TodosBadge")]
+        public  async Task<String> TodosBadge()
         {
 
             var Badge = _badgeRepository.GetBadgeByTitle("the first featured");
@@ -104,39 +118,55 @@ namespace ProjectF.ExernalServices
             var userBadges = _UserbadgeRepository.GetUsersBadge(Badge);
 
 
-
-            var status = IssueStatus().ToString();
-
-            var progression = IssueProgression().ToString();
+            var status = await GetIssueStatus();
+          
+             String progression=await IssueProgression();
            
             foreach (var ub in userBadges)
             {
-                if (ub.UserProgression >= 1 && ub.State != "Done")
-                {
-                    progression = ub.UserProgression.ToString();
-                    ub.ObtainedAt = DateTime.Today;
+                progression =ub.UserProgression.ToString();
+
+
+                while (status != "Resolved" && progression == "100") {
+                    
                     ub.State = status;
                     _userRepository.UpdateUserProgression(ub);
+                    
                 }
+                
+                ub.ObtainedAt = DateTime.Today  ;
+
 
             }
-          
+            return progression;
 
         }
 
-        //public async Task<Issue> GetIssuePerProject(int idProject )
-        //{
 
-        //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
-        //    var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
-        //   var  reponse2 =   _redmineClient.GetObjects<Project>(parameters);
+        [HttpGet("GetIssuePerProject")]
+        public async Task<IdentifiableName> GetIssuePerProject()
+        {
 
-        //    foreach(var r in )
-        //    {
+            
+            IdentifiableName parentname =null;
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
+            
+            foreach (var rep in response)
+            {
+              parentname=  rep.Project;
 
-        //        var re= response2.
-        //    }
 
+            }
+
+            return parentname;
+            
+            //foreach(var r in )
+            //{
+
+            //   var re= response2.
+            //}
+        }
 
 
 

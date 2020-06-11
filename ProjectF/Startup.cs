@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hangfire;
 using Hangfire.SqlServer;
+using HangfireBasicAuthenticationFilter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,8 +19,10 @@ using PerformanceManagement.DATA.Repositories.HomeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
+using ProjectF.Components;
 using ProjectF.ExernalServices;
 using System;
+using System.Collections.Generic;
 
 namespace ProjectF
 {
@@ -41,7 +44,7 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => 
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
@@ -59,7 +62,7 @@ namespace ProjectF
                       DisableGlobalLocks = true
                     }));
             services.AddHangfireServer();
-            JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
+            JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("MyHangfireConnection"));
 
 
 
@@ -119,7 +122,18 @@ namespace ProjectF
 
             app.UseRouting();
             app.UseAuthentication();
-            app.UseHangfireDashboard("/mydashboard");
+            app.UseHangfireDashboard("/mydashboard", new DashboardOptions
+            {
+                //AppPath = "" //The path for the Back To Site link. Set to null in order to hide the Back To  Site link.
+                DashboardTitle = "My Website",
+                Authorization = new[]
+                    {
+                new HangfireCustomBasicAuthenticationFilter{
+                    User = Configuration.GetSection("HangfireSettings:UserName").Value,
+                    Pass = Configuration.GetSection("HangfireSettings:Password").Value
+                }
+            }
+            });
             app.UseAuthorization();
             SeedData.Seed(userManager, roleManager);
             app.UseEndpoints(endpoints =>

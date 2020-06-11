@@ -26,15 +26,26 @@ namespace ProjectF.ExernalServices
 
         public void ScheduleCommitbadgeTask()
         {
-            var badge = _BadgeRepository.GetBadgeByTitle("Commits");
-            var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
-            foreach (var Ub in UserBadge)
-            {
-                if (Ub.State != "done")
-                {
-                    RecurringJob.AddOrUpdate<ICommitsController>($"{Ub.BadgeId}-{Ub.UserId}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.LastUpdate), Cron.Daily);
-                }
-            }
+
+
+            
+                    RecurringJob.AddOrUpdate<ToDosController>($"IssueProgression", gl => gl.IssueProgression(), Cron.Daily);
+                    RecurringJob.AddOrUpdate<ToDosController>($"IssueStatus", gl => gl.IssueStatus(), Cron.Daily);
+                    RecurringJob.AddOrUpdate<ToDosController>($"FeaturedBadge", gl => gl.TodosBadge(), Cron.Daily);
+
+                
+            
+
+
+            //var badge = _BadgeRepository.GetBadgeByTitle("Commits");
+            //var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
+            //    foreach (var Ub in UserBadge)
+            //    {
+            //        if (Ub.State != "done")
+            //        {
+            //            RecurringJob.AddOrUpdate<ICommitsController>($"{Ub.BadgeId}-{Ub.UserId}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.LastUpdate), Cron.Daily);
+            //        }
+            //    }
         }
     }
 }

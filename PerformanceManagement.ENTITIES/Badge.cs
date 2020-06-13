@@ -5,6 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PerformanceManagement.ENTITIES
 {
+    public enum Periodicity
+    {
+        Weekly,
+        Monthly,
+        Yearly
+    }
+
     public class Badge 
     {
         [Key]
@@ -40,6 +47,7 @@ namespace PerformanceManagement.ENTITIES
         [ForeignKey("TypeVoteId")]
         public int? TypeVoteId { get; set; }
         public TypeVote TypeVote { get; set; }
+        public Periodicity periodicity { get; set; }
 
     }
 }

@@ -11,7 +11,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         public IEnumerable<Badge> GetAll();
         public Badge GetBadgeById(int? badgeId);
         public IEnumerable<Badge> GetUserBadge(int userId);
-        public bool Create(int SystemeId  , Badge badge , UserBadge userBadge);
+        public bool Create(int SystemeId  , Badge badge);
       
         public Badge GetBadgeByTitle(string title);
     }

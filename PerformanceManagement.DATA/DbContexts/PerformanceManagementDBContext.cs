@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PerformanceManagement.ENTITIES;
-
+using System;
 
 namespace PerformanceManagement.DATA.DbContexts
 {
@@ -25,7 +25,14 @@ namespace PerformanceManagement.DATA.DbContexts
                 .HasForeignKey(Us => Us.SystemeId);
             modelBuilder.Entity<User>().HasIndex(s => s.Email).IsUnique();
 
-           
+
+            modelBuilder
+               .Entity<Badge>()
+               .Property(b => b.periodicity)
+               .HasConversion(
+                   v => v.ToString(),
+                   v => (Periodicity)Enum.Parse(typeof(Periodicity), v));
+
 
             base.OnModelCreating(modelBuilder);
 

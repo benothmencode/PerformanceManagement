@@ -18,12 +18,12 @@ namespace PerformanceManagement.DATA.Repositories
 
         public IEnumerable<VoteRights> GetUserVoteRights(int idUser)
         {
-            return _context.VoteRights.Where(v => v.UserId == idUser).ToList(); 
+            return _context.VoteRights.Where(v => v.UserId == idUser).Include(v => v.TypeVote).ToList(); 
         }
 
         public VoteRights GetVoteRights(int id)
         {
-            return _context.VoteRights.FirstOrDefault(vr => vr.Id == id);
+            return _context.VoteRights.Include(v => v.TypeVote).FirstOrDefault(vr => vr.Id == id);
         }
 
         public void CreateVoteHistory(int idUserChosen, int idVote, int UserId)
@@ -35,7 +35,7 @@ namespace PerformanceManagement.DATA.Repositories
                 UserOwnerId = UserId,
                 UserChosenId = idUserChosen,
                 VoteRightsId = idVote,
-                VoteTitle = TitleVoteChosen
+                TypeVoteId = voteR.TypeVoteId, 
             };
 
             voteHistory.DateOfVote = DateTime.UtcNow.ToString("MM-dd-yyyy");

@@ -40,7 +40,10 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
 
 
-
+        public int numberOfBadges()
+        {
+           return _context.Badges.Count();
+        }
 
         public bool Create(int SystemeId , Badge badge , UserBadge userBadge)
         {

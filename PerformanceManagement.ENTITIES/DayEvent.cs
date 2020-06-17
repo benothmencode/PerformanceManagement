@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PerformanceManagement.ENTITIES
 {
@@ -7,6 +8,13 @@ namespace PerformanceManagement.ENTITIES
         public int Id { get; set; }
 
         public string Title { get; set; }
+
+        //public DateTime Date { get; set; }
+        //public DayEvent()
+        //{
+        //    Date = DateTime.Today;
+        //}
+        public string Type { get; set; }
 
         public string Action { get; set; }
 

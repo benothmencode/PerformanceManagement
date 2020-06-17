@@ -77,6 +77,7 @@ namespace ProjectF
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
+            services.AddScoped<IToDosController, ToDosController>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
 
             services.AddIdentity<User, AppRole>()

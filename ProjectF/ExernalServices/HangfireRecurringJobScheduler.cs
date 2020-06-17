@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Microsoft.AspNetCore.Components;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjectF.ExernalServices
 {
+
     public class HangfireRecurringJobScheduler : IHangfireRecurringJobScheduler
     {
         private IBadgeRepository _BadgeRepository { get; set; }
@@ -20,11 +22,26 @@ namespace ProjectF.ExernalServices
             _UserbadgeRepository = userBadgeRepository;
         }
 
-        public HangfireRecurringJobScheduler()
+      
+
+        public void ScheduleToDosbadgeTask()
         {
+            var badge = _BadgeRepository.GetBadgeByTitle("the first featured");
+            var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
+
+            foreach (var Ub in UserBadge)
+            {
+                if (Ub.State != "done")
+                {
+
+                    RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), Cron.Minutely,TimeZoneInfo.Local);
+                }
+            }
         }
 
-        public void ScheduleCommitbadgeTask()
+
+
+            public void ScheduleCommitbadgeTask()
         {
             //var badge = _BadgeRepository.GetBadgeByTitle("Commits");
             //var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
@@ -36,11 +53,12 @@ namespace ProjectF.ExernalServices
             //    }
             //}
 
-            var badge = _BadgeRepository.GetBadgeByTitle("Commits");
-            var Ub = _UserbadgeRepository.GetUsersBadge(badge).Where(ub => ub.UserId == 2).First();
+            var badge = _BadgeRepository.GetBadgeByTitle("the first featured");
+            var Ub = _UserbadgeRepository.GetUsersBadge(badge).Where(ub => ub.UserId == 3).First();
             if (Ub.State != "done")
             {
                 RecurringJob.AddOrUpdate<ICommitsController>($"2-2-{Ub.StartedAt}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.StartedAt), "40 15 * * *", TimeZoneInfo.Local);
+
             }
 
         }

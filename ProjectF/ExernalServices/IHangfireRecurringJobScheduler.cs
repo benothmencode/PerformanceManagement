@@ -3,5 +3,6 @@
     public interface IHangfireRecurringJobScheduler
     {
         void ScheduleCommitbadgeTask();
+        void ScheduleToDosbadgeTask();
     }
 }

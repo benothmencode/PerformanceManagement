@@ -8,7 +8,7 @@ using System.Text;
 
 namespace PerformanceManagement.DATA.Repositories.HomeRepository
 {
-    public class HomeRepository: IHomeRepository
+    public class HomeRepository : IHomeRepository
     {
 
         private readonly PerformanceManagementDBContext _context;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PerformanceManagement.DATA.Repositories.HomeRepository
 {
-   public  interface IHomeRepository
+    public interface IHomeRepository
     {
 
         public IEnumerable<Event> GetAll();

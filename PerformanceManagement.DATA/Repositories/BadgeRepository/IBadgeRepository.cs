@@ -12,7 +12,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         public Badge GetBadgeById(int? badgeId);
         public IEnumerable<Badge> GetUserBadge(int userId);
         public bool Create(int SystemeId  , Badge badge , UserBadge userBadge);
-      
+        public int numberOfBadges();
         public Badge GetBadgeByTitle(string title);
     }
 }

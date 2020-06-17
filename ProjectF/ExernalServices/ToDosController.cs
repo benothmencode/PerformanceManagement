@@ -17,9 +17,21 @@ using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 
 namespace ProjectF.ExernalServices
 {
+    
+
+    public interface IToDosController
+    {
+        public  Task<String> TodosBadge();
+
+
+    }
+
+
+
     [Route("api/todos")]
     [ApiController]
-    public class ToDosController : ControllerBase
+
+    public class ToDosController : ControllerBase,IToDosController
     {
         private static RedmineManager _redmineClient;
         private readonly IUserRepository _userRepository;

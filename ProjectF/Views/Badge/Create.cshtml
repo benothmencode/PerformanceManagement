@@ -81,9 +81,11 @@
                             </div>
 
                             <div class="form-group">
-                                <label asp-for="UserBadge.BadgeDeadline" class="control-label"></label>
-                                <input asp-for="UserBadge.BadgeDeadline" class="form-control" />
-                                <span asp-validation-for="UserBadge.BadgeDeadline" class="text-danger"></span>
+                                <label asp-for="Periodicity" class="control-label"></label>
+                                <select asp-for="Periodicity" asp-items="Html.GetEnumSelectList<Periodicity>()" class="form-control">
+                                    <option selected="selected" value="">Please select</option>
+                                </select>
+                                <span asp-validation-for="Periodicity" class="text-danger"></span>
                             </div>
 
                             <div class="form-group">

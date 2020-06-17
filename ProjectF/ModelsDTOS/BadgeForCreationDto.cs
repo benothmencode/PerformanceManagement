@@ -23,5 +23,7 @@ namespace ProjectF.ModelsDTOS
         public IEnumerable<SelectListItem> systemes { get; set; }
 
         public UserBadge UserBadge { get; set; }
+        public Periodicity Periodicity { get; set; }
+
     }
 }

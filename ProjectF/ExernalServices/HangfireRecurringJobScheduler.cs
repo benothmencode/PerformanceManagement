@@ -61,6 +61,13 @@ namespace ProjectF.ExernalServices
 
             }
 
+
+            var Ubadge = _UserbadgeRepository.GetUsersBadge(badge).Where(Ubadge => Ubadge.UserId == 3).First();
+            if (Ubadge.State != "done")
+            {
+                RecurringJob.AddOrUpdate<ICommitsController>($"3-2-{Ubadge.StartedAt}", gl => gl.nombreCommits(Ubadge.UserId, Ubadge.BadgeId, Ubadge.StartedAt), "29 22 * * *", TimeZoneInfo.Local);
+            }
+
         }
     }
 }

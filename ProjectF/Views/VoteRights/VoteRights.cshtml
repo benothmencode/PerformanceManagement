@@ -121,7 +121,9 @@
             <tbody>
                 {{#Vlist}}
                 <tr>
-                    <td>{{voteTitle}}</td>
+                    {{#typeVote}}
+                    <td>{{libellé}}</td>
+                    {{/typeVote}}
                     {{#userChosen}}
                     <td>
                         <figure class="figure">

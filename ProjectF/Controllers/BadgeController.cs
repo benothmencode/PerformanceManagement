@@ -124,7 +124,7 @@ namespace ProjectF.Controllers
         [HttpPost]
 
         [Route("/Admin/Badge/Create")]
-        public IActionResult Create(int SystemeID, BadgeForCreationDto badgeForCreation , UserBadge userBadge)
+        public IActionResult Create(int SystemeID, BadgeForCreationDto badgeForCreation)
         {
             var stringFileName = UploadFile(badgeForCreation);
             var statusCode = ValidateBadge(SystemeID, badgeForCreation);
@@ -134,7 +134,7 @@ namespace ProjectF.Controllers
             {
                 var badge = _mapper.Map<Badge>(badgeForCreation);
                 badge.Icon = stringFileName;
-                if (!_BadgeRepository.Create(SystemeID, badge, userBadge))
+                if (!_BadgeRepository.Create(SystemeID, badge))
                 {
                     ModelState.AddModelError("", $"Something went wrong saving the badge " +
                                                 $"{badgeForCreation.Title}");

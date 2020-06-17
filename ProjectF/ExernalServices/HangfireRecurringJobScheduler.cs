@@ -1,6 +1,8 @@
 ﻿using Hangfire;
+using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
+using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +15,13 @@ namespace ProjectF.ExernalServices
         private IBadgeRepository _BadgeRepository { get; set; }
 
         private readonly IUserBadgeRepository _UserbadgeRepository;
+        private readonly IUserRepository _UserRepository;
 
-        public HangfireRecurringJobScheduler(IBadgeRepository badgeRepository , IUserBadgeRepository userBadgeRepository)
+        public HangfireRecurringJobScheduler(IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository, IUserRepository userRepository)
         {
             _BadgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
+            _UserRepository = userRepository;
         }
 
         public HangfireRecurringJobScheduler()
@@ -44,12 +48,84 @@ namespace ProjectF.ExernalServices
             }
 
 
-            var Ubadge = _UserbadgeRepository.GetUsersBadge(badge).Where(Ubadge => Ubadge.UserId == 3).First();
-            if (Ubadge.State != "done")
+        }
+
+
+     
+
+        // execute evrer frst day of month
+        public void CreationUserbadgeTask()
+        {
+            var badges = _BadgeRepository.GetAll();
+            var users = _UserRepository.GetUsers();
+
+            foreach (var badge in badges)
             {
-                RecurringJob.AddOrUpdate<ICommitsController>($"3-2-{Ubadge.StartedAt}", gl => gl.nombreCommits(Ubadge.UserId, Ubadge.BadgeId, Ubadge.StartedAt), "29 22 * * *", TimeZoneInfo.Local);
+                foreach (var user in users)
+                {
+                  if (badge.LastCreation == badge.Created)
+                  {
+                        _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
+                        badge.LastCreation = DateTime.Now;
+                        _BadgeRepository.UpdateLastCreationDate((DateTime)badge.LastCreation, badge);
+                  }
+                  else
+                    {
+                     var LastCreationDate = (DateTime)badge.LastCreation;  
+                     if (LastCreationDate != null)
+                     {
+                            Periodicity weekly = Periodicity.Weekly;
+                            Periodicity Monthly = Periodicity.Monthly;
+                            Periodicity Yeary = Periodicity.Yearly;
+
+                            if (badge.periodicity.Equals(weekly))
+                            {
+                                LastCreationDate = LastCreationDate.AddDays(7 * badge.ValueOfPeriodicity);
+                            }
+                            else if (badge.periodicity.Equals(Monthly))
+                            {
+                                LastCreationDate = LastCreationDate.AddMonths(badge.ValueOfPeriodicity);
+                            }
+                            else if (badge.periodicity.Equals(Yeary))
+                            {
+                                LastCreationDate = LastCreationDate.AddYears(badge.ValueOfPeriodicity);
+                            }
+                            if (DateTime.Now >= LastCreationDate)
+                            {
+                            _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
+                                LastCreationDate = DateTime.Now;
+                                _BadgeRepository.UpdateLastCreationDate(LastCreationDate, badge);
+                            }
+                     }
+                  }
+                }
+
             }
 
         }
+        public void ScheduleUserbadgeTask()
+        {
+            RecurringJob.AddOrUpdate(() => CreationUserbadgeTask(), "0 0 1 * *", TimeZoneInfo.Local);
+        }
+        //{
+        //    //Get badge periodicity
+        //    //Get badge last creation date
+        //    // if current date > = last creation date + periodicity
+        //    // create batch for all users and update badge las creation date
+        //    foreach (var user in users)
+        //    {
+        //        //RecurringJob.AddOrUpdate<IUserBadgeRepository>($"{user.Id}-{badge.Id}", ub => ub.CreateUserBadge(user.Id, badge.Id), " ", TimeZoneInfo.Local);
+
+        //    }
+
+
+
+
+
+
+
+
+
+
     }
 }

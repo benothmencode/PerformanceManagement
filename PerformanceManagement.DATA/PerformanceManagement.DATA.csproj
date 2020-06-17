@@ -31,6 +31,8 @@
     <Compile Remove="Migrations\20200611124428_AddTypeVoteClassId.Designer.cs" />
     <Compile Remove="Migrations\20200611130145_test.cs" />
     <Compile Remove="Migrations\20200611130145_test.Designer.cs" />
+    <Compile Remove="Migrations\20200617100044_UpdateAttribperiodicity.cs" />
+    <Compile Remove="Migrations\20200617100044_UpdateAttribperiodicity.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

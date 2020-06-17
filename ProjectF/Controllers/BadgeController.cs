@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using ProjectF.ExernalServices;
 using Hangfire;
+using ProjectF.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace ProjectF.Controllers
 {
@@ -31,10 +33,12 @@ namespace ProjectF.Controllers
         private readonly IUserRepository _UserRepository;
         private readonly IWebHostEnvironment _WebHostEnvironment;
         private readonly ISystemeRepository _systemeRepository;
-        private readonly ICommitsController _CommitsController;
+        private readonly IVoteRepository _VoteRepository;
 
-        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, ICommitsController  commitsController,
-            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment)
+        private readonly UserManager<User> _userManager;
+
+        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IVoteRepository VoteRepository,
+            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment , UserManager<User> userManager)
         {
             
 
@@ -47,11 +51,12 @@ namespace ProjectF.Controllers
                 throw new ArgumentNullException(nameof(systemeRepository));
             _UserRepository = userRepository;
             _WebHostEnvironment = webHostEnvironment;
-            _CommitsController = commitsController;
+            _VoteRepository = VoteRepository;
+            _userManager = userManager;
 
         }
 
-        
+
         public IActionResult Index(int idUser)
         {
             var user = _UserRepository.GetUserById(idUser);
@@ -91,12 +96,11 @@ namespace ProjectF.Controllers
         }
 
         [Authorize(Roles ="Administrator")]
-        [Route("/Admin/Badges")]
         public IActionResult Listofbadges()
         {
-            var badges = _BadgeRepository.GetAll();
-            var model = _mapper.Map<IList<BadgeEntityDto>>(badges);
-            return View(model);
+            var badges = _BadgeRepository.GetAll().ToList();
+            
+            return View(badges);
         }
 
 
@@ -120,7 +124,7 @@ namespace ProjectF.Controllers
         [Route("/Admin/Badge/Create")]
         public IActionResult Create(int SystemeID, BadgeForCreationDto badgeForCreation)
         {
-            var stringFileName = UploadFile(badgeForCreation);
+            var stringFileName = UploadFile(badgeForCreation.Icon);
             var statusCode = ValidateBadge(SystemeID, badgeForCreation);
             if (!ModelState.IsValid)
                 return StatusCode(statusCode.StatusCode);
@@ -128,7 +132,7 @@ namespace ProjectF.Controllers
             {
                 var badge = _mapper.Map<Badge>(badgeForCreation);
                 badge.Icon = stringFileName;
-                if (!_BadgeRepository.Create(SystemeID, badge))
+                if (!_BadgeRepository.Create(SystemeID, badge,badge.TypeVoteId))
                 {
                     ModelState.AddModelError("", $"Something went wrong saving the badge " +
                                                 $"{badgeForCreation.Title}");
@@ -139,6 +143,52 @@ namespace ProjectF.Controllers
             }
 
             return View(badgeForCreation);
+        }
+
+
+
+        public IActionResult AddOrEditBadgeVote(int id = 0)
+        {
+            var VoteType = _VoteRepository.GetTypeVotes();
+            var voteTypeList = new TypeVotesList(VoteType);
+            if (id == 0)
+                
+                return View(new BadgesForVotes() { TypeVote = voteTypeList.GetvoteTypeList()});
+            else
+            {
+                var BadgeForVote = _BadgeRepository.GetBadgeById(id);
+                if (BadgeForVote == null)
+                {
+                    return NotFound();
+                }
+                return View(BadgeForVote);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddOrEditBadgeVote(int id, int? TypeVoteId, [Bind("Id,Title,Icon,BadgeCriteria,Description,Periodicity,ValueOfPeriodicity,TypeVoteId,TypeVote")] BadgesForVotes badgeForVotes)
+        {
+            if (ModelState.IsValid)
+            {
+                var VoteRight = new VoteRights();
+                var stringFileName = UploadFile(badgeForVotes.Icon);
+                //Insert
+                if (id == 0)
+                {
+                    var badge = _mapper.Map<Badge>(badgeForVotes);
+                    badge.Icon = stringFileName;
+                    _BadgeRepository.Create(badge.SystemeId, badge , TypeVoteId);
+                    VoteRight.Quantity = badge.BadgeCriteria;
+                    VoteRight.TypeVote = badge.TypeVote;
+                    VoteRight.UserId = Int32.Parse(_userManager.GetUserId(User));
+                    VoteRight.Update = badge.Created;
+                    _VoteRepository.AddOrUpdateVoteRights(VoteRight.Id , VoteRight);
+
+                }
+                return RedirectToAction("Listofbadges");
+            }
+            return View(badgeForVotes);
         }
 
         private StatusCodeResult ValidateBadge(int SystemId, BadgeForCreationDto badge)
@@ -162,23 +212,39 @@ namespace ProjectF.Controllers
 
             return NoContent();
         }
-        private string UploadFile(BadgeForCreationDto badge)
+        private string UploadFile(IFormFile badgeIcon)
         {
             string fileName = null;
-            if (badge.Icon != null)
+            if (badgeIcon != null)
             {
                 string uploadDir = Path.Combine(_WebHostEnvironment.WebRootPath, "theme/dist/img");
-                fileName = Guid.NewGuid().ToString() + "-" + badge.Icon.FileName;
+                fileName = Guid.NewGuid().ToString() + "-" + badgeIcon.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    badge.Icon.CopyTo(fileStream);
+                    badgeIcon.CopyTo(fileStream);
                 }
             }
             return fileName;
         }
+        public IActionResult CreateTypeVote()
+        {
+            return View(new TypeVote());
+        }
 
-       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateTypeVote([Bind("Id,Libellé")] TypeVote typeVote)
+        {
+            if (ModelState.IsValid)
+            {
+                _VoteRepository.CreateTypeVote(typeVote);
+                return RedirectToAction(nameof(Listofbadges));
+            }
+            return View(typeVote);
+        }
+
+
 
 
     }

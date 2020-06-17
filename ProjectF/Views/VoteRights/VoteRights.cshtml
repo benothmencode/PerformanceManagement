@@ -1,9 +1,16 @@
 ﻿@model ProjectF.ViewModels.VoteRightsViewModel
+@using Microsoft.AspNetCore.Identity
+@using PerformanceManagement.ENTITIES
 
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Index";
+    var userConnected = await UserManager.GetUserAsync(User);
 }
+
+
 
 @section head{
     <style>
@@ -127,8 +134,10 @@
                     {{#userChosen}}
                     <td>
                         <figure class="figure">
-                            <img alt="Avatar" class="table-avatar" src="/theme/dist/img/{{{userimage}}}" />
-                            <figcaption class="figure-caption text-center">{{username}}</figcaption>
+                            <a asp-action="Profile" asp-controller="Users" asp-route-idUser="@UserManager.GetUserId(User)">
+                                <img alt="Avatar" class="table-avatar" src="/theme/dist/img/{{{userimage}}}" />
+                            </a>
+                            <figcaption class="figure-caption text-center">{{userName}}</figcaption>
                         </figure>
                     </td>
                     {{/userChosen}}
@@ -154,7 +163,8 @@
                     var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data });
                     $("#details").html(html);
                 },
-                error: function (xhr, status, error) {
+                error: function (xhr, status, error, data) {
+                    alert(date.errorMessage);
                     alert(xhr.responseText);
                     alert(status);
                     alert(error);

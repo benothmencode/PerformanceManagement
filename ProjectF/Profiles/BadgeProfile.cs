@@ -11,7 +11,8 @@ namespace ProjectF.Profiles
 
             CreateMap<Badge, BadgeEntityDto>();
             CreateMap<BadgeForCreationDto, Badge>();
-          
+            CreateMap<BadgesForVotes, Badge>();
+
 
         }
 

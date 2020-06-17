@@ -191,8 +191,8 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <div class="nav-link"  href="#">
-                            <i ></i>
+                        <div class="nav-link" href="#">
+                            <i></i>
                         </div>
                     </li>
                 </ul>
@@ -251,38 +251,37 @@
                                         Manage Systems
                                     </p>
                                 </a>
-                            </li> 
+                            </li>
                             <li class="nav-item">
-                                <a asp-action="ListOfBadges" asp-controller="Badge" class="nav-link">
+                                <a class="nav-link" asp-action="ListOfBadges" asp-controller="Badge">
                                     <i class="nav-icon fas fa-award"></i>
                                     <p>
                                         Manage Badges
+                                        <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
                             </li>
                             @*<li class="nav-item has-treeview">
-                <a asp-action="UserManagement" asp-controller="Admin" class="nav-link">
-                    <i class="nav-icon fas fa-circle"></i>
-                    <p>
-                        Manage users
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a class="nav-link" id="register" asp-area="Identity" asp-page="/Account/Register">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Add User</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Level 3</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>*@
+                                <a class="nav-link">
+                                    <i class="nav-icon fas fa-award"></i>
+                                    <p>
+                                        Manage Badges
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-action="ListOfBadges" asp-controller="Badge">
+                                            <p>Badges for Systems</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <p>Badges for Votes</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>*@
                         }
                     </ul>
                 </nav>
@@ -291,7 +290,9 @@
             <!-- /.sidebar -->
         </aside>
         @RenderBody()
-
+       
+       
+       
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 3.0.1

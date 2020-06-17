@@ -14,6 +14,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
         Progression GetLastProgressionofUserbadge(int ubID);
 
         UserBadge GetUserBadge(int UserId, int BadgeId);
+        public void CreateUserBadge(int idUser, int idBadge);
 
     }
 }

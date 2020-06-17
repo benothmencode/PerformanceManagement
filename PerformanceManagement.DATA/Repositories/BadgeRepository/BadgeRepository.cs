@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.ENTITIES;
 using System;
@@ -12,17 +13,23 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
     {
         private readonly PerformanceManagementDBContext _context;
 
+        private readonly IVoteRepository _VoteRepository;
 
-        public BadgeRepository(PerformanceManagementDBContext context)
+        private readonly UserManager<User> _userManager;
+
+
+        public BadgeRepository(PerformanceManagementDBContext context, UserManager<User> userManager , IVoteRepository voteRepository )
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _VoteRepository = voteRepository ?? throw new ArgumentNullException(nameof(voteRepository));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
 
 
         public IEnumerable<Badge> GetAll()
         {
-            return _context.Badges.Include(b => b.Systeme).ToList();
+            return _context.Badges.Include(b => b.Systeme).Include(b => b.TypeVote).ToList();
         }
 
        
@@ -42,16 +49,33 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
 
 
-        public bool Create(int SystemeId , Badge badge)
+        public bool Create(int? SystemeId , Badge badge , int? TypevoteId )
         {
+            var saved = 0;
+            
             if (_context.Badges.Any(x => x.Title == badge.Title))
                 throw new Exception("Badge \"" + badge.Title + "\" exists already ");
-            var Systeme = _context.Systemes.Where(s => s.Id == SystemeId).FirstOrDefault();
-            badge.SystemeId = SystemeId;
-            badge.Systeme = Systeme;
-          _context.Badges.Add(badge);
-            var saved = _context.SaveChanges();
-            return saved >= 0 ? true : false;
+            badge.LastCreation = badge.Created;
+            if (SystemeId != null)
+            {
+                var Systeme = _context.Systemes.Where(s => s.Id == SystemeId).FirstOrDefault();
+                badge.SystemeId = SystemeId;
+                badge.Systeme = Systeme;
+                _context.Badges.Add(badge);
+                 saved = _context.SaveChanges();
+                return saved >= 0 ? true : false;
+            }
+            if (TypevoteId != null)
+            {
+                var voteType = _context.TypeVotes.Where(tv => tv.Id == TypevoteId).FirstOrDefault();
+              
+                badge.TypeVote = voteType;
+                badge.TypeVoteId = TypevoteId;
+                _context.Badges.Add(badge);
+                 saved = _context.SaveChanges();
+                return saved >= 0 ? true : false;
+            }
+            return saved >= 0 ? true : false; ;
         }
 
         public void Update(Badge badgeParam/*, string password = null*/)
@@ -94,11 +118,22 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         }
 
 
+
         public Badge GetBadgeByTitle(string title)
         {
             return _context.Badges.Where(b => b.Title == title).FirstOrDefault();
         }
 
+        public void UpdateLastCreationDate(DateTime LastCreationDate , Badge badge )
+        {
+            if(LastCreationDate == null)
+                throw new Exception("LastCreationDate \"" + LastCreationDate + "\"is NULL ");
+
+           var badgefound = _context.Badges.Find(badge.Id);
+            badgefound.LastCreation = LastCreationDate;
+            _context.Update(badgefound);
+            _context.SaveChanges();
+        }
 
     }
 }

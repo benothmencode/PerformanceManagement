@@ -20,9 +20,13 @@ namespace PerformanceManagement.ENTITIES
         [ForeignKey("UserOwnerId")]
         public virtual ENTITIES.User UserOwner { get; set; }
 
+        [ForeignKey("BadgeId")]
+        public int BadgeId { get; set; }
 
-        public int VoteRightsId { get; set; }
-        
+        public Badge Badge   { get; set; }
+
+        public bool? BadgeObtained { get; set; }
+
         public string DateOfVote { get; set; }
 
         [ForeignKey("TypeVoteId")]

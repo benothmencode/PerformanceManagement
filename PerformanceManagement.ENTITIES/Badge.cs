@@ -40,14 +40,21 @@ namespace PerformanceManagement.ENTITIES
         }
 
         [ForeignKey("SystemeId")]
-        public int SystemeId { get; set; }
+        public int? SystemeId { get; set; }
         public Systeme Systeme { get; set; }
         public List<UserBadge> UserBadges { get; set; }
 
         [ForeignKey("TypeVoteId")]
         public int? TypeVoteId { get; set; }
         public TypeVote TypeVote { get; set; }
+        public DateTime LastCreation { get; set; }
+
+
+        [Required]
         public Periodicity periodicity { get; set; }
+
+        [Required]
+        public int ValueOfPeriodicity { get; set; }
 
     }
 }

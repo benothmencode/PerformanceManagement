@@ -1,37 +1,17 @@
-﻿@model IList<ProjectF.ModelsDTOS.BadgeEntityDto>
-
+﻿@model IList<PerformanceManagement.ENTITIES.Badge>
 @{
     ViewData["Title"] = "List";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">List Of badges</h1>
-                    <br />
-                    <div class="dropdown">
-                        <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown">
-                            + Add Badges  <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="nav-link" asp-controller="Badge" asp-action="Create">
-                                    Add Badges For systems
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link">
-                                   Add Badges For Votes
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div><!-- /.col -->
+                    <h1 class="m-0 text-dark">List Of badges</h1><br />
+                     </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -40,51 +20,172 @@
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    </section>
+
     <!-- Main content -->
-    <div class="content">
-        <div class="container-fluid">
-
-            <div class="row">
-                @foreach (var item in Model)
-                {
-                    <div class="col-lg-6">
-                        <div class="timeline timeline-inverse">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="col-12">
-                                        <img src="/theme/dist/img/@item.Icon" class="product-image-thumbs" width="80" alt="Product Image"><br />
-                                        <h3 class="card-title"><b>Badge Title : @item.Title</b></h3><br />
-                                        <hr />
-                                        <div class="time-label">
-                                            <span class="bg-danger">
-                                                <small>Created : @item.Created</small>
-                                            </span>
-                                        </div>
-                                        <p class="card-text">
-                                            Badge Criteria : <strong>@item.BadgeCriteria</strong>
-                                            <h6> Systeme : @item.Systeme.SystemName</h6>
-                                            Badge Description : @item.Description
-                                        </p>
-                                    </div>
-                                    <hr />
-                                    <div class="align-content-xl-stretch">
-                                        <a href="#" class="btn btn-primary">Publish</a>
-                                        <a href="#" class="btn btn-outline-secondary">Update</a>
-                                        <a href="#" class="btn btn-danger">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                }
+    <section class="content">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
+            <div class="card-body p-0">
+                <br />
+                <div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown">
+                        + Add Badges  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="nav-link" asp-controller="Badge" asp-action="Create">
+                                Add Badges For systems
+                            </a>
+                        </li>
+                        <li>
+                            <div class="btn-group dropright">
+                                <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Mangage Badges For vote  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="btn btn-light" onclick="showInPopup('@Url.Action("CreateTypeVote","Badge",null,Context.Request.Scheme)','New TypeVotes')">
+                                            Add Type For Vote
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-light" onclick="showInPopup('@Url.Action("AddOrEditBadgeVote","Badge",null,Context.Request.Scheme)','New BadgesForVotes')">
+                                            Add Badges For Vote
+                                        </a>
+
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <hr style="width:40%" />
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%">
+                                Badge Title
+                            </th>
+                            <th style="width: 10%">
+                            </th>
+                            <th style="width: 20%" class="text-center">
+                                Badge Info
+                            </th>
+                            <th style="width: 20%" class="text-center">
+                                Systems/voteType
+                            </th>
+                            <th style="width: 20%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                <a>
+                                    <h3 class="card-title"><b>Badge Title : @item.Title</b></h3><br />
+                                </a>
+                                <br />
+                                <small>
+                                    Created : @item.Created
+                                </small>
+                            </td>
+                            <td>
+                                <img src="/theme/dist/img/@item.Icon" class="product-image-thumbs" width="80" height="80" alt="Product Image"><br />
+                            </td>
+
+                            <td class="project-state">
+                                Badge Criteria : <strong>@item.BadgeCriteria</strong>
+                                <br />
+                                Badge Description : @item.Description
+                            </td>
+                            @if (@item.Systeme != null)
+                            {
+                            <td>
+                               <center> Systeme : @item.Systeme.SystemName</center>
+                            </td>
+                            }
+                            else if(@item.TypeVote != null)
+                            {
+                                <td>
+                                    <center> TypeVote : @item.TypeVote.Libellé</center>
+                                </td>
+                            }
+                            <td class="project-actions text-right">
+                                <a class="btn btn-primary btn-sm" href="#">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    View
+                                </a>
+                                <a class="btn btn-info btn-sm" href="#">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Edit
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="#">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+     
+        <div class="modal" tabindex="-1" role="dialog" id="form-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+
+
+
+@section Scripts {
+    <script>
+        showInPopup = (url, title) => {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (res) {
+                    $('#form-modal .modal-body').html(res);
+                    $('#form-modal .modal-title').html(title);
+                    $('#form-modal').modal('show');
+                }
+            })
+        }
+    </script>
+}

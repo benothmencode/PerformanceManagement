@@ -88,14 +88,7 @@ namespace ProjectF.Controllers
             return View(systeme);
         }
 
-        // BackgroundJob.Enqueue(() => _CommitsController.CountCommitsUser(Ub.BadgeId, Ub.UserId));
-        //public IActionResult TrackUserBadge()
-        //{
-        //    var UserBadges = _BadgeRepository.GetUserBadges();
-        //    HangfireRecurringJobScheduler scheduler = new HangfireRecurringJobScheduler(_BadgeRepository);
-        //    scheduler.ScheduleCommitbadgeTask();
-        //    return View(UserBadges);
-        //}
+       
 
     }
 }

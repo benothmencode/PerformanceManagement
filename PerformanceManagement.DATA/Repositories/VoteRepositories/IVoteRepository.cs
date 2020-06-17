@@ -10,9 +10,16 @@ namespace PerformanceManagement.DATA.Repositories
         IEnumerable<VoteRights> GetUserVoteRights(int idUser);
         VoteRights GetVoteRights(int id);
 
-        void CreateVoteHistory(int idUserChosen, int idVote, int UserId);
+        void CreateVoteHistory(int idUserChosen, int TypeVoteId, int UserId);
 
         IEnumerable<VoteHistory> GetVoteHistory(int UserId);
+        void AddOrUpdateVoteRights(int id, VoteRights voteRights);
+        List<TypeVote> GetTypeVotes();
+
+        void CreateTypeVote(TypeVote typeVote);
+        
+
+
 
     }
 }

@@ -11,10 +11,6 @@ namespace PerformanceManagement.ENTITIES
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        
-        public string Description { get; set; }
-
         public int Quantity { get; set; }
 
         [ForeignKey("UserId")]
@@ -23,6 +19,7 @@ namespace PerformanceManagement.ENTITIES
         [ForeignKey("TypeVoteId")]
         public int TypeVoteId { get; set; }
         public TypeVote TypeVote { get; set; }
+        public DateTime Update { get; set; }
 
 
 

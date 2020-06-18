@@ -15,7 +15,7 @@ namespace PerformanceManagement.DATA
         }
         private static void SeedUsers(UserManager<User> userManager)
         {
-            if(userManager.FindByNameAsync("Admin").Result == null)
+            if (userManager.FindByNameAsync("Admin").Result == null)
             {
                 var user = new User
                 {
@@ -32,13 +32,13 @@ namespace PerformanceManagement.DATA
         }
         private static void SeedRoles(RoleManager<AppRole> roleManager)
         {
-            if(!roleManager.RoleExistsAsync("Administrator").Result)
+            if (!roleManager.RoleExistsAsync("Administrator").Result)
             {
                 var role = new AppRole
                 {
-                    Name = "Administrator" 
+                    Name = "Administrator"
                 };
-               var result = roleManager.CreateAsync(role).Result;
+                var result = roleManager.CreateAsync(role).Result;
             }
             if (!roleManager.RoleExistsAsync("Employee").Result)
             {

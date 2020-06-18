@@ -5,8 +5,10 @@ using System.Text;
 
 namespace PerformanceManagement.ENTITIES
 {
+
    public  class Event
     {
+        
 
         public int Id { get; set; }
 

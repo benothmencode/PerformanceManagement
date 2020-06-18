@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PerformanceManagement.ENTITIES
 {
-    public class DayEvent
+    public class DayEvent 
     {
+       
+
+
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -12,6 +17,8 @@ namespace PerformanceManagement.ENTITIES
         public string Type { get; set; }
 
         public string Action { get; set; }
+
+        public DateTime Date { get; set; }
 
         public string Description { get; set; }
 
@@ -25,6 +32,9 @@ namespace PerformanceManagement.ENTITIES
         [ForeignKey("EventId")]
         public int EventId { get; set; }
 
-
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

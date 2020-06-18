@@ -55,8 +55,8 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
         public IEnumerable<DayEvent> getAllDayEventsPerDate()
         {
 
-            IEnumerable<Event> events = _context.Events;
-            IEnumerable<DayEvent> dayevents = _context.DayEvents;
+            IEnumerable<Event> events = _context.Events.ToList();
+            IEnumerable<DayEvent> dayevents = _context.DayEvents.ToList();
           
             foreach (var ev in events)
             {

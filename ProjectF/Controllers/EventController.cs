@@ -15,10 +15,10 @@ namespace ProjectF.Controllers
     {
         
         private readonly IMapper _mapper;
-        private  EventRepository _EventRepository;
+        private  IEventRepository _EventRepository;
 
         public EventController(IMapper mapper,
-            EventRepository eventRepository, IWebHostEnvironment webHostEnvironment)
+            IEventRepository eventRepository, IWebHostEnvironment webHostEnvironment)
         {
 
 

@@ -116,12 +116,6 @@ namespace ProjectF.Controllers
             return View(BadgeForCreationDto);
         }
 
-        [Authorize(Roles = "Administrator")]
-        [Route("/Admin/Badge/Count")]
-        public int Countbadges()
-        {
-           return _BadgeRepository.numberOfBadges();
-        }
 
 
         [Authorize(Roles = "Administrator")]
@@ -250,6 +244,13 @@ namespace ProjectF.Controllers
             return View(typeVote);
         }
 
+
+        [Authorize(Roles = "Administrator")]
+        [Route("/Admin/Badge/Count")]
+        public int Countbadges()
+        {
+            return _BadgeRepository.numberOfBadges();
+        }
 
 
 

@@ -18,7 +18,7 @@ namespace ProjectF.Controllers
         private  IEventRepository _EventRepository;
 
         public EventController(IMapper mapper,
-            EventRepository eventRepository, IWebHostEnvironment webHostEnvironment)
+            IEventRepository eventRepository, IWebHostEnvironment webHostEnvironment)
         {
 
 

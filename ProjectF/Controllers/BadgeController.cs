@@ -25,7 +25,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ProjectF.Controllers
 {
-
+ 
     public class BadgeController : Controller
     {
         private readonly IMapper _mapper;
@@ -37,10 +37,10 @@ namespace ProjectF.Controllers
 
         private readonly UserManager<User> _userManager;
 
-        public BadgeController(IBadgeRepository badgeRepository, IMapper mapper, IVoteRepository VoteRepository,
-            IUserRepository userRepository, ISystemeRepository systemeRepository, IWebHostEnvironment webHostEnvironment, UserManager<User> userManager)
+        public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IVoteRepository VoteRepository,
+            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment , UserManager<User> userManager)
         {
-
+            
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
@@ -79,27 +79,27 @@ namespace ProjectF.Controllers
             };
             return View(userProfileviewModel);
 
-
+           
         }
 
         public IActionResult Details(int? idBadge)
         {
 
             var badges = _BadgeRepository.GetAll();
-            var model = _mapper.Map<IList<BadgeEntityDto>>(badges);
-            BadgeEntityDto badge = model.FirstOrDefault(b => b.Id == idBadge);
-
+            var model = _mapper.Map <IList<BadgeEntityDto>>(badges);
+            BadgeEntityDto badge = model.FirstOrDefault(b =>b.Id ==idBadge); 
+            
 
 
             return View(badge);
 
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles ="Administrator")]
         public IActionResult Listofbadges()
         {
             var badges = _BadgeRepository.GetAll().ToList();
-
+            
             return View(badges);
         }
 
@@ -116,12 +116,6 @@ namespace ProjectF.Controllers
             return View(BadgeForCreationDto);
         }
 
-        [Authorize(Roles = "Administrator")]
-        [Route("/Admin/Badge/Count")]
-        public int Countbadges()
-        {
-            return _BadgeRepository.numberOfBadges();
-        }
 
 
         [Authorize(Roles = "Administrator")]
@@ -138,7 +132,7 @@ namespace ProjectF.Controllers
             {
                 var badge = _mapper.Map<Badge>(badgeForCreation);
                 badge.Icon = stringFileName;
-                if (!_BadgeRepository.Create(SystemeID, badge, badge.TypeVoteId))
+                if (!_BadgeRepository.Create(SystemeID, badge,badge.TypeVoteId))
                 {
                     ModelState.AddModelError("", $"Something went wrong saving the badge " +
                                                 $"{badgeForCreation.Title}");
@@ -158,8 +152,8 @@ namespace ProjectF.Controllers
             var VoteType = _VoteRepository.GetTypeVotes();
             var voteTypeList = new TypeVotesList(VoteType);
             if (id == 0)
-
-                return View(new BadgesForVotes() { TypeVote = voteTypeList.GetvoteTypeList() });
+                
+                return View(new BadgesForVotes() { TypeVote = voteTypeList.GetvoteTypeList()});
             else
             {
                 var BadgeForVote = _BadgeRepository.GetBadgeById(id);
@@ -184,12 +178,12 @@ namespace ProjectF.Controllers
                 {
                     var badge = _mapper.Map<Badge>(badgeForVotes);
                     badge.Icon = stringFileName;
-                    _BadgeRepository.Create(badge.SystemeId, badge, TypeVoteId);
+                    _BadgeRepository.Create(badge.SystemeId, badge , TypeVoteId);
                     VoteRight.Quantity = badge.BadgeCriteria;
                     VoteRight.TypeVote = badge.TypeVote;
                     VoteRight.UserId = Int32.Parse(_userManager.GetUserId(User));
                     VoteRight.Update = badge.Created;
-                    _VoteRepository.AddOrUpdateVoteRights(VoteRight.Id, VoteRight);
+                    _VoteRepository.AddOrUpdateVoteRights(VoteRight.Id , VoteRight);
 
                 }
                 return RedirectToAction("Listofbadges");
@@ -204,11 +198,11 @@ namespace ProjectF.Controllers
                 ModelState.AddModelError("", "Missing badge, user, or system");
                 return BadRequest();
             }
-            if (!_systemeRepository.SystemeExists(SystemId))
-            {
-                ModelState.AddModelError("", "Systeme Not Found");
-                return StatusCode(404);
-            }
+           if (!_systemeRepository.SystemeExists(SystemId))
+           {
+                    ModelState.AddModelError("", "Systeme Not Found");
+                    return StatusCode(404);
+           }
 
             if (!ModelState.IsValid)
             {
@@ -250,6 +244,13 @@ namespace ProjectF.Controllers
             return View(typeVote);
         }
 
+
+        [Authorize(Roles = "Administrator")]
+        [Route("/Admin/Badge/Count")]
+        public int Countbadges()
+        {
+            return _BadgeRepository.numberOfBadges();
+        }
 
 
 

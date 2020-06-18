@@ -13,7 +13,11 @@ namespace PerformanceManagement.ENTITIES
         public List<DayEvent> DayEvent { get; set; }
 
         public DateTime Date { get; set; }
-      
+   
+        public Event()
+        {
+            Date = DateTime.Today;
+        }
 
 
     }

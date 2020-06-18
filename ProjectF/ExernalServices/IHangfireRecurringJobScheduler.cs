@@ -5,5 +5,6 @@
         void ScheduleCommitbadgeTask();
         void ScheduleUserbadgeTask();
         void CreationUserbadgeTask();
+        void ScheduleToDosbadgeTask();
     }
 }

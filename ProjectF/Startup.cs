@@ -44,7 +44,7 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => 
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
@@ -52,7 +52,7 @@ namespace ProjectF
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                    .UseSqlServerStorage(Configuration.GetConnectionString("MyHangfireConnection"), new SqlServerStorageOptions
                     {
                       CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                       SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -77,6 +77,7 @@ namespace ProjectF
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
+            services.AddScoped<IToDosController, ToDosController>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
 
             services.AddIdentity<User, AppRole>()

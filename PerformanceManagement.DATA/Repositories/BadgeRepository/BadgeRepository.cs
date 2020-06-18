@@ -47,7 +47,10 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
 
 
-
+        public int numberOfBadges()
+        {
+           return _context.Badges.Count();
+        }
 
         public bool Create(int? SystemeId , Badge badge , int? TypevoteId )
         {
@@ -124,16 +127,6 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             return _context.Badges.Where(b => b.Title == title).FirstOrDefault();
         }
 
-        public void UpdateLastCreationDate(DateTime LastCreationDate , Badge badge )
-        {
-            if(LastCreationDate == null)
-                throw new Exception("LastCreationDate \"" + LastCreationDate + "\"is NULL ");
-
-           var badgefound = _context.Badges.Find(badge.Id);
-            badgefound.LastCreation = LastCreationDate;
-            _context.Update(badgefound);
-            _context.SaveChanges();
-        }
 
     }
 }

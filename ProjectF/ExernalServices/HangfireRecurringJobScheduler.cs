@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProjectF.ExernalServices
 {
+
     public class HangfireRecurringJobScheduler : IHangfireRecurringJobScheduler
     {
         private IBadgeRepository _BadgeRepository { get; set; }
@@ -24,11 +25,26 @@ namespace ProjectF.ExernalServices
             _UserRepository = userRepository;
         }
 
-        public HangfireRecurringJobScheduler()
+      
+
+        public void ScheduleToDosbadgeTask()
         {
+            var badge = _BadgeRepository.GetBadgeByTitle("the first featured");
+            var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
+
+            foreach (var Ub in UserBadge)
+            {
+                if (Ub.State != "done")
+                {
+
+                    RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), Cron.Minutely,TimeZoneInfo.Local);
+                }
+            }
         }
 
-        public void ScheduleCommitbadgeTask()
+
+
+            public void ScheduleCommitbadgeTask()
         {
             var badge = _BadgeRepository.GetBadgeByTitle("Commits");
             var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);

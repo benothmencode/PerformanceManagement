@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PerformanceManagement.DATA.Repositories;
+using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.HomeRepository;
 using ProjectF.Models;
 using ProjectF.ModelsDTOS;
@@ -16,13 +18,14 @@ using System.Linq;
 namespace ProjectF.Controllers
 {
     [Authorize]
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMapper _mapper;
         private readonly IHomeRepository _HomeRepository;
-      
-        public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository, IMapper mapper, IConfiguration configuration)
+
+        public HomeController(ILogger<HomeController> logger, IHomeRepository homeRepository, IUserRepository userRepository, IBadgeRepository badgeRepository, IMapper mapper, IConfiguration configuration)
         {
          _logger = logger;
 
@@ -33,9 +36,8 @@ namespace ProjectF.Controllers
                 throw new ArgumentNullException(nameof(homeRepository));
 
         }
+      
 
-
-       
 
         public IActionResult Index()
         {
@@ -63,5 +65,22 @@ namespace ProjectF.Controllers
         {
            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
+
+    
+        //public bool NewBadgeisAdded()
+        //{
+        //    int nbreBadge = _badgeRepository.numberOfBadges();
+            
+
+        //    if (nbreBadge == nbreBadge + 1)
+        //    {
+        //        return true;
+        //    }
+        //    else return false;
+        //}
+
     }
 }

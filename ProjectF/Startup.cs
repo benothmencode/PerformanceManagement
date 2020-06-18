@@ -116,9 +116,9 @@ namespace ProjectF
             app.UseStaticFiles();
 
 
-            //HANGFIRE
-            Scheduler.ScheduleCommitbadgeTask();
-            //Scheduler.ScheduleUserbadgeTask();
+            ////HANGFIRE
+            //Scheduler.ScheduleCommitbadgeTask();
+            ////Scheduler.ScheduleUserbadgeTask();
             Scheduler.ScheduleUserbadgeTask();
 
 

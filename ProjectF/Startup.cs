@@ -15,6 +15,7 @@ using PerformanceManagement.DATA;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
+using PerformanceManagement.DATA.Repositories.EventsRepository;
 using PerformanceManagement.DATA.Repositories.HomeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
@@ -77,6 +78,7 @@ namespace ProjectF
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IToDosController, ToDosController>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
 

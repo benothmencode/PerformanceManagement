@@ -25,7 +25,7 @@ namespace ProjectF.ExernalServices
             _UserRepository = userRepository;
         }
 
-      
+
 
         public void ScheduleToDosbadgeTask()
         {
@@ -37,14 +37,14 @@ namespace ProjectF.ExernalServices
                 if (Ub.State != "done")
                 {
 
-                    RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), Cron.Minutely,TimeZoneInfo.Local);
+                    RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), Cron.Minutely, TimeZoneInfo.Local);
                 }
             }
         }
 
 
 
-            public void ScheduleCommitbadgeTask()
+        public void ScheduleCommitbadgeTask()
         {
             var badge = _BadgeRepository.GetBadgeByTitle("Commits");
             var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
@@ -65,7 +65,7 @@ namespace ProjectF.ExernalServices
         }
 
 
-     
+
 
         // execute evrer frst day of month
         public void CreationUserbadgeTask()
@@ -77,17 +77,17 @@ namespace ProjectF.ExernalServices
             {
                 foreach (var user in users)
                 {
-                  if (badge.LastCreation == badge.Created)
-                  {
+                    if (badge.LastCreation == badge.Created)
+                    {
                         _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
                         badge.LastCreation = DateTime.Now;
                         _BadgeRepository.UpdateLastCreationDate((DateTime)badge.LastCreation, badge);
-                  }
-                  else
+                    }
+                    else
                     {
-                     var LastCreationDate = (DateTime)badge.LastCreation;  
-                     if (LastCreationDate != null)
-                     {
+                        var LastCreationDate = (DateTime)badge.LastCreation;
+                        if (LastCreationDate != null)
+                        {
                             Periodicity weekly = Periodicity.Weekly;
                             Periodicity Monthly = Periodicity.Monthly;
                             Periodicity Yeary = Periodicity.Yearly;
@@ -106,12 +106,12 @@ namespace ProjectF.ExernalServices
                             }
                             if (DateTime.Now >= LastCreationDate)
                             {
-                            _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
+                                _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
                                 LastCreationDate = DateTime.Now;
                                 _BadgeRepository.UpdateLastCreationDate(LastCreationDate, badge);
                             }
-                     }
-                  }
+                        }
+                    }
                 }
 
             }

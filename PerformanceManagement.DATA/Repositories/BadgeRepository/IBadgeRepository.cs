@@ -6,13 +6,15 @@ using System.Text;
 
 namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 {
-   public interface IBadgeRepository
+    public interface IBadgeRepository
     {
         public IEnumerable<Badge> GetAll();
         public Badge GetBadgeById(int? badgeId);
         public IEnumerable<Badge> GetUserBadge(int userId);
-        public bool Create(int SystemeId  , Badge badge);
-      
+        public bool Create(int? SystemeId, Badge badge, int? TypevoteId);
+
+        public int numberOfBadges();
+        public void UpdateLastCreationDate(DateTime LastCreationDate, Badge badge);
         public Badge GetBadgeByTitle(string title);
     }
 }

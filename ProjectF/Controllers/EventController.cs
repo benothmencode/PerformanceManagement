@@ -10,7 +10,7 @@ using PerformanceManagement.ENTITIES;
 
 namespace ProjectF.Controllers
 {
-   
+    [Route("/[controller]/[action]")]
     public class EventController : Controller
     {
         
@@ -47,6 +47,12 @@ namespace ProjectF.Controllers
         public String dayevents()
         {
             return _EventRepository.dayevents();
+        }
+
+        [ActionName("DayeventsPerDate")]
+        public IEnumerable<DayEvent> DayeventsPerDate()
+        {
+            return _EventRepository.getAllDayEventsPerDate();
         }
 
 

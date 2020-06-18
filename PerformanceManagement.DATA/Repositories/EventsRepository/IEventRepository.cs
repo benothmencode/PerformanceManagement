@@ -10,5 +10,6 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
          IEnumerable<DayEvent> DayEvents();
         public IEnumerable<Event> Eventsperday(DateTime dateoftoday);
         public String dayevents();
+        public IEnumerable<DayEvent> getAllDayEventsPerDate();
     }
 }

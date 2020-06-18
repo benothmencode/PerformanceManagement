@@ -102,6 +102,9 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             return _context.Badges.Where(b => b.Title == title).FirstOrDefault();
         }
 
-
+        public bool Create(int SystemeId, Badge badge, UserBadge userBadge)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

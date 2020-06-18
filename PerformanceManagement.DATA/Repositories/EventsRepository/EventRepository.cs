@@ -51,11 +51,38 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
 
         }
 
+
+        public IEnumerable<DayEvent> getAllDayEventsPerDate()
+        {
+
+            IEnumerable<Event> events = _context.Events;
+            IEnumerable<DayEvent> dayevents = _context.DayEvents;
+          
+            foreach (var ev in events)
+            {
+                int idEvent = ev.Id;
+                foreach (var dv in dayevents)
+                {
+                   int  idDayEvent = dv.EventId;
+
+                    if (idEvent == idDayEvent)
+                    {
+                        return dayevents;
+                    }
+                    
+                }
+             
+            }
+            return dayevents;
+        }
+
+
         public String dayevents()
         {
 
             IEnumerable<DayEvent> dayevents = _context.DayEvents;
             IEnumerable<Event> events=_context.Events;
+         
             String titreevent = null;
            DateTime date = new DateTime();
            foreach(var ev in events)

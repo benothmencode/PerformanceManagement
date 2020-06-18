@@ -9,11 +9,6 @@ namespace PerformanceManagement.ENTITIES
 
         public string Title { get; set; }
 
-        //public DateTime Date { get; set; }
-        //public DayEvent()
-        //{
-        //    Date = DateTime.Today;
-        //}
         public string Type { get; set; }
 
         public string Action { get; set; }

@@ -1,8 +1,10 @@
 ﻿using Hangfire;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
+using PerformanceManagement.DATA.Repositories.EventsRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
+using ProjectF.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +19,19 @@ namespace ProjectF.ExernalServices
 
         private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IUserRepository _UserRepository;
-
+        private readonly IEventRepository _EventRepository;
         public HangfireRecurringJobScheduler(IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository, IUserRepository userRepository)
         {
             _BadgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
             _UserRepository = userRepository;
+        
         }
 
+      
 
 
-        public void ScheduleToDosbadgeTask()
+            public void ScheduleToDosbadgeTask()
         {
             var badge = _BadgeRepository.GetBadgeByTitle("the first featured");
             var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);

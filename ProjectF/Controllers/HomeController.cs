@@ -43,6 +43,7 @@ namespace ProjectF.Controllers
         public IActionResult Index()
         {
 
+            _eventRepository.createeventeveryday();
             var dayevents = _eventRepository.getAllDayEventsForToday();
             var events = _eventRepository.GetAll();
             var model = _mapper.Map< IList<EventEntityDto>>(events);

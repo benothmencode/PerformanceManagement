@@ -30,10 +30,10 @@ namespace ProjectF.Controllers
 
         }
 
-       public void Adddayevent()
-        {
-             _EventRepository.Adddayevent();
-        }
+       //public void Adddayevent()
+       // {
+       //      _EventRepository.Adddayevent();
+       // }
 
 
         public IEnumerable<Event> GetEvents()
@@ -58,6 +58,13 @@ namespace ProjectF.Controllers
         {
             return _EventRepository.getAllDayEventsForToday().OrderByDescending(d=>d.Date);
         }
+
+        //[ActionName("createevent")]
+        //[Route("/Home")]
+        //public void createeventdaily()
+        //{
+        //    _EventRepository.createeventeveryday();
+        //}
 
 
     }

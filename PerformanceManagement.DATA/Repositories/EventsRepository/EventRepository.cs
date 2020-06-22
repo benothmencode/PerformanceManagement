@@ -84,16 +84,9 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
         public bool verifybadge()
         {
 
-           var badges = _badgeRepository.GetAll();
-            foreach(var b in badges)
-            {
-                if (b.Created == DateTime.Today)
-                {
-                    return true;
-                }
-                else return false;
-            }
-            return false;
+            if (_badgeRepository.badgefortoday(DateTime.Today))
+                return true;
+            else return false;
         }
         public IEnumerable<DayEvent> DayEvents()
         {
@@ -162,6 +155,22 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
              
             }
             return titreevent;
+        }
+
+        public void createeventeveryday()
+        {
+            Event ev = new Event();
+            ev.Date = DateTime.Today;
+            var lev = _context.Events;
+
+            foreach (var e in lev)
+            {
+                if (e.Date != ev.Date)
+                {
+                    _context.Events.Add(ev);
+                    //_context.SaveChanges();
+                }
+            }
         }
 
        

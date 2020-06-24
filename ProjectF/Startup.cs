@@ -123,9 +123,10 @@ namespace ProjectF
             ////HANGFIRE
             //Scheduler.ScheduleCommitbadgeTask();
             ////Scheduler.ScheduleUserbadgeTask();
-            Scheduler.ScheduleUserbadgeTask();
+            //Scheduler.ScheduleUserbadgeTask();
 
-
+            //Scheduler.ScheduleToDosbadgeTask();
+            Scheduler.ScheduleEvent();
 
             app.UseRouting();
             app.UseAuthentication();

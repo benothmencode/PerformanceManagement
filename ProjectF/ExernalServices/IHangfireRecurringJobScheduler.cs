@@ -6,5 +6,6 @@
         void ScheduleUserbadgeTask();
         void CreationUserbadgeTask();
         void ScheduleToDosbadgeTask();
+        public void ScheduleEvent();
     }
 }

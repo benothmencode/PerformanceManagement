@@ -20,20 +20,33 @@ namespace ProjectF.ExernalServices
         private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IUserRepository _UserRepository;
         private readonly IEventRepository _EventRepository;
-        public HangfireRecurringJobScheduler(IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository, IUserRepository userRepository)
+        public HangfireRecurringJobScheduler(IEventRepository eventRepository,IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository, IUserRepository userRepository)
         {
             _BadgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
             _UserRepository = userRepository;
+            _EventRepository = eventRepository;
         
         }
 
-      
+        public void ScheduleEvent()
+        {
+            var events = _EventRepository.GetAll();
+            foreach (var ev in events)
+            {
+                var date = DateTime.Today;
+                if (ev.Date != date)
+                {
 
+
+                    RecurringJob.AddOrUpdate<EventController>("Today'sevent", gl => gl.Eventsperday(date), Cron.Minutely, TimeZoneInfo.Local);
+                }
+            }
+        }
 
             public void ScheduleToDosbadgeTask()
         {
-            var badge = _BadgeRepository.GetBadgeByTitle("the first featured");
+            var badge = _BadgeRepository.GetBadgeByTitle("The first Feature");
             var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
 
             foreach (var Ub in UserBadge)

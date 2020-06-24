@@ -148,5 +148,26 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             _context.SaveChanges();
         }
 
+      
+        public bool badgefortoday(DateTime d)
+        {
+            d = DateTime.Today;
+            var bad = BadgeForToday();
+            if (bad.Created == d)
+            {
+                return true;
+            }
+            else return false;
+            
+        }
+
+        public Badge BadgeForToday()
+        {
+           return (Badge)_context.Badges.Where(d => d.Created == DateTime.Today);
+            
+
+        }
+
+
     }
 }

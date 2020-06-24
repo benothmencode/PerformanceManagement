@@ -160,11 +160,15 @@
                 dataType: "json",
                 data: { idUserChosen: Id1, idVote: Id2, UserId: Id3 },
                 success: function (data) {
-                    var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data });
-                    $("#details").html(html);
+                    if (data.success) {
+                        var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data.responseText });
+                        $("#details").html(html);
+                    }
+                     else {
+                        alert(data.responseText);
+                    }
                 },
-                error: function (xhr, status, error, data) {
-                    alert(date.errorMessage);
+                error: function (xhr, status, error) {
                     alert(xhr.responseText);
                     alert(status);
                     alert(error);

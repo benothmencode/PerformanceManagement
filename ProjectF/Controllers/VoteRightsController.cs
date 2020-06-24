@@ -71,14 +71,18 @@ namespace ProjectF.Controllers
             {
                 _voteRepository.CreateVoteHistory(idUserChosen, vote.TypeVoteId, UserId);
 
-                return Json( _voteRepository.GetVoteHistory(UserId) );
+                 return Json(new
+                 {
+                     success = true,
+                     responseText = _voteRepository.GetVoteHistory(UserId)
+                 });
             }
-            else
+            else 
             {
                 return Json(new
                 {
                     success = false,
-                    errorMessage = "you Used All your VoteRights ! "
+                    responseText = "you Used All your VoteRights ! "
                 });
             }
             

@@ -60,6 +60,12 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             return _context.userBadges.Where(ub => ub.Badge == badge).ToList();
         }
 
+
+        public List<UserBadge> GetUsersBadge(int UserId)
+        {
+            return _context.userBadges.Where(ub => ub.UserId == UserId).Include(ub => ub.User).Include(ub => ub.Badge).ToList();
+        }
+
         public List<UserBadge> GetUserBadges()
         {
             return _context.userBadges.ToList();
@@ -98,5 +104,14 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             }
             return result;
         }
+        public void UpdateUserbadge(UserBadge userBadge)
+        {
+            if(userBadge != null)
+            {
+                _context.userBadges.Update(userBadge);
+                _context.SaveChanges();
+            }
+        }
+    
     }
 }

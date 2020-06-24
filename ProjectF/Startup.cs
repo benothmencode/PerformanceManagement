@@ -45,7 +45,7 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => 
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
@@ -53,7 +53,7 @@ namespace ProjectF
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(Configuration.GetConnectionString("MyHangfireConnection"), new SqlServerStorageOptions
+                    .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
                     {
                       CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                       SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -63,7 +63,7 @@ namespace ProjectF
                       DisableGlobalLocks = true
                     }));
             services.AddHangfireServer();
-            JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("MyHangfireConnection"));
+            JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
 
 
 
@@ -121,7 +121,7 @@ namespace ProjectF
 
 
             ////HANGFIRE
-            //Scheduler.ScheduleCommitbadgeTask();
+            Scheduler.ScheduleCommitbadgeTask();
             ////Scheduler.ScheduleUserbadgeTask();
             Scheduler.ScheduleUserbadgeTask();
 

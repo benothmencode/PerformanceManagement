@@ -46,22 +46,19 @@ namespace ProjectF.ExernalServices
 
         public void ScheduleCommitbadgeTask()
         {
-            var badge = _BadgeRepository.GetBadgeByTitle("Commits");
+            var badge = _BadgeRepository.GetBadgeByTitle("Commit");
             var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
-            foreach (var Ub in UserBadge)
+            if (UserBadge.Count != 0)
             {
-                if (Ub.State != "done")
+                foreach (var Ub in UserBadge)
                 {
-                    RecurringJob.AddOrUpdate<ICommitsController>($"{Ub.BadgeId}-{Ub.UserId}-{Ub.StartedAt}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.StartedAt), "55 16 * * *", TimeZoneInfo.Local);
+                    if (Ub.State != "done")
+                    {
+                        RecurringJob.AddOrUpdate<ICommitsController>($"{Ub.BadgeId}-{Ub.UserId}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.StartedAt), "55 16 * * *", TimeZoneInfo.Local);
+                    }
                 }
             }
-
-            //var badge = _BadgeRepository.GetBadgeByTitle("Commits");
-            //var Ub = _UserbadgeRepository.GetUsersBadge(badge).Where(ub => ub.UserId == 2).First();
-            //if (Ub.State != "done")
-            //{
-            //    RecurringJob.AddOrUpdate<ICommitsController>($"2-2-{Ub.StartedAt}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.StartedAt), "40 15 * * *", TimeZoneInfo.Local);
-            //}
+           
         }
 
 
@@ -77,14 +74,6 @@ namespace ProjectF.ExernalServices
             {
                 foreach (var user in users)
                 {
-                    if (badge.LastCreation == badge.Created)
-                    {
-                        _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
-                        badge.LastCreation = DateTime.Now;
-                        _BadgeRepository.UpdateLastCreationDate((DateTime)badge.LastCreation, badge);
-                    }
-                    else
-                    {
                         var LastCreationDate = (DateTime)badge.LastCreation;
                         if (LastCreationDate != null)
                         {
@@ -112,16 +101,18 @@ namespace ProjectF.ExernalServices
                             }
                         }
                     }
-                }
-
             }
 
         }
         public void ScheduleUserbadgeTask()
         {
+
             RecurringJob.AddOrUpdate(() => CreationUserbadgeTask(), "0 0 1 * *", TimeZoneInfo.Local);
-            //ScheduleCommitbadgeTask();
+            RecurringJob.AddOrUpdate("Test",() => CreationUserbadgeTask(), "35 13 * * *", TimeZoneInfo.Local);
         }
+
+
+       
         //{
         //    //Get badge periodicity
         //    //Get badge last creation date

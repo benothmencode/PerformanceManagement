@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,12 @@ namespace PerformanceManagement.DATA.Repositories
     public class VoteRepository : IVoteRepository
     {
         private readonly PerformanceManagementDBContext _context;
-        public VoteRepository(PerformanceManagementDBContext context)
+        private readonly IUserBadgeRepository _UserbadgeRepository;
+
+        public VoteRepository(PerformanceManagementDBContext context , IUserBadgeRepository userBadgeRepository)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _UserbadgeRepository = userBadgeRepository;
         }
 
         public IEnumerable<VoteRights> GetUserVoteRights(int idUser)
@@ -52,6 +56,15 @@ namespace PerformanceManagement.DATA.Repositories
             _context.VoteHistories.Add(voteHistory);
             _context.SaveChanges();
 
+            AddOrUpdateVoteRights(voteR.Id, voteR);
+            var userbadge = _UserbadgeRepository.GetUserBadge(idUserChosen, badge.Id);
+            if(userbadge != null && userbadge.UserProgression <= userbadge.Badge.BadgeCriteria && userbadge.State != "Done" && DateTime.Now <= userbadge.BadgeDeadline)
+            {
+                userbadge.UserProgression += 1;
+                _UserbadgeRepository.UpdateUserbadge(userbadge);
+            }
+
+
         }
 
         public IEnumerable<VoteHistory> GetVoteHistory(int UserId)
@@ -78,32 +91,32 @@ namespace PerformanceManagement.DATA.Repositories
         {
            return _context.TypeVotes.Include(vt => vt.Badges).ToList();
         }
-        public double NumberTokens(int idTypeVote)
-        {
+        //public double NumberTokens(int idTypeVote)
+        //{
             
-            var nbrWEEKS = new int();
-            var typeVote = _context.TypeVotes.Find(idTypeVote);
-            var badgeTypeVote = _context.Badges.Where(b => b.TypeVoteId == idTypeVote).FirstOrDefault();
-            var critiria = badgeTypeVote.BadgeCriteria;
-            var Periodicity = badgeTypeVote.periodicity;
-            var Value = badgeTypeVote.ValueOfPeriodicity;
-            if (Periodicity.Equals("Weekly"))
-            {
-                nbrWEEKS = Value;
-            };
-            if (Periodicity.Equals("Monthly") )
-            {
-                nbrWEEKS = Value * 4;
-            };
-            if (Periodicity.Equals("Yearly"))
-            {
-                nbrWEEKS = Value * 12 * 4;
-            }
-            var nbreUsers = _context.Users.Count();
-            double res = (critiria * nbreUsers) / (nbrWEEKS * (nbreUsers - 1));
-            var nbreToken = Math.Ceiling(res);
-            return nbreToken;
-        }
+        //    var nbrWEEKS = new int();
+        //    var typeVote = _context.TypeVotes.Find(idTypeVote);
+        //    var badgeTypeVote = _context.Badges.Where(b => b.TypeVoteId == idTypeVote).FirstOrDefault();
+        //    var critiria = badgeTypeVote.BadgeCriteria;
+        //    var Periodicity = badgeTypeVote.periodicity;
+        //    var Value = badgeTypeVote.ValueOfPeriodicity;
+        //    if (Periodicity.Equals("Weekly"))
+        //    {
+        //        nbrWEEKS = Value;
+        //    };
+        //    if (Periodicity.Equals("Monthly") )
+        //    {
+        //        nbrWEEKS = Value * 4;
+        //    };
+        //    if (Periodicity.Equals("Yearly"))
+        //    {
+        //        nbrWEEKS = Value * 12 * 4;
+        //    }
+        //    var nbreUsers = _context.Users.Count();
+        //    double res = (critiria * nbreUsers) / (nbrWEEKS * (nbreUsers - 1));
+        //    var nbreToken = Math.Ceiling(res);
+        //    return nbreToken;
+        //}
 
        
 

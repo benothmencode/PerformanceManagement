@@ -129,6 +129,7 @@ namespace ProjectF.ExernalServices
                             }
                         }
                     }
+
                 }
 
             }
@@ -136,7 +137,8 @@ namespace ProjectF.ExernalServices
         }
         public void ScheduleUserbadgeTask()
         {
-            RecurringJob.AddOrUpdate(() => CreationUserbadgeTask(), "0 0 1 * *", TimeZoneInfo.Local);
+            RecurringJob.AddOrUpdate(() => CreationUserbadgeTask(), "0 0 1 * *", TimeZoneInfo.Local) ;
+            //BackgroundJob.ContinueJobWith()
             //ScheduleCommitbadgeTask();
         }
         //{

@@ -1,4 +1,4 @@
-﻿@model ProjectF.ViewModels.UserProfileViewModel
+﻿@model ProjectF.ViewModels.BadgesListesViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -46,30 +46,37 @@
                                             <th style="width: 10px">Challenges</th>
 
                                             <th>Your progress</th>
-                                            <th style="width: 80px">Label</th>
                                             <th style="width: 20%">Started</th>
                                             <th style="width: 20%">Badge-deadline</th>
+
+                                            <th style="width: 20%">
+                                            </th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.badges)
+                                        @foreach (var item in Model.BadgesInProgress)
                                         {
-                                            @foreach (var item2 in item.UserBadges)
-                                            {
-                                                <tr>
 
-                                                    <td>@item.Challenge</td>
-                                                    <td>
-                                                        <div class="progress progress-xs">
-                                                            <div class="progress-bar progress-bar-danger" style="width:@item2.UserProgression%"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td><span class="badge bg-danger"></span></td>
-                                                    <td>@item2.StartedAt</td>
-                                                    <td>@item2.BadgeDeadline </td>
-                                                </tr>
-                                            }
+                                        <tr>
+
+                                            <td>@item.Badge.Title</td>
+                                            <td>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-green" role="progressbar" aria-volumenow="@item.UserProgression" aria-volumemin="0" aria-volumemax="100" style="width:@item.UserProgression%"></div>
+                                                </div>
+                                            </td>
+                                            <td>@item.StartedAt</td>
+                                            <td>@item.BadgeDeadline </td>
+                                            <td class="project-actions text-right">
+
+                                                <a class="btn btn-primary btn-sm" href="@Url.Action("Details", "badge", new { idBadge = item.Id })">
+
+
+                                                    View
+                                                </a>
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
 
@@ -84,7 +91,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <hr>
                     <div class="card">
                         <div class="card-header p-2">
@@ -94,7 +101,16 @@
                         </div>
                         <!-- /.tab-pane Trophies badges-->
                         <div class="card-body">
+                            @if (@Model.BadgesObtained.Count() == 0)
+                            {
+                                <div class="alert alert-info">
+                                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                                     You did not win a Badge YET!
+                                </div>
+
+                            }
                             <div class="tab-pane" id="timeline">
+
                                 <table class="table table-striped projects">
                                     <thead>
                                         <tr>
@@ -116,34 +132,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.badges)
+                                        @foreach (var item in Model.BadgesObtained)
                                         {
-                                            @foreach (var item2 in item.UserBadges) { 
-                                                <tr>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        <a>
-                                                            @item.Title winner
-                                                        </a>
-                                                        <br />
-                                                    </td>
-                                                    <td>
-                                                        <img alt="Avatar" class="table-avatar" src="/theme/dist/img/badge.png">
-                                                    </td>
-                                                    <td>
-                                                        Obtained @item2.ObtainedAt
-                                                    </td>
-                                                    <td class="project-actions text-right">
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <a>
+                                                        @item.Badge.Title winner
+                                                    </a>
+                                                    <br />
+                                                </td>
+                                                <td>
+                                                    <img alt="Avatar" class="table-avatar" src="/theme/dist/img/badge.png">
+                                                </td>
+                                                <td>
+                                                    Obtained @item.ObtainedAt
+                                                </td>
+                                                <td class="project-actions text-right">
 
-                                                        <a class="btn btn-primary btn-sm" href="@Url.Action("Details", "badge", new { idBadge = item.Id })">
+                                                    <a class="btn btn-primary btn-sm" href="@Url.Action("Details", "badge", new { idBadge = item.Id })">
 
 
-                                                            View
-                                                        </a>
-                                                    </td>
-                                                </tr>}
-
+                                                        View
+                                                    </a>
+                                                </td>
+                                            </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -159,4 +173,3 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-

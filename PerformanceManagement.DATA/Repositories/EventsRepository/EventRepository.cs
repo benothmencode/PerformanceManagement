@@ -120,6 +120,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
             IEnumerable<Event> events = _context.Events.ToList();
             IEnumerable<DayEvent> dayevents = _context.DayEvents.ToList();
 
+            IEnumerable<DayEvent> getAllDayEventsPerDate = new IEnumerable<DayEvent>();
             foreach (var ev in events)
             {
                 if (ev.Date == DateTime.Today)

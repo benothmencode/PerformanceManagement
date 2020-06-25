@@ -22,6 +22,7 @@ using ProjectF.ExernalServices;
 using Hangfire;
 using ProjectF.Helpers;
 using Microsoft.AspNetCore.Http;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 
 namespace ProjectF.Controllers
 {
@@ -34,11 +35,12 @@ namespace ProjectF.Controllers
         private readonly IWebHostEnvironment _WebHostEnvironment;
         private readonly ISystemeRepository _systemeRepository;
         private readonly IVoteRepository _VoteRepository;
+        private readonly IUserBadgeRepository _UserBadgeRepository;
 
         private readonly UserManager<User> _userManager;
 
         public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IVoteRepository VoteRepository,
-            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment , UserManager<User> userManager)
+            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment , UserManager<User> userManager , IUserBadgeRepository userBadgeRepository )
         {
             
 
@@ -54,6 +56,7 @@ namespace ProjectF.Controllers
             _VoteRepository = VoteRepository;
             _userManager = userManager;
 
+            _UserBadgeRepository = userBadgeRepository;
         }
 
 
@@ -65,19 +68,19 @@ namespace ProjectF.Controllers
                 return NotFound();
             }
             var model = _mapper.Map<UserEntityDto>(user);
-            var Badges = _BadgeRepository.GetUserBadge(idUser);
-            if (Badges.Count() <= 0)
+            var UserBadges = _UserBadgeRepository.GetUsersBadge(idUser);
+            if (UserBadges.Count() <= 0)
             {
                 ViewBag.BadgeMessage = $"{user.UserName} has no Badges yet ";
             }
-            var model2 = _mapper.Map<IList<BadgeEntityDto>>(Badges);
-
-            var userProfileviewModel = new UserProfileViewModel()
+            var ListBadgesObtained = UserBadges.Where(ub => ub.State == "Done").ToList();
+            var ListBadgesInProgress= UserBadges.Where(ub => ub.State == "In progress").ToList();
+            var BadgesListes = new BadgesListesViewModel()
             {
-                user = model,
-                badges = model2
+                BadgesObtained = ListBadgesObtained,
+                BadgesInProgress = ListBadgesInProgress,
             };
-            return View(userProfileviewModel);
+            return View(BadgesListes);
 
            
         }
@@ -171,7 +174,7 @@ namespace ProjectF.Controllers
         {
             if (ModelState.IsValid)
             {
-                var VoteRight = new VoteRights();
+                
                 var stringFileName = UploadFile(badgeForVotes.Icon);
                 //Insert
                 if (id == 0)
@@ -179,12 +182,16 @@ namespace ProjectF.Controllers
                     var badge = _mapper.Map<Badge>(badgeForVotes);
                     badge.Icon = stringFileName;
                     _BadgeRepository.Create(badge.SystemeId, badge , TypeVoteId);
-                    VoteRight.Quantity = badge.BadgeCriteria;
-                    VoteRight.TypeVote = badge.TypeVote;
-                    VoteRight.UserId = Int32.Parse(_userManager.GetUserId(User));
-                    VoteRight.Update = badge.Created;
-                    _VoteRepository.AddOrUpdateVoteRights(VoteRight.Id , VoteRight);
-
+                    var users = _UserRepository.GetUsers();
+                    foreach (var user in users)
+                    {
+                        var VoteRight = new VoteRights();
+                        VoteRight.Quantity = badge.BadgeCriteria;
+                        VoteRight.TypeVote = badge.TypeVote;
+                        VoteRight.UserId = user.Id;
+                        VoteRight.Update = badge.Created;
+                        _VoteRepository.AddOrUpdateVoteRights(VoteRight.Id, VoteRight);
+                    }
                 }
                 return RedirectToAction("Listofbadges");
             }

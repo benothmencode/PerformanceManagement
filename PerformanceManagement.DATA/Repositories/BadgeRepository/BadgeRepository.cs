@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,15 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
         private readonly UserManager<User> _userManager;
 
+        private readonly IUserBadgeRepository _UserbadgeRepository;
 
-        public BadgeRepository(PerformanceManagementDBContext context, UserManager<User> userManager, IVoteRepository voteRepository)
+
+        public BadgeRepository(PerformanceManagementDBContext context, UserManager<User> userManager, IVoteRepository voteRepository , IUserBadgeRepository userBadgeRepository)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _VoteRepository = voteRepository ?? throw new ArgumentNullException(nameof(voteRepository));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _UserbadgeRepository = userBadgeRepository;
         }
 
 
@@ -58,7 +62,6 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
             if (_context.Badges.Any(x => x.Title == badge.Title))
                 throw new Exception("Badge \"" + badge.Title + "\" exists already ");
-            badge.LastCreation = badge.Created;
             if (SystemeId != null)
             {
                 var Systeme = _context.Systemes.Where(s => s.Id == SystemeId).FirstOrDefault();
@@ -66,7 +69,6 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                 badge.Systeme = Systeme;
                 _context.Badges.Add(badge);
                 saved = _context.SaveChanges();
-                return saved >= 0 ? true : false;
             }
             if (TypevoteId != null)
             {
@@ -76,7 +78,15 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                 badge.TypeVoteId = TypevoteId;
                 _context.Badges.Add(badge);
                 saved = _context.SaveChanges();
-                return saved >= 0 ? true : false;
+            }
+            var users = _context.Users.ToList();
+            foreach(var user in users)
+            {
+                if (!_UserbadgeRepository.UserBadgeExist(user.Id, badge.Id, badge.Created))
+                {
+                    _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
+                    badge.LastCreation = badge.Created;
+                }
             }
             return saved >= 0 ? true : false; ;
         }

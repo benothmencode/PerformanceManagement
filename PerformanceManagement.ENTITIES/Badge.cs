@@ -27,7 +27,6 @@ namespace PerformanceManagement.ENTITIES
         [Required]
         public int BadgeCriteria { get; set; }
 
-        //public  periodicity { get; set; }
 
      
 
@@ -36,7 +35,7 @@ namespace PerformanceManagement.ENTITIES
         public DateTime Created { get; set; }
         public Badge()
         {
-            Created = DateTime.Today;
+            Created = DateTime.Now;
         }
 
         [ForeignKey("SystemeId")]

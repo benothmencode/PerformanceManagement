@@ -161,6 +161,7 @@
                 data: { idUserChosen: Id1, idVote: Id2, UserId: Id3 },
                 success: function (data) {
                     if (data.success) {
+                        debugger;
                         var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data.responseText });
                         $("#details").html(html);
                     }
@@ -175,6 +176,7 @@
                 }
             });
         }
+
     </script>
     <script>
 

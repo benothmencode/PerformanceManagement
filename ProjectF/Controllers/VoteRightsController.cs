@@ -70,8 +70,9 @@ namespace ProjectF.Controllers
             if (vote.Quantity != 0)
             {
                 _voteRepository.CreateVoteHistory(idUserChosen, vote.TypeVoteId, UserId);
-
-                 return Json(new
+                vote.Quantity -= 1;
+                _voteRepository.AddOrUpdateVoteRights(vote.Id, vote);
+                return Json(new
                  {
                      success = true,
                      responseText = _voteRepository.GetVoteHistory(UserId)

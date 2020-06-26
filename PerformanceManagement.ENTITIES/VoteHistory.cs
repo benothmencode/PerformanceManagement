@@ -27,7 +27,7 @@ namespace PerformanceManagement.ENTITIES
 
         public bool? BadgeObtained { get; set; }
 
-        public DateTime DateOfVote { get; set; }
+        public string DateOfVote { get; set; }
 
         [ForeignKey("TypeVoteId")]
         public int TypeVoteId { get; set; }

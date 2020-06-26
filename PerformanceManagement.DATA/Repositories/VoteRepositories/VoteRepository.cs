@@ -38,34 +38,31 @@ namespace PerformanceManagement.DATA.Repositories
         }
 
         public void CreateVoteHistory(int idUserChosen, int TypeVoteId, int UserId)
-        {
+        { 
             
-            var voteR = GetUserVoteRightsperType(UserId, TypeVoteId);
-            if(voteR.Quantity != 0)
-            {
-                voteR.Quantity -= 1;
-            }
-            AddOrUpdateVoteRights(voteR.Id , voteR);
             var badge = _context.Badges.Where(b => b.TypeVoteId == TypeVoteId).FirstOrDefault();
+            var userOwner = _context.Users.FirstOrDefault(u => u.Id == UserId);
+            var userChosen = _context.Users.FirstOrDefault(u => u.Id == idUserChosen);
+
             VoteHistory voteHistory = new VoteHistory()
             {
                 UserOwnerId = UserId,
                 UserChosenId = idUserChosen,
-                TypeVoteId = voteR.TypeVoteId, 
-                DateOfVote = DateTime.Today,
+                TypeVoteId = TypeVoteId,
+                DateOfVote = DateTime.Today.ToString("MM-dd-yyyy"),
                 Badge = badge ,
+                BadgeId = badge.Id,
                 BadgeObtained = false ,
             };
-            var evente = _context.Events.Where(e => e.Date == voteHistory.DateOfVote).FirstOrDefault();
+            var evente = _eventRepository.GetAll().Where(e => e.Date.ToString("MM-dd-yyyy") == voteHistory.DateOfVote).FirstOrDefault();
             if (evente != null)
             {
              DayEvent ListEvent = new DayEvent()
              {
                 Action = "new vote",
-                Description = voteHistory.UserOwner.UserName + " Has voted to " + voteHistory.UserChosen.UserName,
                 Date = DateTime.Today,
-                Title = " jj",
-                UserId = voteHistory.UserOwner.Id,
+                Description = userOwner.UserName + " Has voted To " + userChosen.UserName,
+                UserId = UserId,
                 EventId = evente.Id
               };
              var result = _eventRepository.CreateDayEvent(ListEvent);
@@ -75,9 +72,9 @@ namespace PerformanceManagement.DATA.Repositories
              }
             }
             _context.VoteHistories.Add(voteHistory);
-            _context.SaveChanges();
+           
 
-            AddOrUpdateVoteRights(voteR.Id, voteR);
+            
             var userbadge = _UserbadgeRepository.GetUserBadge(idUserChosen, badge.Id);
             if(userbadge != null && userbadge.UserProgression <= userbadge.Badge.BadgeCriteria && userbadge.State != "Done" && DateTime.Now <= userbadge.BadgeDeadline)
             {
@@ -85,7 +82,7 @@ namespace PerformanceManagement.DATA.Repositories
                 _UserbadgeRepository.UpdateUserbadge(userbadge);
             }
 
-
+            _context.SaveChanges();
         }
 
         public IEnumerable<VoteHistory> GetVoteHistory(int UserId)
@@ -112,33 +109,7 @@ namespace PerformanceManagement.DATA.Repositories
         {
            return _context.TypeVotes.Include(vt => vt.Badges).ToList();
         }
-        //public double NumberTokens(int idTypeVote)
-        //{
-            
-        //    var nbrWEEKS = new int();
-        //    var typeVote = _context.TypeVotes.Find(idTypeVote);
-        //    var badgeTypeVote = _context.Badges.Where(b => b.TypeVoteId == idTypeVote).FirstOrDefault();
-        //    var critiria = badgeTypeVote.BadgeCriteria;
-        //    var Periodicity = badgeTypeVote.periodicity;
-        //    var Value = badgeTypeVote.ValueOfPeriodicity;
-        //    if (Periodicity.Equals("Weekly"))
-        //    {
-        //        nbrWEEKS = Value;
-        //    };
-        //    if (Periodicity.Equals("Monthly") )
-        //    {
-        //        nbrWEEKS = Value * 4;
-        //    };
-        //    if (Periodicity.Equals("Yearly"))
-        //    {
-        //        nbrWEEKS = Value * 12 * 4;
-        //    }
-        //    var nbreUsers = _context.Users.Count();
-        //    double res = (critiria * nbreUsers) / (nbrWEEKS * (nbreUsers - 1));
-        //    var nbreToken = Math.Ceiling(res);
-        //    return nbreToken;
-        //}
-
+       
        
 
         void IVoteRepository.CreateTypeVote(TypeVote typeVote)

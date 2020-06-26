@@ -37,8 +37,8 @@ namespace ProjectF.ExernalServices
         private readonly IUserRepository _userRepository;
         private readonly IBadgeRepository _badgeRepository;
         private readonly IUserBadgeRepository _UserbadgeRepository;
-        public string host = "http://localhost/redmine/";
-        public string apiKey = "11b9a54a46850052e067141f514a96830b882399";
+        public string host = "http://10.10.10.105/redmine";
+        public string apiKey = "a33a925bb2ac3c04c507178bc25286d60516f38a";
         //public String login = "Hassen";
 
 
@@ -78,16 +78,16 @@ namespace ProjectF.ExernalServices
 
         }
 
-        [HttpGet("IssueStatus")]
-        public async Task<IEnumerable<IdentifiableName>> IssueStatus()
-        {
-            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+        //[HttpGet("IssueStatus")]
+        //public async Task<IEnumerable<IdentifiableName>> IssueStatus()
+        //{
+        //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
 
-            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
-            var rep = response.Select(T => T.Status);
+        //    var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
+        //    var rep = response.Select(T => T.Status);
 
-            return rep;
-        }
+        //    return rep;
+        //}
 
         [HttpGet("GetIssueStatus")]
         public async Task<String> GetIssueStatus()

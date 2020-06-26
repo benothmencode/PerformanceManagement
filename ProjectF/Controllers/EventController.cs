@@ -59,6 +59,12 @@ namespace ProjectF.Controllers
             return _EventRepository.getAllDayEventsForToday().OrderByDescending(d=>d.Date);
         }
 
+
+        public void Addnewevent()
+        {
+            _EventRepository.createeventeveryday();
+        }
+
         //[ActionName("createevent")]
         //[Route("/Home")]
         //public void createeventdaily()

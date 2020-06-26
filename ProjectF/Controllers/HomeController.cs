@@ -45,7 +45,7 @@ namespace ProjectF.Controllers
 
             //_eventRepository.createeventeveryday();
             var dayevents = _eventRepository.getAllDayEventsForToday();
-            var events = _eventRepository.GetAll();
+            var events = _eventRepository.GetAll().OrderByDescending(d=>d.Date);
             var model = _mapper.Map< IList<EventEntityDto>>(events);
             var model2 = _mapper.Map<IList<DayEventEntityDto>>(dayevents);
             var eventviewModel = new EventViewModel()

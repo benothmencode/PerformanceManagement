@@ -29,7 +29,6 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
         public DayEvent newdayevent()
         {
 
-            string title = "new badge";
             string type = "badge";
             string action = "is added ";
             string description = " trying jajajajjaja";
@@ -38,7 +37,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
             DateTime date = DateTime.Today;
 
             var dayevent = new DayEvent();
-            DayEvent dayEvente = Create(date, title, action, description, userId, eventId, type, dayevent);
+            DayEvent dayEvente = Create(date, action, description, userId, eventId, type, dayevent);
 
             _context.DayEvents.Add(dayEvente);
             _context.SaveChanges();
@@ -67,10 +66,9 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
 
         }
 
-        public DayEvent Create(DateTime date,string title , string action , string description, int userId , int eventId ,string type,DayEvent dv)
+        public DayEvent Create(DateTime date, string action , string description, int userId , int eventId ,string type,DayEvent dv)
         {
             dv.Action = action;
-            dv.Title = title;
             dv.UserId = userId;
             dv.Description = description;
             dv.EventId = eventId;
@@ -148,20 +146,20 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
          
             String titreevent = null;
            DateTime date = new DateTime();
-           foreach(var ev in events)
-            {
-                date = ev.Date;
-                if(date == DateTime.Today)
-                {
-                    foreach(var dv in dayevents)
-                    {
-                       titreevent= dv.Title;
-                    }
+           //foreach(var ev in events)
+           // {
+           //     date = ev.Date;
+           //     if(date == DateTime.Today)
+           //     {
+           //         foreach(var dv in dayevents)
+           //         {
+           //            titreevent= dv.Title;
+           //         }
 
                   
-                }
+           //     }
              
-            }
+           // }
             return titreevent;
         }
 

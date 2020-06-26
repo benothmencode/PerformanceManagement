@@ -16,7 +16,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
         public DayEvent newdayevent();
         public void addevent();
         public List<DayEvent> returndayeventlist(DayEvent dv);
-        public DayEvent Create(DateTime date, string title, string action, string description, int userId, int eventId, string type, DayEvent dv);
+        public DayEvent Create(DateTime date, string action, string description, int userId, int eventId, string type, DayEvent dv);
         public bool CreateDayEvent(DayEvent dv);
        
 

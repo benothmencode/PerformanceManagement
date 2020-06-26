@@ -70,16 +70,15 @@ namespace ProjectF
 
             services.AddControllersWithViews();
             services.AddHttpClient();
-            services.AddHttpContextAccessor();
+
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
-            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
-            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IToDosController, ToDosController>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
 
@@ -122,8 +121,8 @@ namespace ProjectF
 
             ////HANGFIRE
             Scheduler.ScheduleCommitbadgeTask();
-            ////Scheduler.ScheduleUserbadgeTask();
             Scheduler.ScheduleUserbadgeTask();
+            Scheduler.EventEveryDay();
 
 
 

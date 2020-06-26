@@ -80,6 +80,15 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
             return dv;
             
         }
+        public bool CreateDayEvent(DayEvent dv)
+        {
+
+            _context.DayEvents.Add(dv);
+
+            return _context.SaveChanges() >= 0 ? true : false; ;
+
+
+        }
 
         public bool verifybadge()
         {
@@ -120,16 +129,14 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
             IEnumerable<Event> events = _context.Events.ToList();
             IEnumerable<DayEvent> dayevents = _context.DayEvents.ToList();
 
-            IEnumerable<DayEvent> getAllDayEventsPerDate = new IEnumerable<DayEvent>();
-            foreach (var ev in events)
-            {
-                if (ev.Date == DateTime.Today)
-                {
-                    return dayevents = ev.DayEvent.OrderByDescending(ev=>ev.Date);
+            //foreach (var ev in events)
+            //{
+            //    if (ev.Date == DateTime.Today)
+            //    {
+            //        return dayevents = ev.DayEvent.OrderByDescending(ev=>ev.Date);
                     
-                }
-             
-            }
+            //    }
+            //}
             return dayevents.OrderByDescending(d=>d.Date);
         }
 
@@ -160,18 +167,12 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
 
         public void createeventeveryday()
         {
-            Event ev = new Event();
-            ev.Date = DateTime.Today;
-            var lev = _context.Events;
-
-            foreach (var e in lev)
+            Event ev = new Event()
             {
-                if (e.Date != ev.Date)
-                {
-                    _context.Events.Add(ev);
-                    //_context.SaveChanges();
-                }
-            }
+                Date = DateTime.Today
+            };
+             _context.Events.Add(ev);
+             _context.SaveChanges();    
         }
 
        

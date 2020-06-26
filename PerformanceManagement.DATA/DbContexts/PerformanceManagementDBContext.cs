@@ -32,7 +32,7 @@ namespace PerformanceManagement.DATA.DbContexts
                .HasConversion(
                    v => v.ToString(),
                    v => (Periodicity)Enum.Parse(typeof(Periodicity), v));
-
+            modelBuilder.Entity<Event>().HasIndex(d => d.Date).IsUnique();
 
             base.OnModelCreating(modelBuilder);
 

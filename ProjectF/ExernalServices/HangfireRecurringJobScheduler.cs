@@ -19,7 +19,6 @@ namespace ProjectF.ExernalServices
 
         private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IUserRepository _UserRepository;
-        private readonly IEventRepository _EventRepository;
         public HangfireRecurringJobScheduler(IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository, IUserRepository userRepository)
         {
             _BadgeRepository = badgeRepository;
@@ -115,7 +114,12 @@ namespace ProjectF.ExernalServices
             RecurringJob.AddOrUpdate("Test",() => CreationUserbadgeTask(), "35 13 * * *", TimeZoneInfo.Local);
         }
 
+        public void EventEveryDay()
+        {
 
+            RecurringJob.AddOrUpdate<IEventRepository>("event", e => e.createeventeveryday(), "39 13 * * *", TimeZoneInfo.Local);
+
+        }
        
         //{
         //    //Get badge periodicity

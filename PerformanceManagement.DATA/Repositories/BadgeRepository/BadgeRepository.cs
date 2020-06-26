@@ -14,17 +14,17 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
     {
         private readonly PerformanceManagementDBContext _context;
 
-        private readonly IVoteRepository _VoteRepository;
+        //private readonly IVoteRepository _VoteRepository;
 
         private readonly UserManager<User> _userManager;
 
         private readonly IUserBadgeRepository _UserbadgeRepository;
 
 
-        public BadgeRepository(PerformanceManagementDBContext context, UserManager<User> userManager, IVoteRepository voteRepository , IUserBadgeRepository userBadgeRepository)
+        public BadgeRepository(PerformanceManagementDBContext context, UserManager<User> userManager, IUserBadgeRepository userBadgeRepository)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _VoteRepository = voteRepository ?? throw new ArgumentNullException(nameof(voteRepository));
+            //_VoteRepository = voteRepository ?? throw new ArgumentNullException(nameof(voteRepository));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _UserbadgeRepository = userBadgeRepository;
         }

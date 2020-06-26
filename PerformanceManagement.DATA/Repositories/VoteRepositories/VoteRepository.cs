@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories.EventsRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
 using System;
@@ -13,11 +14,13 @@ namespace PerformanceManagement.DATA.Repositories
     {
         private readonly PerformanceManagementDBContext _context;
         private readonly IUserBadgeRepository _UserbadgeRepository;
+        private readonly IEventRepository _eventRepository;
 
-        public VoteRepository(PerformanceManagementDBContext context , IUserBadgeRepository userBadgeRepository)
+        public VoteRepository(PerformanceManagementDBContext context , IUserBadgeRepository userBadgeRepository , IEventRepository eventRepository )
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _UserbadgeRepository = userBadgeRepository;
+            _eventRepository = eventRepository;
         }
 
         public IEnumerable<VoteRights> GetUserVoteRights(int idUser)
@@ -36,6 +39,7 @@ namespace PerformanceManagement.DATA.Repositories
 
         public void CreateVoteHistory(int idUserChosen, int TypeVoteId, int UserId)
         {
+            
             var voteR = GetUserVoteRightsperType(UserId, TypeVoteId);
             if(voteR.Quantity != 0)
             {
@@ -48,11 +52,28 @@ namespace PerformanceManagement.DATA.Repositories
                 UserOwnerId = UserId,
                 UserChosenId = idUserChosen,
                 TypeVoteId = voteR.TypeVoteId, 
-                DateOfVote = DateTime.Now.ToString("MM-dd-yyyy"),
+                DateOfVote = DateTime.Today,
                 Badge = badge ,
                 BadgeObtained = false ,
             };
-           
+            var evente = _context.Events.Where(e => e.Date == voteHistory.DateOfVote).FirstOrDefault();
+            if (evente != null)
+            {
+             DayEvent ListEvent = new DayEvent()
+             {
+                Action = "new vote",
+                Description = voteHistory.UserOwner.UserName + " Has voted to " + voteHistory.UserChosen.UserName,
+                Date = DateTime.Today,
+                Title = " jj",
+                UserId = voteHistory.UserOwner.Id,
+                EventId = evente.Id
+              };
+             var result = _eventRepository.CreateDayEvent(ListEvent);
+             if (result)
+             {
+                voteHistory.DayEvent = ListEvent;
+             }
+            }
             _context.VoteHistories.Add(voteHistory);
             _context.SaveChanges();
 

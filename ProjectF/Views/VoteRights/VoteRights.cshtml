@@ -38,7 +38,7 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="card-body">
+                    <div id="divid" class="card-body">
                         <h2> Votes </h2>
                         <hr>
                         <table class="table table-striped projects" id="list">
@@ -161,7 +161,7 @@
                 data: { idUserChosen: Id1, idVote: Id2, UserId: Id3 },
                 success: function (data) {
                     if (data.success) {
-                        debugger;
+                        $("#divid").load(" #divid");
                         var html = Mustache.to_html($("#DetailTemplate").html(), { Vlist: data.responseText });
                         $("#details").html(html);
                     }

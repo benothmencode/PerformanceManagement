@@ -45,7 +45,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
         public Badge GetBadgeById(int? badgeId)
         {
-            return _context.Badges.Include(b => b.UserBadges).Where(b => b.Id == badgeId).FirstOrDefault();
+            return _context.Badges.Include(b => b.UserBadges).Include(b => b.Systeme).Include(b=> b.TypeVote).Include(b=> b.voteHistories).Where(b => b.Id == badgeId).FirstOrDefault();
         }
 
 

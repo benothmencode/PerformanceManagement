@@ -33,6 +33,8 @@
     <Compile Remove="Migrations\20200611130145_test.Designer.cs" />
     <Compile Remove="Migrations\20200617100044_UpdateAttribperiodicity.cs" />
     <Compile Remove="Migrations\20200617100044_UpdateAttribperiodicity.Designer.cs" />
+    <Compile Remove="Migrations\20200627193020_Test.cs" />
+    <Compile Remove="Migrations\20200627193020_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

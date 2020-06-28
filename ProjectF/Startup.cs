@@ -24,6 +24,7 @@ using ProjectF.Components;
 using ProjectF.ExernalServices;
 using System;
 using System.Collections.Generic;
+using Vereyon.Web;
 
 namespace ProjectF
 {
@@ -81,7 +82,7 @@ namespace ProjectF
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
             services.AddScoped<IToDosController, ToDosController>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
-
+            services.AddFlashMessage();
             services.AddIdentity<User, AppRole>()
             .AddDefaultUI()
             .AddDefaultTokenProviders()

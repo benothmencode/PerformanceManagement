@@ -23,6 +23,7 @@ using Hangfire;
 using ProjectF.Helpers;
 using Microsoft.AspNetCore.Http;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
+using Vereyon.Web;
 
 namespace ProjectF.Controllers
 {
@@ -36,11 +37,13 @@ namespace ProjectF.Controllers
         private readonly ISystemeRepository _systemeRepository;
         private readonly IVoteRepository _VoteRepository;
         private readonly IUserBadgeRepository _UserBadgeRepository;
+        private readonly IFlashMessage _flashMessage;
 
         private readonly UserManager<User> _userManager;
 
         public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IVoteRepository VoteRepository,
-            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment , UserManager<User> userManager , IUserBadgeRepository userBadgeRepository )
+            IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment ,
+            UserManager<User> userManager , IUserBadgeRepository userBadgeRepository , IFlashMessage  flashMessage)
         {
             
 
@@ -57,6 +60,7 @@ namespace ProjectF.Controllers
             _userManager = userManager;
 
             _UserBadgeRepository = userBadgeRepository;
+            _flashMessage = flashMessage;
         }
 
 
@@ -87,14 +91,9 @@ namespace ProjectF.Controllers
 
         public IActionResult Details(int? idBadge)
         {
-
-            var badges = _BadgeRepository.GetAll();
-            var model = _mapper.Map <IList<BadgeEntityDto>>(badges);
-            BadgeEntityDto badge = model.FirstOrDefault(b =>b.Id ==idBadge); 
-            
-
-
-            return View(badge);
+            var badge = _BadgeRepository.GetBadgeById(idBadge);
+            var model = _mapper.Map <BadgeEntityDto>(badge);
+            return View(model);
 
         }
 
@@ -153,18 +152,27 @@ namespace ProjectF.Controllers
         public IActionResult AddOrEditBadgeVote(int id = 0)
         {
             var VoteType = _VoteRepository.GetTypeVotes();
-            var voteTypeList = new TypeVotesList(VoteType);
-            if (id == 0)
-                
-                return View(new BadgesForVotes() { TypeVote = voteTypeList.GetvoteTypeList()});
+            if (VoteType.Count() != 0)
+            {
+                var voteTypeList = new TypeVotesList(VoteType);
+                if (id == 0)
+
+                    return View(new BadgesForVotes() { TypeVote = voteTypeList.GetvoteTypeList() });
+                else
+                {
+                    var BadgeForVote = _BadgeRepository.GetBadgeById(id);
+                    if (BadgeForVote == null)
+                    {
+                        return NotFound();
+                    }
+                    return View(BadgeForVote);
+                }
+            }
             else
             {
-                var BadgeForVote = _BadgeRepository.GetBadgeById(id);
-                if (BadgeForVote == null)
-                {
-                    return NotFound();
-                }
-                return View(BadgeForVote);
+
+                _flashMessage.Warning("You need To Add a Type Vote First");
+                return RedirectToAction("CreateTypeVote");
             }
         }
 

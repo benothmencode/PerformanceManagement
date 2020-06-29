@@ -14,7 +14,11 @@ namespace ProjectF.ModelsDTOS
         public string Description { get; set; }
         public string Icon { get; set; }
         public int BadgeCriteria { get; set; }
-      
+        public TypeVote TypeVote { get; set; }
+        public Periodicity periodicity { get; set; }
+
+        
+        public int ValueOfPeriodicity { get; set; }
         public string Challenge { get; set; }
 
         public SystemeEntityDto Systeme { get; set; }

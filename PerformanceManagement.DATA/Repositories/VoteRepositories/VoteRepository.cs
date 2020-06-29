@@ -14,13 +14,13 @@ namespace PerformanceManagement.DATA.Repositories
     {
         private readonly PerformanceManagementDBContext _context;
         private readonly IUserBadgeRepository _UserbadgeRepository;
-        private readonly IEventRepository _EventRepository;
-          
-        public VoteRepository(PerformanceManagementDBContext context , IUserBadgeRepository userBadgeRepository , IEventRepository eventRepository)
+        private readonly IEventRepository _eventRepository;
+
+        public VoteRepository(PerformanceManagementDBContext context , IUserBadgeRepository userBadgeRepository , IEventRepository eventRepository )
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _UserbadgeRepository = userBadgeRepository;
-            _EventRepository = eventRepository;
+            _eventRepository = eventRepository;
         }
 
         public IEnumerable<VoteRights> GetUserVoteRights(int idUser)
@@ -37,63 +37,53 @@ namespace PerformanceManagement.DATA.Repositories
             return _context.VoteRights.Where(v => v.UserId == idUser).Where(v => v.TypeVoteId == TypeVoteId).Include(v => v.TypeVote).FirstOrDefault();
         }
 
+        public void CreateVoteHistory(int idUserChosen, int TypeVoteId, int UserId)
+        { 
+            
+            var badge = _context.Badges.Where(b => b.TypeVoteId == TypeVoteId).FirstOrDefault();
+            var userOwner = _context.Users.FirstOrDefault(u => u.Id == UserId);
+            var userChosen = _context.Users.FirstOrDefault(u => u.Id == idUserChosen);
 
-
-
-        //public void CreateVoteHistory(int idUserChosen, int TypeVoteId, int UserId)
-        //{
-        //    var voteR = GetUserVoteRightsperType(UserId, TypeVoteId);
-        //    if(voteR.Quantity != 0)
-        //    {
-        //        voteR.Quantity -= 1;
-        //    }
-        //    AddOrUpdateVoteRights(voteR.Id , voteR);
-        //    var badge = _context.Badges.Where(b => b.TypeVoteId == TypeVoteId).FirstOrDefault();
-        //    VoteHistory voteHistory = new VoteHistory()
-        //    {
-        //        UserOwnerId = UserId,
-        //        UserChosenId = idUserChosen,
-        //        TypeVoteId = voteR.TypeVoteId, 
-        //        DateOfVote = DateTime.Now.ToString("MM-dd-yyyy"),
-        //        Badge = badge ,
-        //        BadgeObtained = false ,
-        //    };
-        //    var evente = _EventRepository.GetAll().Where(d => d.Date.ToString("MM-dd-yyyy") == voteHistory.DateOfVote).FirstOrDefault();
-        //    if (evente != null)
-        //    {
-        //        var DayEvent = new DayEvent()
-        //        {
-        //            Action = "new vote",
-        //            Description = voteHistory.UserOwner.UserName + " Has voted to " + voteHistory.UserChosen.UserName,
-        //            Date = DateTime.Today,
-        //            EventId = evente.Id,
-        //            Title = " jj",
-        //            UserId = 1,
-        //        };
-
-        //        var result = _EventRepository.CreateDayEvent(DayEvent);
-        //        if (result)
-        //        {
-        //            voteHistory.DayEvent = DayEvent;
-        //        }
-        //    }
-        //    _context.VoteHistories.Add(voteHistory);
-        //    _context.SaveChanges();
-
-        //    AddOrUpdateVoteRights(voteR.Id, voteR);
-        //    var userbadge = _UserbadgeRepository.GetUserBadge(idUserChosen, badge.Id);
-        //    if(userbadge != null && userbadge.UserProgression <= userbadge.Badge.BadgeCriteria && userbadge.State != "Done" && DateTime.Now <= userbadge.BadgeDeadline)
-        //    {
-        //        userbadge.UserProgression += 1;
-        //        _UserbadgeRepository.UpdateUserbadge(userbadge);
-        //    }
-
+            VoteHistory voteHistory = new VoteHistory()
+            {
+                UserOwnerId = UserId,
+                UserChosenId = idUserChosen,
+                TypeVoteId = TypeVoteId,
+                DateOfVote = DateTime.Today.ToString("MM-dd-yyyy"),
+                Badge = badge ,
+                BadgeId = badge.Id,
+                BadgeObtained = false ,
+            };
+            var evente = _eventRepository.GetAll().Where(e => e.Date.ToString("MM-dd-yyyy") == voteHistory.DateOfVote).FirstOrDefault();
+            if (evente != null)
+            {
+             DayEvent ListEvent = new DayEvent()
+             {
+                Action = "new vote",
+                Date = DateTime.Today,
+                Description = userOwner.UserName + " Has voted To " + userChosen.UserName,
+                UserId = UserId,
+                EventId = evente.Id
+              };
+             var result = _eventRepository.CreateDayEvent(ListEvent);
+             if (result)
+             {
+                voteHistory.DayEvent = ListEvent;
+             }
+            }
+            _context.VoteHistories.Add(voteHistory);
+           
 
             
+            var userbadge = _UserbadgeRepository.GetUserBadge(idUserChosen, badge.Id);
+            if(userbadge != null && userbadge.UserProgression <= userbadge.Badge.BadgeCriteria && userbadge.State != "Done" && DateTime.Now <= userbadge.BadgeDeadline)
+            {
+                userbadge.UserProgression += 1;
+                _UserbadgeRepository.UpdateUserbadge(userbadge);
+            }
 
-
-
-        //}
+            _context.SaveChanges();
+        }
 
         public IEnumerable<VoteHistory> GetVoteHistory(int UserId)
         {
@@ -119,34 +109,7 @@ namespace PerformanceManagement.DATA.Repositories
         {
            return _context.TypeVotes.Include(vt => vt.Badges).ToList();
         }
-
-        //public double NumberTokens(int idTypeVote)
-        //{
-            
-        //    var nbrWEEKS = new int();
-        //    var typeVote = _context.TypeVotes.Find(idTypeVote);
-        //    var badgeTypeVote = _context.Badges.Where(b => b.TypeVoteId == idTypeVote).FirstOrDefault();
-        //    var critiria = badgeTypeVote.BadgeCriteria;
-        //    var Periodicity = badgeTypeVote.periodicity;
-        //    var Value = badgeTypeVote.ValueOfPeriodicity;
-        //    if (Periodicity.Equals("Weekly"))
-        //    {
-        //        nbrWEEKS = Value;
-        //    };
-        //    if (Periodicity.Equals("Monthly") )
-        //    {
-        //        nbrWEEKS = Value * 4;
-        //    };
-        //    if (Periodicity.Equals("Yearly"))
-        //    {
-        //        nbrWEEKS = Value * 12 * 4;
-        //    }
-        //    var nbreUsers = _context.Users.Count();
-        //    double res = (critiria * nbreUsers) / (nbrWEEKS * (nbreUsers - 1));
-        //    var nbreToken = Math.Ceiling(res);
-        //    return nbreToken;
-        //}
-
+       
        
 
         void IVoteRepository.CreateTypeVote(TypeVote typeVote)

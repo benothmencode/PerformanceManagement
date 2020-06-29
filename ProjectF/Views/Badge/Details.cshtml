@@ -48,9 +48,25 @@
                                 <b class="d-block">@Model.BadgeCriteria</b>
                             </p>
                             <p class="text-sm">
-                                System Name :
-                                <b class="d-block">@Model.Systeme.SystemName</b>
+                                Badge Periodicity :
+                                <b class="d-block">@Model.periodicity.ToString()</b>
+                                <b class="d-block">@Model.ValueOfPeriodicity</b>
+
                             </p>
+                            @if (Model.Systeme != null)
+                            {
+                                <p class="text-sm">
+                                    System Name :
+                                    <b class="d-block">@Model.Systeme.SystemName</b>
+                                </p>
+                            }
+                            @if (Model.TypeVote != null)
+                            {
+                                <p class="text-sm">
+                                    Type of Vote :
+                                    <b class="d-block">@Model.TypeVote.Libellé</b>
+                                </p>
+                            }
                         </div>
                     </div>
                 </div>

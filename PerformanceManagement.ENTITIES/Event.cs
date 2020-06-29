@@ -14,7 +14,10 @@ namespace PerformanceManagement.ENTITIES
         public int Id { get; set; }
 
         public List<DayEvent> DayEvent { get; set; }
+
+
         [Required]
+       
         public DateTime Date { get; set; }
    
         public Event()

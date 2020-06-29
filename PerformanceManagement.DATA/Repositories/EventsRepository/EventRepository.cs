@@ -13,7 +13,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
     public class EventRepository : IEventRepository
     {
 
-        da
+
         private PerformanceManagementDBContext _context;
 
         private IBadgeRepository _badgeRepository;
@@ -26,26 +26,24 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
            
         }
        
-        //public DayEvent newdayevent()
-        //{
+        public DayEvent newdayevent()
+        {
 
-        //    string title = "new badge";
-        //    string type = "badge";
-        //    string action = "is added ";
-        //    string description = " trying jajajajjaja";
-        //    int userId = 1;
-        //    int eventId = 5;
-        //    DateTime date = DateTime.Today;
+            string type = "badge";
+            string action = "is added ";
+            string description = " trying jajajajjaja";
+            int userId = 1;
+            int eventId = 5;
+            DateTime date = DateTime.Today;
 
-        //    var dayevent = new DayEvent();
+            var dayevent = new DayEvent();
+            DayEvent dayEvente = Create(date, action, description, userId, eventId, type, dayevent);
 
-        //    DayEvent dayEvente = Create(date, title, action, description, userId, eventId, type, dayevent);
+            _context.DayEvents.Add(dayEvente);
+            _context.SaveChanges();
 
-        //    _context.DayEvents.Add(dayEvente);
-        //    _context.SaveChanges();
-
-        //    return dayEvente;
-        //  }
+            return dayEvente;
+          }
                 
         
         public void addevent()
@@ -68,9 +66,21 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
 
         }
 
+        public DayEvent Create(DateTime date, string action , string description, int userId , int eventId ,string type,DayEvent dv)
+        {
+            dv.Action = action;
+            dv.UserId = userId;
+            dv.Description = description;
+            dv.EventId = eventId;
+            dv.Date = date;
+            _context.DayEvents.Add(dv);
+            _context.SaveChanges();
+            return dv;
+            
+        }
         public bool CreateDayEvent(DayEvent dv)
         {
-        
+
             _context.DayEvents.Add(dv);
 
             return _context.SaveChanges() >= 0 ? true : false; ;
@@ -117,15 +127,14 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
             IEnumerable<Event> events = _context.Events.ToList();
             IEnumerable<DayEvent> dayevents = _context.DayEvents.ToList();
 
-            foreach (var ev in events)
-            {
-                if (ev.Date == DateTime.Today)
-                {
-                    return dayevents = ev.DayEvent.OrderByDescending(ev=>ev.Date);
+            //foreach (var ev in events)
+            //{
+            //    if (ev.Date == DateTime.Today)
+            //    {
+            //        return dayevents = ev.DayEvent.OrderByDescending(ev=>ev.Date);
                     
-                }
-             
-            }
+            //    }
+            //}
             return dayevents.OrderByDescending(d=>d.Date);
         }
 
@@ -137,38 +146,33 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
          
             String titreevent = null;
            DateTime date = new DateTime();
-           foreach(var ev in events)
-            {
-                date = ev.Date;
-                if(date == DateTime.Today)
-                {
-                    foreach(var dv in dayevents)
-                    {
-                       titreevent= dv.Title;
-                    }
+           //foreach(var ev in events)
+           // {
+           //     date = ev.Date;
+           //     if(date == DateTime.Today)
+           //     {
+           //         foreach(var dv in dayevents)
+           //         {
+           //            titreevent= dv.Title;
+           //         }
 
                   
-                }
+           //     }
              
-            }
+           // }
             return titreevent;
         }
 
         public void createeventeveryday()
         {
-            Event ev = new Event();
-            ev.Date = DateTime.Now;
-            var lev = _context.Events;
-
-            foreach (var e in lev)
+            Event ev = new Event()
             {
-                if (e.Date != ev.Date)
-                {
-                    _context.Events.Add(ev);
-                    _context.SaveChanges();
-                }
-            }
+                Date = DateTime.Today
+            };
+             _context.Events.Add(ev);
+             _context.SaveChanges();    
         }
 
+       
     }
 }

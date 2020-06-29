@@ -5,15 +5,48 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200224153725_M3.cs" />
+    <Compile Remove="Migrations\20200224153725_M3.Designer.cs" />
+    <Compile Remove="Migrations\20200423103728_test.cs" />
+    <Compile Remove="Migrations\20200423103728_test.Designer.cs" />
+    <Compile Remove="Migrations\20200428003235_test.cs" />
+    <Compile Remove="Migrations\20200428003235_test.Designer.cs" />
+    <Compile Remove="Migrations\20200519225351_maybechanges.cs" />
+    <Compile Remove="Migrations\20200519225351_maybechanges.Designer.cs" />
+    <Compile Remove="Migrations\20200521205149_UserRoles.cs" />
+    <Compile Remove="Migrations\20200521205149_UserRoles.Designer.cs" />
+    <Compile Remove="Migrations\20200521205431_UserRoles.cs" />
+    <Compile Remove="Migrations\20200521205431_UserRoles.Designer.cs" />
+    <Compile Remove="Migrations\20200609171829_progression.cs" />
+    <Compile Remove="Migrations\20200609171829_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200609172120_progression.cs" />
+    <Compile Remove="Migrations\20200609172120_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200609172207_progression.cs" />
+    <Compile Remove="Migrations\20200609172207_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200609172404_progression.cs" />
+    <Compile Remove="Migrations\20200609172404_progression.Designer.cs" />
+    <Compile Remove="Migrations\20200611123757_AddTypeVoteClass.cs" />
+    <Compile Remove="Migrations\20200611123757_AddTypeVoteClass.Designer.cs" />
+    <Compile Remove="Migrations\20200611124428_AddTypeVoteClassId.cs" />
+    <Compile Remove="Migrations\20200611124428_AddTypeVoteClassId.Designer.cs" />
+    <Compile Remove="Migrations\20200611130145_test.cs" />
+    <Compile Remove="Migrations\20200611130145_test.Designer.cs" />
+    <Compile Remove="Migrations\20200617100044_UpdateAttribperiodicity.cs" />
+    <Compile Remove="Migrations\20200617100044_UpdateAttribperiodicity.Designer.cs" />
+    <Compile Remove="Migrations\20200627193020_Test.cs" />
+    <Compile Remove="Migrations\20200627193020_Test.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Repositories\HomeRepository\HomeRepository.cs~RFfc032bc.TMP" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

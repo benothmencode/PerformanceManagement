@@ -1,4 +1,5 @@
 ﻿@model PerformanceManagement.ENTITIES.TypeVote
+@addTagHelper *, Vereyon.Web.FlashMessage
 
 @{
     Layout = null;
@@ -14,6 +15,7 @@
 <body>
 
     <h4>TypeVote</h4>
+    <flash dismissable="true" />
     <hr />
     <div class="row">
         <div class="col-md-4">

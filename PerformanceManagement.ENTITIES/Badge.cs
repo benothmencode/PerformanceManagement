@@ -42,6 +42,7 @@ namespace PerformanceManagement.ENTITIES
         public int? SystemeId { get; set; }
         public Systeme Systeme { get; set; }
         public List<UserBadge> UserBadges { get; set; }
+        public List<VoteHistory> voteHistories { get; set; }
 
         [ForeignKey("TypeVoteId")]
         public int? TypeVoteId { get; set; }

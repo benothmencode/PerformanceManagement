@@ -34,10 +34,8 @@ namespace PerformanceManagement.ENTITIES
         public TypeVote TypeVote { get; set; }
 
 
-
         [ForeignKey("DayEventId")]
         public int? DayEventId { get; set; }
-        public DayEvent DayEvent{ get; set; }
-
+        public DayEvent DayEvent { get; set; }
     }
 }

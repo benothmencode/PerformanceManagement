@@ -6,7 +6,6 @@
         void ScheduleUserbadgeTask();
         void CreationUserbadgeTask();
         void ScheduleToDosbadgeTask();
-        void CreateEventEveryDay();
-      
+        void EventEveryDay();
     }
 }

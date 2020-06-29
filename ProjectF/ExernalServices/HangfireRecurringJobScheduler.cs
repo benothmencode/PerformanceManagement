@@ -30,7 +30,7 @@ namespace ProjectF.ExernalServices
       
 
 
-        public void ScheduleToDosbadgeTask()
+            public void ScheduleToDosbadgeTask()
         {
             var badge = _BadgeRepository.GetBadgeByTitle("the first featured");
             var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
@@ -44,6 +44,9 @@ namespace ProjectF.ExernalServices
                 }
             }
         }
+
+
+
         public void ScheduleCommitbadgeTask()
         {
             var badge = _BadgeRepository.GetBadgeByTitle("Commit");
@@ -60,6 +63,9 @@ namespace ProjectF.ExernalServices
             }
            
         }
+
+
+
 
         // execute evrer frst day of month
         public void CreationUserbadgeTask()
@@ -98,7 +104,6 @@ namespace ProjectF.ExernalServices
                             }
                         }
                     }
-
             }
 
         }
@@ -107,16 +112,15 @@ namespace ProjectF.ExernalServices
 
             RecurringJob.AddOrUpdate(() => CreationUserbadgeTask(), "0 0 1 * *", TimeZoneInfo.Local);
             RecurringJob.AddOrUpdate("Test",() => CreationUserbadgeTask(), "35 13 * * *", TimeZoneInfo.Local);
-
         }
 
-
-
-        public void CreateEventEveryDay()
+        public void EventEveryDay()
         {
-            RecurringJob.AddOrUpdate<IEventRepository>("new event", ev => ev.createeventeveryday(), "* 13 * * *", TimeZoneInfo.Local);
-        }
 
+            RecurringJob.AddOrUpdate<IEventRepository>("event", e => e.createeventeveryday(), "39 13 * * *", TimeZoneInfo.Local);
+
+        }
+       
         //{
         //    //Get badge periodicity
         //    //Get badge last creation date

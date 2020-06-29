@@ -43,7 +43,7 @@ namespace ProjectF.Controllers
         public IActionResult Index()
         {
 
-            _eventRepository.createeventeveryday();
+            //_eventRepository.createeventeveryday();
             var dayevents = _eventRepository.getAllDayEventsForToday();
             var events = _eventRepository.GetAll().OrderByDescending(d=>d.Date);
             var model = _mapper.Map< IList<EventEntityDto>>(events);

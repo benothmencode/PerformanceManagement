@@ -24,13 +24,14 @@ using ProjectF.Components;
 using ProjectF.ExernalServices;
 using System;
 using System.Collections.Generic;
+using Vereyon.Web;
 
 namespace ProjectF
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        {
+        { 
             Configuration = configuration;
         }
 
@@ -46,47 +47,48 @@ namespace ProjectF
                                );
             services.AddRazorPages();
             string connectionString = this.Configuration.GetConnectionString("DefaultContext");
-            services.AddDbContext<PerformanceManagementDBContext>(Options =>
+            services.AddDbContext<PerformanceManagementDBContext>(Options => 
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
-
+           
             services.AddHangfire(configuration => configuration
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
                     .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
                     {
-                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                        QueuePollInterval = TimeSpan.Zero,
-                        UseRecommendedIsolationLevel = true,
-                        UsePageLocksOnDequeue = true,
-                        DisableGlobalLocks = true
+                      CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                      SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                      QueuePollInterval = TimeSpan.Zero,
+                      UseRecommendedIsolationLevel = true,
+                      UsePageLocksOnDequeue = true,
+                      DisableGlobalLocks = true
                     }));
             services.AddHangfireServer();
             JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
 
 
 
+
             services.AddControllersWithViews();
             services.AddHttpClient();
-            services.AddHttpContextAccessor();
+
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();
             services.AddScoped<IBadgeRepository, BadgeRepository>();
             services.AddScoped<IHomeRepository, HomeRepository>();
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
-            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
             services.AddScoped<IToDosController, ToDosController>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
-
+            services.AddFlashMessage();
             services.AddIdentity<User, AppRole>()
             .AddDefaultUI()
             .AddDefaultTokenProviders()
             .AddRoles<AppRole>()
             .AddEntityFrameworkStores<PerformanceManagementDBContext>();
-
+            
 
             services.AddAutoMapper(typeof(Startup));
             //services.AddMvcCore(options =>
@@ -120,11 +122,10 @@ namespace ProjectF
 
             ////HANGFIRE
             Scheduler.ScheduleCommitbadgeTask();
-            ////Scheduler.ScheduleUserbadgeTask();
-            //Scheduler.ScheduleUserbadgeTask();
+            Scheduler.ScheduleUserbadgeTask();
+            Scheduler.EventEveryDay();
 
-            //Scheduler.ScheduleToDosbadgeTask();
-            //Scheduler.ScheduleEvent();
+
 
             app.UseRouting();
             app.UseAuthentication();

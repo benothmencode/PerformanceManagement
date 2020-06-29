@@ -6,11 +6,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PerformanceManagement.ENTITIES
 {
+
+    public enum Type
+    {
+        Badge,
+        Vote,
+        User
+    }
     public class DayEvent 
     {
+
+       
         public int Id { get; set; }
 
-        public string Type { get; set; }
+        public Type Type { get; set; }
 
         public string Action { get; set; }
         [Required]
@@ -24,6 +33,8 @@ namespace PerformanceManagement.ENTITIES
         [ForeignKey("EventId")]
         public int EventId { get; set; }
         public List<VoteHistory> VoteHistories { get; set; }
+      
+       
 
 
     }

@@ -16,7 +16,7 @@ namespace PerformanceManagement.DATA.Repositories
         private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IEventRepository _eventRepository;
 
-        public VoteRepository(PerformanceManagementDBContext context , IUserBadgeRepository userBadgeRepository , IEventRepository eventRepository )
+        public VoteRepository(PerformanceManagementDBContext context, IUserBadgeRepository userBadgeRepository, IEventRepository eventRepository)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _UserbadgeRepository = userBadgeRepository;
@@ -25,21 +25,21 @@ namespace PerformanceManagement.DATA.Repositories
 
         public IEnumerable<VoteRights> GetUserVoteRights(int idUser)
         {
-            return _context.VoteRights.Where(v => v.UserId == idUser).Include(v => v.TypeVote).ToList(); 
+            return _context.VoteRights.Where(v => v.UserId == idUser).Include(v => v.TypeVote).ToList();
         }
 
         public VoteRights GetVoteRights(int id)
         {
             return _context.VoteRights.Include(v => v.TypeVote).FirstOrDefault(vr => vr.Id == id);
         }
-        public VoteRights GetUserVoteRightsperType(int idUser , int TypeVoteId)
+        public VoteRights GetUserVoteRightsperType(int idUser, int TypeVoteId)
         {
             return _context.VoteRights.Where(v => v.UserId == idUser).Where(v => v.TypeVoteId == TypeVoteId).Include(v => v.TypeVote).FirstOrDefault();
         }
 
         public void CreateVoteHistory(int idUserChosen, int TypeVoteId, int UserId)
-        { 
-            
+        {
+
             var badge = _context.Badges.Where(b => b.TypeVoteId == TypeVoteId).FirstOrDefault();
             var userOwner = _context.Users.FirstOrDefault(u => u.Id == UserId);
             var userChosen = _context.Users.FirstOrDefault(u => u.Id == idUserChosen);
@@ -50,33 +50,34 @@ namespace PerformanceManagement.DATA.Repositories
                 UserChosenId = idUserChosen,
                 TypeVoteId = TypeVoteId,
                 DateOfVote = DateTime.Today.ToString("MM-dd-yyyy"),
-                Badge = badge ,
+                Badge = badge,
                 BadgeId = badge.Id,
-                BadgeObtained = false ,
+                BadgeObtained = false,
             };
             var evente = _eventRepository.GetAll().Where(e => e.Date.ToString("MM-dd-yyyy") == voteHistory.DateOfVote).FirstOrDefault();
             if (evente != null)
             {
-             DayEvent ListEvent = new DayEvent()
-             {
-                Action = "new vote",
-                Date = DateTime.Today,
-                Description = userOwner.UserName + " Has voted To " + userChosen.UserName,
-                UserId = UserId,
-                EventId = evente.Id
-              };
-             var result = _eventRepository.CreateDayEvent(ListEvent);
-             if (result)
-             {
-                voteHistory.DayEvent = ListEvent;
-             }
+                DayEvent ListEvent = new DayEvent()
+                {
+                    Action = "new vote",
+                    Date = DateTime.Today,
+                    Description = userOwner.UserName + " Has voted To " + userChosen.UserName,
+                    UserId = UserId,
+                    EventId = evente.Id,
+                   
+                };
+                var result = _eventRepository.CreateDayEvent(ListEvent);
+                if (result)
+                {
+                    voteHistory.DayEvent = ListEvent;
+                }
             }
             _context.VoteHistories.Add(voteHistory);
-           
 
-            
+
+
             var userbadge = _UserbadgeRepository.GetUserBadge(idUserChosen, badge.Id);
-            if(userbadge != null && userbadge.UserProgression <= userbadge.Badge.BadgeCriteria && userbadge.State != "Done" && DateTime.Now <= userbadge.BadgeDeadline)
+            if (userbadge != null && userbadge.UserProgression <= userbadge.Badge.BadgeCriteria && userbadge.State != "Done" && DateTime.Now <= userbadge.BadgeDeadline)
             {
                 userbadge.UserProgression += 1;
                 _UserbadgeRepository.UpdateUserbadge(userbadge);
@@ -87,12 +88,12 @@ namespace PerformanceManagement.DATA.Repositories
 
         public IEnumerable<VoteHistory> GetVoteHistory(int UserId)
         {
-           return _context.VoteHistories.Where(vh => vh.UserOwnerId == UserId).Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList();
+            return _context.VoteHistories.Where(vh => vh.UserOwnerId == UserId).Include(vh => vh.UserChosen).Include(vh => vh.UserOwner).ToList();
         }
-        
-        public void AddOrUpdateVoteRights( int id ,VoteRights voteRights)
+
+        public void AddOrUpdateVoteRights(int id, VoteRights voteRights)
         {
-            if(id == 0 && voteRights != null)
+            if (id == 0 && voteRights != null)
             {
 
                 _context.Add(voteRights);
@@ -107,10 +108,10 @@ namespace PerformanceManagement.DATA.Repositories
 
         public List<TypeVote> GetTypeVotes()
         {
-           return _context.TypeVotes.Include(vt => vt.Badges).ToList();
+            return _context.TypeVotes.Include(vt => vt.Badges).ToList();
         }
-       
-       
+
+
 
         void IVoteRepository.CreateTypeVote(TypeVote typeVote)
         {

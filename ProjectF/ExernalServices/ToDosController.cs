@@ -14,41 +14,36 @@ using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.ENTITIES;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
+using PerformanceManagement.DATA.Repositories.EventsRepository;
+using Type = PerformanceManagement.ENTITIES.Type;
 
 namespace ProjectF.ExernalServices
 {
     
-
-    public interface IToDosController
-    {
-        public  Task<String> TodosBadge();
-
-
-    }
-
-
-
     [Route("api/todos")]
     [ApiController]
 
-    public class ToDosController : ControllerBase,IToDosController
+    public class ToDosController : ControllerBase, IToDosController
+
     {
         private static RedmineManager _redmineClient;
         private readonly IUserRepository _userRepository;
         private readonly IBadgeRepository _badgeRepository;
         private readonly IUserBadgeRepository _UserbadgeRepository;
-        public string host = "http://10.10.10.105/redmine";
-        public string apiKey = "a33a925bb2ac3c04c507178bc25286d60516f38a";
+        private readonly IEventRepository _eventRepository;
+        public string host = "http://localhost/redmine/";
+        public string apiKey = "01f1b7962f14cfd0475d03b136efc32e14ef159e";
         //public String login = "Hassen";
 
 
-        public ToDosController(IUserRepository userRepository, IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository)
+        public ToDosController(IEventRepository eventRepository,IUserRepository userRepository, IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository)
         {
 
             _redmineClient = new RedmineManager(host, apiKey/*,login*/);
             _userRepository = userRepository;
             _badgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
+            _eventRepository = eventRepository;
             //_redmineClient.ImpersonateUser = login;
         }
 
@@ -101,28 +96,59 @@ namespace ProjectF.ExernalServices
         }
         [HttpGet("IssueProgression")]
 
-        public async Task<String>  IssueProgression()
+        public async Task<float?>  IssueProgression()
         {
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL }};
             
             var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
             var rep3 = response.Select(T => T.DoneRatio);
-            String rep1 = null;
+            float? rep1 = null;
             foreach (var prog in rep3)
             {
-                rep1 = prog.ToString();
+                rep1 = prog;
                 
             }
 
             return rep1;
 
         }
+        [HttpGet("dayevent")]
+        public async Task dayevent()
+        {
 
+            var Badge = _badgeRepository.GetBadgeByTitle("the first featured");
 
+            var userBadges = _UserbadgeRepository.GetUsersBadge(Badge);
+            foreach (var ub in userBadges)
+            {
+                if (ub.UserProgression == 10)
+                {
+                    var evente = _eventRepository.GetAll().Where(e => e.Date == DateTime.Today).FirstOrDefault();
+                    if (evente != null)
+                    {
+                        
+                        
+                        DayEvent ListEvent = new DayEvent()
+                        {
+                            Action = "Progression",
+                            Date = DateTime.Today,
+                            Description = ub.User.UserName + " Started a new bagde which is " + ub.Badge.Title,
+                            UserId = ub.UserId,
+                            EventId = evente.Id,
+                           Type= Type.Badge
+                         
+                        };
+                        var result = _eventRepository.CreateDayEvent(ListEvent);
+                        
+
+                    }
+                }
+            }
+        }
 
 
         [HttpGet("TodosBadge")]
-        public  async Task<String> TodosBadge()
+        public async Task TodosBadge()
         {
 
             var Badge = _badgeRepository.GetBadgeByTitle("the first featured");
@@ -131,26 +157,24 @@ namespace ProjectF.ExernalServices
 
 
             var status = await GetIssueStatus();
-          
-             String progression=await IssueProgression();
-           
-            foreach (var ub in userBadges)
-            {
-                progression =ub.UserProgression.ToString();
 
+            float? progression = await IssueProgression();
 
-                while (status != "Resolved" && progression == "100") {
-                    
+            foreach (var ub in userBadges) { 
+             
+
+                if (ub.UserProgression <= ub.Badge.BadgeCriteria && ub.State != "Done" && DateTime.Now <= ub.BadgeDeadline)
+                {
+
+                    ub.UserProgression = (int)progression;
                     ub.State = status;
-                    _userRepository.UpdateUserProgression(ub);
-                    
-                }
-                
-                ub.ObtainedAt = DateTime.Today  ;
+                    _UserbadgeRepository.UpdateUserbadge(ub);
+                  
+                };
+               
 
+            } 
 
-            }
-            return progression;
 
         }
 

@@ -26,24 +26,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
            
         }
        
-        public DayEvent newdayevent()
-        {
-
-            string type = "badge";
-            string action = "is added ";
-            string description = " trying jajajajjaja";
-            int userId = 1;
-            int eventId = 5;
-            DateTime date = DateTime.Today;
-
-            var dayevent = new DayEvent();
-            DayEvent dayEvente = Create(date, action, description, userId, eventId, type, dayevent);
-
-            _context.DayEvents.Add(dayEvente);
-            _context.SaveChanges();
-
-            return dayEvente;
-          }
+        
                 
         
         public void addevent()
@@ -66,18 +49,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
 
         }
 
-        public DayEvent Create(DateTime date, string action , string description, int userId , int eventId ,string type,DayEvent dv)
-        {
-            dv.Action = action;
-            dv.UserId = userId;
-            dv.Description = description;
-            dv.EventId = eventId;
-            dv.Date = date;
-            _context.DayEvents.Add(dv);
-            _context.SaveChanges();
-            return dv;
-            
-        }
+      
         public bool CreateDayEvent(DayEvent dv)
         {
 

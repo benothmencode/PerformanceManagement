@@ -69,6 +69,8 @@ namespace PerformanceManagement.DATA.Repositories
             return saved >= 0 ? true : false;
         }
 
+
+
         public bool UserExists(int userId)
         {
             return _context.Users.Any(a => a.Id == userId);

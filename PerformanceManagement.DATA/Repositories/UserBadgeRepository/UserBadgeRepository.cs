@@ -104,6 +104,9 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             }
             return result;
         }
+
+
+
         public void UpdateUserbadge(UserBadge userBadge)
         {
             if(userBadge != null)

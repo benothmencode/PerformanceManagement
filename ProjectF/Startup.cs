@@ -80,7 +80,7 @@ namespace ProjectF
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
-            services.AddScoped<IToDosController, ToDosController>();
+            
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
             services.AddFlashMessage();
             services.AddIdentity<User, AppRole>()
@@ -124,6 +124,7 @@ namespace ProjectF
             Scheduler.ScheduleCommitbadgeTask();
             Scheduler.ScheduleUserbadgeTask();
             Scheduler.EventEveryDay();
+            Scheduler.ScheduleToDosbadgeTask();
 
 
 

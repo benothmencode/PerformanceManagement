@@ -41,6 +41,9 @@ namespace ProjectF.ExernalServices
                 {
 
                     RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), Cron.Minutely, TimeZoneInfo.Local);
+                    RecurringJob.AddOrUpdate<ToDosController>("todos", gl => gl.TodosBadge(),Cron.Minutely, TimeZoneInfo.Local);
+                    RecurringJob.AddOrUpdate<ToDosController>("dayeventforbadgefirstfeature", gl => gl.dayevent(), Cron.Minutely, TimeZoneInfo.Local);
+
                 }
             }
         }
@@ -117,7 +120,7 @@ namespace ProjectF.ExernalServices
         public void EventEveryDay()
         {
 
-            RecurringJob.AddOrUpdate<IEventRepository>("event", e => e.createeventeveryday(), "39 13 * * *", TimeZoneInfo.Local);
+            RecurringJob.AddOrUpdate<IEventRepository>("event", e => e.createeventeveryday(), "13 18 * * *", TimeZoneInfo.Local);
 
         }
        

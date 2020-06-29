@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,14 @@ namespace PerformanceManagement.DATA
 {
     public static class SeedData
     {
+        
         public static void Seed(UserManager<User> userManager, RoleManager<AppRole> roleManager)
         {
+          
             SeedRoles(roleManager);
             SeedUsers(userManager);
         }
+       
         private static void SeedUsers(UserManager<User> userManager)
         {
             if (userManager.FindByNameAsync("Admin").Result == null)

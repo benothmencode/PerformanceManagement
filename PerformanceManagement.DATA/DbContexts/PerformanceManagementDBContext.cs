@@ -32,9 +32,7 @@ namespace PerformanceManagement.DATA.DbContexts
                .HasConversion(
                    v => v.ToString(),
                    v => (Periodicity)Enum.Parse(typeof(Periodicity), v));
-
-
-            base.OnModelCreating(modelBuilder);
+                   base.OnModelCreating(modelBuilder);
 
 
         }

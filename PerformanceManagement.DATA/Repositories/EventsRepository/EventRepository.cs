@@ -13,7 +13,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
     public class EventRepository : IEventRepository
     {
 
-
+        da
         private PerformanceManagementDBContext _context;
 
         private IBadgeRepository _badgeRepository;
@@ -26,25 +26,26 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
            
         }
        
-        public DayEvent newdayevent()
-        {
+        //public DayEvent newdayevent()
+        //{
 
-            string title = "new badge";
-            string type = "badge";
-            string action = "is added ";
-            string description = " trying jajajajjaja";
-            int userId = 1;
-            int eventId = 5;
-            DateTime date = DateTime.Today;
+        //    string title = "new badge";
+        //    string type = "badge";
+        //    string action = "is added ";
+        //    string description = " trying jajajajjaja";
+        //    int userId = 1;
+        //    int eventId = 5;
+        //    DateTime date = DateTime.Today;
 
-            var dayevent = new DayEvent();
-            DayEvent dayEvente = Create(date, title, action, description, userId, eventId, type, dayevent);
+        //    var dayevent = new DayEvent();
 
-            _context.DayEvents.Add(dayEvente);
-            _context.SaveChanges();
+        //    DayEvent dayEvente = Create(date, title, action, description, userId, eventId, type, dayevent);
 
-            return dayEvente;
-          }
+        //    _context.DayEvents.Add(dayEvente);
+        //    _context.SaveChanges();
+
+        //    return dayEvente;
+        //  }
                 
         
         public void addevent()
@@ -67,18 +68,14 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
 
         }
 
-        public DayEvent Create(DateTime date,string title , string action , string description, int userId , int eventId ,string type,DayEvent dv)
+        public bool CreateDayEvent(DayEvent dv)
         {
-            dv.Action = action;
-            dv.Title = title;
-            dv.UserId = userId;
-            dv.Description = description;
-            dv.EventId = eventId;
-            dv.Date = date;
+        
             _context.DayEvents.Add(dv);
-            _context.SaveChanges();
-            return dv;
-            
+
+            return _context.SaveChanges() >= 0 ? true : false; ;
+
+
         }
 
         public bool verifybadge()
@@ -120,7 +117,6 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
             IEnumerable<Event> events = _context.Events.ToList();
             IEnumerable<DayEvent> dayevents = _context.DayEvents.ToList();
 
-            IEnumerable<DayEvent> getAllDayEventsPerDate = new IEnumerable<DayEvent>();
             foreach (var ev in events)
             {
                 if (ev.Date == DateTime.Today)
@@ -161,7 +157,7 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
         public void createeventeveryday()
         {
             Event ev = new Event();
-            ev.Date = DateTime.Today;
+            ev.Date = DateTime.Now;
             var lev = _context.Events;
 
             foreach (var e in lev)
@@ -169,11 +165,10 @@ namespace PerformanceManagement.DATA.Repositories.EventsRepository
                 if (e.Date != ev.Date)
                 {
                     _context.Events.Add(ev);
-                    //_context.SaveChanges();
+                    _context.SaveChanges();
                 }
             }
         }
 
-       
     }
 }

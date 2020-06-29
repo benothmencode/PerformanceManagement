@@ -63,7 +63,7 @@ namespace ProjectF.Controllers
           }
 
         [Authorize]
-        public JsonResult VoteRegistration(int idUserChosen , int idVote , int UserId)
+        public JsonResult VoteRegistration(int idUserChosen, int idVote, int UserId)
         {
             var vote = _voteRepository.GetVoteRights(idVote);
 
@@ -71,13 +71,13 @@ namespace ProjectF.Controllers
             {
                 _voteRepository.CreateVoteHistory(idUserChosen, vote.TypeVoteId, UserId);
 
-                 return Json(new
-                 {
-                     success = true,
-                     responseText = _voteRepository.GetVoteHistory(UserId)
-                 });
+                return Json(new
+                {
+                    success = true,
+                    responseText = _voteRepository.GetVoteHistory(UserId)
+                });
             }
-            else 
+            else
             {
                 return Json(new
                 {
@@ -85,10 +85,10 @@ namespace ProjectF.Controllers
                     responseText = "you Used All your VoteRights ! "
                 });
             }
-            
+
         }
 
-      
+
 
 
 

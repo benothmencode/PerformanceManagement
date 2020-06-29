@@ -30,7 +30,7 @@ namespace ProjectF
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        { 
+        {
             Configuration = configuration;
         }
 
@@ -46,25 +46,24 @@ namespace ProjectF
                                );
             services.AddRazorPages();
             string connectionString = this.Configuration.GetConnectionString("DefaultContext");
-            services.AddDbContext<PerformanceManagementDBContext>(Options => 
+            services.AddDbContext<PerformanceManagementDBContext>(Options =>
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
-           
+
             services.AddHangfire(configuration => configuration
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
                     .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
                     {
-                      CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                      SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                      QueuePollInterval = TimeSpan.Zero,
-                      UseRecommendedIsolationLevel = true,
-                      UsePageLocksOnDequeue = true,
-                      DisableGlobalLocks = true
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        UsePageLocksOnDequeue = true,
+                        DisableGlobalLocks = true
                     }));
             services.AddHangfireServer();
             JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
-
 
 
 
@@ -79,7 +78,6 @@ namespace ProjectF
             services.AddScoped<ICommitsController, CommitsController>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
-            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IToDosController, ToDosController>();
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
 
@@ -88,7 +86,7 @@ namespace ProjectF
             .AddDefaultTokenProviders()
             .AddRoles<AppRole>()
             .AddEntityFrameworkStores<PerformanceManagementDBContext>();
-            
+
 
             services.AddAutoMapper(typeof(Startup));
             //services.AddMvcCore(options =>
@@ -126,7 +124,7 @@ namespace ProjectF
             //Scheduler.ScheduleUserbadgeTask();
 
             //Scheduler.ScheduleToDosbadgeTask();
-            Scheduler.ScheduleEvent();
+            //Scheduler.ScheduleEvent();
 
             app.UseRouting();
             app.UseAuthentication();

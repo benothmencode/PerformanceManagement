@@ -10,7 +10,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
         public List<UserBadge> GetUsersBadge(Badge badge);
         public List<UserBadge> GetUsersBadge(int UserId);
         public List<UserBadge> GetUserBadges();
-
+        public List<UserBadge> GetAll();
         bool UpdateProgression(Progression progression);
         Progression GetLastProgressionofUserbadge(int ubID);
 

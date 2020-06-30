@@ -7,5 +7,6 @@
         void CreationUserbadgeTask();
         void ScheduleToDosbadgeTask();
         void EventEveryDay();
+        public void SchedulePBITask();
     }
 }

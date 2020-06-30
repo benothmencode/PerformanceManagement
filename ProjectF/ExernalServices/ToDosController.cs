@@ -124,7 +124,7 @@ namespace ProjectF.ExernalServices
                 if (ub.UserProgression == 10)
                 {
                     var evente = _eventRepository.GetAll().Where(e => e.Date == DateTime.Today).FirstOrDefault();
-                    if (evente != null)
+                   if (evente != null)
                     {
                         
                         

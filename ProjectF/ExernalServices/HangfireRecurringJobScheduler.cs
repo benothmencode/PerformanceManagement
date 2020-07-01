@@ -34,7 +34,7 @@ namespace ProjectF.ExernalServices
 
       public void SchedulePBITask()
         {
-           RecurringJob.AddOrUpdate<PBIController>("powerBI",pbi=>pbi.create(), Cron.Monthly, TimeZoneInfo.Local);
+            RecurringJob.AddOrUpdate<PBIController>("powerBI",pbi=>pbi.firstpbi(),Cron.Weekly, TimeZoneInfo.Local);
         }
 
 
@@ -50,7 +50,7 @@ namespace ProjectF.ExernalServices
 
                     RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), Cron.Minutely, TimeZoneInfo.Local);
                     RecurringJob.AddOrUpdate<ToDosController>("todos", gl => gl.TodosBadge(),Cron.Minutely, TimeZoneInfo.Local);
-                    RecurringJob.AddOrUpdate<ToDosController>("dayeventforbadgefirstfeature", gl => gl.dayevent(), Cron.Minutely, TimeZoneInfo.Local);
+                    //RecurringJob.AddOrUpdate<ToDosController>("dayeventforbadgefirstfeature", gl => gl.dayevent(), Cron.Minutely, TimeZoneInfo.Local);
 
                 }
             }

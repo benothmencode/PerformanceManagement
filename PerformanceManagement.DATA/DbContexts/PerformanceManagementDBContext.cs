@@ -15,7 +15,7 @@ namespace PerformanceManagement.DATA.DbContexts
 
 
             modelBuilder.Entity<PBIEntity>().HasKey(pbi=>pbi.Id);
-            
+           
 
             modelBuilder.Entity<SystemeUser>()
          .HasKey(Us => new { Us.SystemeId, Us.UserId });

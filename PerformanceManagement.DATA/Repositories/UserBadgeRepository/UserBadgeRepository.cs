@@ -94,7 +94,16 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             }
             return null;
         }
+        public UserBadge GetLastProgressionofUserbadgefromuserbadge(int ubID)
+        {
+            var progression = _context.userBadges.Where(p => p.Id == ubID).ToList().LastOrDefault();
+            if (progression != null)
+            {
 
+                return progression;
+            }
+            return null;
+        }
         //UserBadgeExistAtcertainTime
         public bool UserBadgeExist(int idUser , int idBadge , DateTime Date)
         {

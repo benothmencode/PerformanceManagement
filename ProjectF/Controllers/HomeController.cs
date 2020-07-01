@@ -47,7 +47,8 @@ namespace ProjectF.Controllers
         {
 
             //_eventRepository.createeventeveryday();
-            //_pbiRepository.CreatePBI();
+            //pbiRepository.CreatePBI();
+            //_pbiRepository.firstpbi();
             var dayevents = _eventRepository.getAllDayEventsForToday();
             var events = _eventRepository.GetAll().OrderByDescending(d=>d.Date);
             var model = _mapper.Map< IList<EventEntityDto>>(events);

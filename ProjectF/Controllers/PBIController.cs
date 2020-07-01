@@ -32,7 +32,13 @@ namespace ProjectF.Controllers
             _UserBadgeRepository = userBadgeRepository;
            
         }
+        public void firstpbi()
+        {
+            _PBIRepository.firstpbi(); 
 
+                    
+          
+        }
 
         public  void create()
         {

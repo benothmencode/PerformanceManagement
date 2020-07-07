@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.API", "PerformanceManagement.API\PerformanceManagement.API.csproj", "{EBDC10A2-B2E5-4DDE-805D-0809977BAC32}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.DATA", "PerformanceManagement.DATA\PerformanceManagement.DATA.csproj", "{DDFFBD87-23DA-4100-964D-4CFB6F9A9F56}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PerformanceManagement.ENTITIES", "PerformanceManagement.ENTITIES\PerformanceManagement.ENTITIES.csproj", "{492A2265-1DAD-46C9-8ABA-C098E605154A}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EBDC10A2-B2E5-4DDE-805D-0809977BAC32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBDC10A2-B2E5-4DDE-805D-0809977BAC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBDC10A2-B2E5-4DDE-805D-0809977BAC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBDC10A2-B2E5-4DDE-805D-0809977BAC32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDFFBD87-23DA-4100-964D-4CFB6F9A9F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DDFFBD87-23DA-4100-964D-4CFB6F9A9F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDFFBD87-23DA-4100-964D-4CFB6F9A9F56}.Release|Any CPU.ActiveCfg = Release|Any CPU

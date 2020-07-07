@@ -17,7 +17,7 @@ using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.EventsRepository;
 using PerformanceManagement.DATA.Repositories.HomeRepository;
-using PerformanceManagement.DATA.Repositories.PBIRepository;
+
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
@@ -81,8 +81,7 @@ namespace ProjectF
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
-            services.AddScoped<IPBIRepository, PBIRepository>();
-            
+           
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
             services.AddFlashMessage();
             services.AddIdentity<User, AppRole>()
@@ -127,8 +126,7 @@ namespace ProjectF
             Scheduler.ScheduleUserbadgeTask();
             Scheduler.EventEveryDay();
             Scheduler.ScheduleToDosbadgeTask();
-            Scheduler.SchedulePBITask();
-
+       
 
 
             app.UseRouting();

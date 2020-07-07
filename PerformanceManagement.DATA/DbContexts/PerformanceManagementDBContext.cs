@@ -14,7 +14,7 @@ namespace PerformanceManagement.DATA.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
 
-            modelBuilder.Entity<PBIEntity>().HasKey(pbi=>pbi.Id);
+            
            
 
             modelBuilder.Entity<SystemeUser>()
@@ -44,7 +44,7 @@ namespace PerformanceManagement.DATA.DbContexts
         }
 
         public DbSet<User> Employees { get; set; }
-        public DbSet<PBIEntity> pbis { get; set; }
+     
         public DbSet<Badge> Badges { get; set; }
         public DbSet<Systeme> Systemes { get; set; }
         public DbSet<SystemeUser> SystemeUsers { get; set; }

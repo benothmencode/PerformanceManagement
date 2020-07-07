@@ -2,7 +2,7 @@
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.EventsRepository;
-using PerformanceManagement.DATA.Repositories.PBIRepository;
+
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
 using ProjectF.Controllers;
@@ -20,23 +20,19 @@ namespace ProjectF.ExernalServices
 
         private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IUserRepository _UserRepository;
-        private readonly IPBIRepository _PbibadgeRepository;
+       
 
-        public HangfireRecurringJobScheduler(IBadgeRepository badgeRepository, IPBIRepository pbibadgeRepository,IUserBadgeRepository userBadgeRepository, IUserRepository userRepository)
+        public HangfireRecurringJobScheduler(IBadgeRepository badgeRepository,IUserBadgeRepository userBadgeRepository, IUserRepository userRepository)
         {
             _BadgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
             _UserRepository = userRepository;
-            _PbibadgeRepository = pbibadgeRepository;
+            
 
 
         }
 
-      public void SchedulePBITask()
-        {
-            RecurringJob.AddOrUpdate<PBIController>("powerBI",pbi=>pbi.firstpbi(),Cron.Weekly, TimeZoneInfo.Local);
-        }
-
+     
 
             public void ScheduleToDosbadgeTask()
         {

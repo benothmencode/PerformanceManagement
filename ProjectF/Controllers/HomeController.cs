@@ -9,7 +9,7 @@ using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.EventsRepository;
 using PerformanceManagement.DATA.Repositories.HomeRepository;
-using PerformanceManagement.DATA.Repositories.PBIRepository;
+
 using ProjectF.Models;
 using ProjectF.ModelsDTOS;
 using ProjectF.ViewModels;
@@ -27,8 +27,8 @@ namespace ProjectF.Controllers
         private readonly IMapper _mapper;
         private readonly IHomeRepository _HomeRepository;
         private readonly IEventRepository _eventRepository;
-        private readonly IPBIRepository _pbiRepository;
-        public HomeController(IEventRepository eventRepository,ILogger<HomeController> logger, IPBIRepository pbiRepository, IHomeRepository homeRepository, IUserRepository userRepository, IBadgeRepository badgeRepository, IMapper mapper, IConfiguration configuration)
+     
+        public HomeController(IEventRepository eventRepository,ILogger<HomeController> logger,  IHomeRepository homeRepository, IUserRepository userRepository, IBadgeRepository badgeRepository, IMapper mapper, IConfiguration configuration)
         {
          _logger = logger;
 
@@ -38,7 +38,7 @@ namespace ProjectF.Controllers
             _HomeRepository = homeRepository ??
                 throw new ArgumentNullException(nameof(homeRepository));
             _eventRepository = eventRepository;
-            _pbiRepository = pbiRepository;
+            
         }
       
 
@@ -47,8 +47,7 @@ namespace ProjectF.Controllers
         {
 
             //_eventRepository.createeventeveryday();
-            //pbiRepository.CreatePBI();
-            //_pbiRepository.firstpbi();
+           
             var dayevents = _eventRepository.getAllDayEventsForToday();
             var events = _eventRepository.GetAll().OrderByDescending(d=>d.Date);
             var model = _mapper.Map< IList<EventEntityDto>>(events);

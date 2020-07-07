@@ -66,7 +66,10 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
         {
             return _context.userBadges.Where(ub => ub.UserId == UserId).Include(ub => ub.User).Include(ub => ub.Badge).ToList();
         }
-
+        public List<UserBadge> GetAll()
+        {
+            return _context.userBadges.ToList();
+        }
         public List<UserBadge> GetUserBadges()
         {
             return _context.userBadges.Include(ub => ub.User).Include(ub => ub.Badge).Include(ub => ub.Progressions).ToList();
@@ -92,7 +95,16 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             }
             return null;
         }
+        public UserBadge GetLastProgressionofUserbadgefromuserbadge(int ubID)
+        {
+            var progression = _context.userBadges.Where(p => p.Id == ubID).ToList().LastOrDefault();
+            if (progression != null)
+            {
 
+                return progression;
+            }
+            return null;
+        }
         //UserBadgeExistAtcertainTime
         public bool UserBadgeExist(int idUser, int idBadge, DateTime Date)
         {

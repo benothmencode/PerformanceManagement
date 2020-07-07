@@ -22,7 +22,7 @@ namespace ProjectF.ExernalServices
         
         
 
-        public  Task dayevent();
+        //public  Task dayevent();
     
 
         

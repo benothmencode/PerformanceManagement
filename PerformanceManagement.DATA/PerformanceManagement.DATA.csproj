@@ -35,6 +35,12 @@
     <Compile Remove="Migrations\20200617100044_UpdateAttribperiodicity.Designer.cs" />
     <Compile Remove="Migrations\20200627193020_Test.cs" />
     <Compile Remove="Migrations\20200627193020_Test.Designer.cs" />
+    <Compile Remove="Migrations\20200629154958_bbsmm.cs" />
+    <Compile Remove="Migrations\20200629154958_bbsmm.Designer.cs" />
+    <Compile Remove="Migrations\20200630112526_pbi.cs" />
+    <Compile Remove="Migrations\20200630112526_pbi.Designer.cs" />
+    <Compile Remove="Migrations\20200630112920_ppp.cs" />
+    <Compile Remove="Migrations\20200630112920_ppp.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

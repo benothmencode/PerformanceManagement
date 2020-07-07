@@ -16,9 +16,9 @@ using PerformanceManagement.ENTITIES;
 
 namespace ProjectF.ExernalServices
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class CommitsController : ControllerBase , ICommitsController
+    //[Route("api/[controller]/[action]")]
+    //[ApiController]
+    public class CommitsController : ICommitsController
     {
         private readonly GitLabClient _gitLabClient;
         private readonly IUserRepository _userRepository;
@@ -36,13 +36,13 @@ namespace ProjectF.ExernalServices
 
 
         }
-        [ActionName("LoadProjects")]
+        //[ActionName("LoadProjects")]
         public async Task<IList<Project>> LoadProjects()
         {
             return await _gitLabClient.Projects.GetAsync();
         }
 
-        [ActionName("VerifyIdUser")]
+        //[ActionName("VerifyIdUser")]
         public async Task<int?> VerifyIdUser(int userId)
         {
             
@@ -59,7 +59,7 @@ namespace ProjectF.ExernalServices
         }
 
 
-        [ActionName("LoadProjectsperUser")]
+        //[ActionName("LoadProjectsperUser")]
         public async Task<IList<Project>> ListProjectsPerUser(int userId)
         {
             int? IdsUserGitlab = await VerifyIdUser(userId);
@@ -76,7 +76,7 @@ namespace ProjectF.ExernalServices
         }
 
 
-        [ActionName("LoadprojectsMemberofperUser")]
+        //[ActionName("LoadprojectsMemberofperUser")]
         public async Task<int> nombreCommits(int userId , int idBadge , DateTime? update)
         {
             int nbrCommit = new int();
@@ -121,7 +121,7 @@ namespace ProjectF.ExernalServices
 
        
 
-        [ActionName("CountCommits")]
+        //[ActionName("CountCommits")]
         public async Task<int> CountCommits(int userId, int idBadge, DateTime? update)
         {
             int nbrCommit = new int();
@@ -146,7 +146,7 @@ namespace ProjectF.ExernalServices
             return nbrCommit;
         }
 
-        [ActionName("FirstCommit")]
+        //[ActionName("FirstCommit")]
         public async Task<bool> FirstCommiter()
         {
             bool result = new bool();
@@ -168,7 +168,7 @@ namespace ProjectF.ExernalServices
 
 
 
-        [ActionName("counter")]
+        //[ActionName("counter")]
         public async Task<int> nbreCommits(int userId, int idBadge, DateTime? update)
         {
             int nbrCommit = new int();

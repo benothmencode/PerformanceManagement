@@ -1,4 +1,5 @@
 ﻿@model PerformanceManagement.ENTITIES.Systeme
+@addTagHelper *, Vereyon.Web.FlashMessage
 
 @{
     ViewData["Title"] = "CreateSysteme";
@@ -27,6 +28,7 @@
 
     <section class="content">
         <div class="row">
+            <flash dismissable="true" />
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
@@ -50,11 +52,6 @@
                                 <label asp-for="Description" class="control-label"></label>
                                 <input asp-for="Description" class="form-control" />
                                 <span asp-validation-for="Description" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Created" class="control-label"></label>
-                                <input asp-for="Created" class="form-control" />
-                                <span asp-validation-for="Created" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <a href="#" class="btn btn-secondary">Cancel</a>

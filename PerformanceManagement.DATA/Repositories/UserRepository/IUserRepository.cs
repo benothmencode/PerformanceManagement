@@ -22,6 +22,7 @@ namespace PerformanceManagement.DATA.Repositories
         bool UpdateUserProgression(UserBadge userBadge);
 
         bool UserExists(int userId);
+        bool DesactivateOrActivateUser(int userId , bool result);
 
 
 

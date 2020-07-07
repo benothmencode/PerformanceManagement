@@ -63,24 +63,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var user in Model.ListusersForAdmins)
+                        @foreach (var item in Model.ListusersForAdmins)
                         {
-                            @foreach (var role in @user.RolesHeld)
+                            @foreach (var role in @item.RolesHeld)
                             {
                                 <tr>
                                     <td>
                                         <a>
-                                            @user.UserName
+                                            @item.UserName
                                         </a>
                                         <br />
                                         <small>
-                                            Created @user.Created
+                                            Created @item.Created
                                         </small>
                                     </td>
                                     <td>
-                                        <center><img alt="Avatar" class="table-avatar" src="~/theme/dist/img/@user.Userimage"></center>
+                                        <center><img alt="Avatar" class="table-avatar" src="~/theme/dist/img/@item.Userimage"></center>
                                     </td>
-                                    @if (role.Equals("Administrator") && user.UserId.ToString() == UserManager.GetUserId(User))
+                                    @if (role.Equals("Administrator") && item.UserId.ToString() == UserManager.GetUserId(User))
                                     {
                                         <td class="project-state">
                                             <span class="badge badge-danger">@role</span>
@@ -114,11 +114,22 @@
                                             </i>
                                             Edit
                                         </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                            Delete
-                                        </a>
+                                            @if (@item.UserId.ToString() != UserManager.GetUserId(User) && @item.Active)
+                                            {
+                                                <a onclick="Desctivate(@item.UserId)" class="btn btn-danger btn-sm" href="#">
+                                                    <i class="fas fa-trash">
+                                                    </i>
+                                                    Disable Account
+                                                </a>
+                                            }
+                                            else if (!@item.Active)
+                                            {
+                                                <a onclick="Activate(@item.UserId)" class="btn btn-success btn-sm" href="#">
+                                                    <i class="fas fa-toggle-on">
+                                                    </i>
+                                                    Enable Account
+                                                </a>
+                                            }
                                     </td>
                                 </tr>
                             }
@@ -134,3 +145,56 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+
+@section scripts{
+    <script>
+        function Desctivate(id) {
+            if (confirm("Are you Sure you want to Disable this User?")) {
+                $.ajax({
+                    url: "/Admin/DesactivateUser",
+                    type: "POST",
+                    dataType: "json",
+                    data: { UserId: id },
+                    success: function (data) {
+                        if (data.success) {
+                            alert(data.responseText);
+                             window.location.reload(true);
+                        }
+                        else {
+                            alert(data.responseText);
+                        }
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        };
+
+
+
+        function Activate(id) {
+            if (confirm("Are you Sure you want to enable this User?")) {
+                $.ajax({
+                    url: "/Admin/activateUser",
+                    type: "POST",
+                    dataType: "json",
+                    data: { UserId: id },
+                    success: function (data) {
+                        if (data.success) {
+                            alert(data.responseText);
+                             window.location.reload(true);
+                        }
+                        else {
+                            alert(data.responseText);
+                        }
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        };
+    </script>
+}

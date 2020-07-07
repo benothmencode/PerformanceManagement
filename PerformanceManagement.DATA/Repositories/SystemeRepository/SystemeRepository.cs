@@ -32,8 +32,7 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         }
         public void CreateSysteme(Systeme systeme)
         {
-            //IList<Badge> badges = _context.Badges.Where(b => BadgeIds.Contains(b.Id)).ToList();
-            //systeme.Badges = badges;
+            systeme.Created = DateTime.Now;
             _context.Add(systeme);
             _context.SaveChanges();
         }
@@ -50,10 +49,14 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
             _context.SaveChanges();
         }
 
-
         public bool SystemeExists(int systemeId)
         {
             return _context.Systemes.Any(a => a.Id == systemeId);
+        }
+
+        public Systeme GetGitlab(string title)
+        {
+            return _context.Systemes.FirstOrDefault(s => s.SystemName == title);
         }
 
     }

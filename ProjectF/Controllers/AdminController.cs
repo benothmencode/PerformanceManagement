@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.ENTITIES;
@@ -22,11 +23,12 @@ namespace ProjectF.Controllers
         private readonly RoleManager<AppRole> _roleManager;
         private readonly ISystemeRepository _SystemeRepository;
         private readonly IBadgeRepository _BadgeRepository;
+        private readonly IUserRepository _userRepository;
 
         private readonly ICommitsController _CommitsController;
 
         public AdminController(UserManager<User> userManager , RoleManager<AppRole> roleManager , ISystemeRepository systemeRepository 
-            , IBadgeRepository badgeRepository , ICommitsController commitsController)
+            , IBadgeRepository badgeRepository , IUserRepository userRepository)
         {
             _userManager =userManager ??
               throw new ArgumentNullException(nameof(userManager));
@@ -36,7 +38,7 @@ namespace ProjectF.Controllers
             _SystemeRepository = systemeRepository ??
              throw new ArgumentNullException(nameof(systemeRepository));
             _BadgeRepository = badgeRepository;
-            _CommitsController = commitsController;
+            _userRepository = userRepository;
 
         }
 
@@ -83,12 +85,59 @@ namespace ProjectF.Controllers
             if (ModelState.IsValid)
             {
                 _SystemeRepository.CreateSysteme(systeme);
+                
                 return RedirectToAction(nameof(SystemManagement));
             }
             return View(systeme);
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> DesactivateUser(int UserId)
+        {
+            var user = await _userManager.FindByIdAsync(UserId.ToString());
+            if (user != null && user.Active)
+            {
+                bool result = false;
+                _userRepository.DesactivateOrActivateUser(UserId,result);
+                return Json(new
+                {
+                    success = true,
+                    responseText = "Employee disabled Successfully!! "
+                });
+            }
+            return Json(new
+            {
+                success = false,
+                responseText = "Something went wrong !! "
+            });
+        }
+
+
+   
+        [HttpPost]
+        public async Task<IActionResult> activateUser(int UserId)
+        {
+            var user = await _userManager.FindByIdAsync(UserId.ToString());
+            if (user != null && !user.Active)
+            {
+                bool result = true;
+                _userRepository.DesactivateOrActivateUser(UserId , result);
+                return Json(new
+                {
+                    success = true,
+                    responseText = "Employee enabled Successfully!! "
+                });
+            }
+            return Json(new
+            {
+                success = false,
+                responseText = "Something went wrong !! "
+            });
+
+
+
+
+        }
 
     }
 }

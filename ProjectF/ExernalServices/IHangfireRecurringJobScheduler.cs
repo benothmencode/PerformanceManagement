@@ -2,10 +2,7 @@
 {
     public interface IHangfireRecurringJobScheduler
     {
-        void ScheduleCommitbadgeTask();
         void ScheduleUserbadgeTask();
-        void CreationUserbadgeTask();
-        void ScheduleToDosbadgeTask();
         void EventEveryDay();
     }
 }

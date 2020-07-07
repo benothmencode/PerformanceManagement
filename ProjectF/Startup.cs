@@ -20,6 +20,8 @@ using PerformanceManagement.DATA.Repositories.HomeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
+using ProjectF.Areas.Identity;
+using ProjectF.BadgeJobs;
 using ProjectF.Components;
 using ProjectF.ExernalServices;
 using System;
@@ -46,7 +48,7 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
+            string connectionString = this.Configuration.GetConnectionString("MyDefaultContext");
             services.AddDbContext<PerformanceManagementDBContext>(Options => 
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
            
@@ -54,7 +56,7 @@ namespace ProjectF
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                    .UseSqlServerStorage(Configuration.GetConnectionString("MyHangfireConnection"), new SqlServerStorageOptions
                     {
                       CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                       SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -64,7 +66,7 @@ namespace ProjectF
                       DisableGlobalLocks = true
                     }));
             services.AddHangfireServer();
-            JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
+            JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("MyHangfireConnection"));
 
 
 
@@ -80,14 +82,18 @@ namespace ProjectF
             services.AddScoped<ISystemeRepository, SystemeRepository>();
             services.AddScoped<ICommitsController, CommitsController>();
             services.AddScoped<IUserBadgeRepository, UserBadgeRepository>();
-            
+
+            services.AddScoped<IJobService, JobService>();
+
             services.AddScoped<IHangfireRecurringJobScheduler, HangfireRecurringJobScheduler>();
             services.AddFlashMessage();
+
             services.AddIdentity<User, AppRole>()
             .AddDefaultUI()
             .AddDefaultTokenProviders()
             .AddRoles<AppRole>()
-            .AddEntityFrameworkStores<PerformanceManagementDBContext>();
+            .AddEntityFrameworkStores<PerformanceManagementDBContext>()
+            .AddSignInManager<ApplicationSignInManager>();
             
 
             services.AddAutoMapper(typeof(Startup));
@@ -103,7 +109,9 @@ namespace ProjectF
             IWebHostEnvironment env,
             UserManager<User> userManager,
             RoleManager<AppRole> roleManager,
-            IHangfireRecurringJobScheduler Scheduler
+            IJobService jobService,
+            IHangfireRecurringJobScheduler Scheduler,
+            PerformanceManagementDBContext dBContext
             )
         {
             if (env.IsDevelopment())
@@ -119,14 +127,12 @@ namespace ProjectF
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-
+            dBContext.Database.Migrate();
             ////HANGFIRE
-            Scheduler.ScheduleCommitbadgeTask();
+            jobService.startAllJobs();
+
             Scheduler.ScheduleUserbadgeTask();
             Scheduler.EventEveryDay();
-            Scheduler.ScheduleToDosbadgeTask();
-
-
 
             app.UseRouting();
             app.UseAuthentication();

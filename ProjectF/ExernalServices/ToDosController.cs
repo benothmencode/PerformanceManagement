@@ -126,8 +126,6 @@ namespace ProjectF.ExernalServices
                     var evente = _eventRepository.GetAll().Where(e => e.Date == DateTime.Today).FirstOrDefault();
                     if (evente != null)
                     {
-                        
-                        
                         DayEvent ListEvent = new DayEvent()
                         {
                             Action = "Progression",

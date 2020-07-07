@@ -11,7 +11,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">List Of badges</h1><br />
-                     </div><!-- /.col -->
+                </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -93,55 +93,55 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                <a>
-                                    <h3 class="card-title"><b>Badge Title : @item.Title</b></h3><br />
-                                </a>
-                                <br />
-                                <small>
-                                    Created : @item.Created
-                                </small>
-                            </td>
-                            <td>
-                                <img src="/theme/dist/img/@item.Icon" class="product-image-thumbs" width="80" height="80" alt="Product Image"><br />
-                            </td>
-
-                            <td class="project-state">
-                                Badge Criteria : <strong>@item.BadgeCriteria</strong>
-                                <br />
-                                Badge Description : @item.Description
-                            </td>
-                            @if (@item.Systeme != null)
-                            {
-                            <td>
-                               <center> Systeme : @item.Systeme.SystemName</center>
-                            </td>
-                            }
-                            else if(@item.TypeVote != null)
-                            {
+                            <tr>
                                 <td>
-                                    <center> TypeVote : @item.TypeVote.Libellé</center>
+                                    <a>
+                                        <h3 class="card-title"><b>Badge Title : @item.Title</b></h3><br />
+                                    </a>
+                                    <br />
+                                    <small>
+                                        Created : @item.Created
+                                    </small>
                                 </td>
-                            }
-                            <td class="project-actions text-right">
-                                <a class="btn btn-primary btn-sm" href="#">
-                                    <i class="fas fa-folder">
-                                    </i>
-                                    View
-                                </a>
-                                <a class="btn btn-info btn-sm" href="#">
-                                    <i class="fas fa-pencil-alt">
-                                    </i>
-                                    Edit
-                                </a>
-                                <a class="btn btn-danger btn-sm" href="#">
-                                    <i class="fas fa-trash">
-                                    </i>
-                                    Delete
-                                </a>
-                            </td>
-                        </tr>
+                                <td>
+                                    <img src="/theme/dist/img/@item.Icon" class="product-image-thumbs" width="80" height="80" alt="Product Image"><br />
+                                </td>
+
+                                <td class="project-state">
+                                    Badge Criteria : <strong>@item.BadgeCriteria</strong>
+                                    <br />
+                                    Badge Description : @item.Description
+                                </td>
+                                @if (@item.Systeme != null)
+                                {
+                                    <td>
+                                        <center> Systeme : @item.Systeme.SystemName</center>
+                                    </td>
+                                }
+                                else if (@item.TypeVote != null)
+                                {
+                                    <td>
+                                        <center> TypeVote : @item.TypeVote.Libellé</center>
+                                    </td>
+                                }
+                                <td class="project-actions text-right">
+                                    <a class="btn btn-primary btn-sm" href="#">
+                                        <i class="fas fa-folder">
+                                        </i>
+                                        View
+                                    </a>
+                                    <a class="btn btn-info btn-sm" href="#">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" href="#">
+                                        <i class="fas fa-trash">
+                                        </i>
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -150,7 +150,7 @@
         </div>
         <!-- /.card -->
 
-     
+
         <div class="modal" tabindex="-1" role="dialog" id="form-modal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -167,7 +167,7 @@
             </div>
         </div>
     </section>
-<!-- /.content -->
+    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
@@ -186,6 +186,36 @@
                     $('#form-modal').modal('show');
                 }
             })
+        }
+    </script>
+    <script>
+        jQueryAjaxPost = form => {
+            try {
+                $.ajax({
+                    type: 'POST',
+                    url: form.action,
+                    data: new FormData(form),
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        if (res.isValid) {
+                            $('#view-all').html(res.html)
+                            $('#form-modal .modal-body').html('');
+                            $('#form-modal .modal-title').html('');
+                            $('#form-modal').modal('hide');
+                        }
+                        else
+                            $('#form-modal .modal-body').html(res.html);
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+                //to prevent default form submit event
+                return false;
+            } catch (ex) {
+                console.log(ex)
+            }
         }
     </script>
 }

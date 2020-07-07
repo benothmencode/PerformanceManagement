@@ -24,7 +24,11 @@ namespace PerformanceManagement.DATA
                 var user = new User
                 {
                     UserName = "admin",
-                    Email = "admin@gmail.com"
+                    Email = "admin@gmail.com",
+                    Active = true ,
+                    Userimage = "avatar5.png"
+
+
                 };
                 var result = userManager.CreateAsync(user, "P@ssword1").Result;
                 if (result.Succeeded)

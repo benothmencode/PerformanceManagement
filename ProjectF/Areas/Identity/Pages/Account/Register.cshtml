@@ -32,7 +32,7 @@
                         <div class="col-xl-12">
                             <section>
                                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                                    <h4>Create a new Employee account.</h4>
+                                    <h4>Create a new Employee account</h4>
                                     <hr />
                                     <div asp-validation-summary="All" class="text-danger"></div>
                                     <div class="input-group mb-3">
@@ -63,62 +63,45 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="input-group mb-3">
-
-                                        <input asp-for="Input.Email" class="form-control" placeholder="Email" />
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span asp-validation-for="Input.Email" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="input-group mb-3">
 
                                         <input asp-for="Input.Password" class="form-control" placeholder="Password" />
-                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
-                                                <span class="fas fa-lock"></span>
+                                                <span asp-validation-for="Input.Password" class="fas fa-lock"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="input-group mb-3">
-
                                         <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm Your Password" />
-                                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
-                                                <span class="fas fa-lock"></span>
+                                                <span asp-validation-for="Input.ConfirmPassword" class="fas fa-lock"></span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label asp-for="UserSystemsvm.systemes">Systemes:</label>
-                                        <select type="button" class="btn btn-md btn-secondary" asp-for="UserSystemsvm.SelectedSystemesID" asp-items="@Model.UserSystemsvm.systemes">
-                                            <option value="" selected disabled>-- Select Systeme Name --</option>
-                                        </select>
-                                        <span asp-validation-for="UserSystemsvm.SelectedSystemesID" class="text-danger"></span>
-                                        
-                                    </div>
-                                    <div class="input-group mb-3">
 
-                                        <input asp-for="Input.Identifier" class="form-control" placeholder="Systeme Identifier" />
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span asp-validation-for="Input.Identifier" class="text-danger"></span>
+                                    @if (@Model.systemG != null)
+                                    {
+                                        <div class="input-group mb-3">
+                                            <input asp-for="Input.Identifier" class="form-control" placeholder="Gitlab Identifier" />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span asp-validation-for="Input.Identifier" class="text-danger"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="input-group mb-3">
+                                        <div class="input-group mb-3">
 
-                                        <input asp-for="Input.UrlAccount" class="form-control" placeholder="User UrlAccount" />
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span asp-validation-for="Input.UrlAccount" class="text-danger"></span>
+                                            <input asp-for="Input.UrlAccount" class="form-control" placeholder="Gitlab UrlAccount" />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span asp-validation-for="Input.UrlAccount" class="text-danger"></span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
+
                                     <div class="col-8">
                                         <button type="submit" class="btn btn-primary btn-block">Register</button>
                                     </div>

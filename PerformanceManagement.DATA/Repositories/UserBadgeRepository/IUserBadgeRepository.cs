@@ -18,5 +18,6 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
         public void CreateUserBadge(int idUser, int idBadge);
         public bool UserBadgeExist(int idUser, int idBadge, DateTime Date);
         public void UpdateUserbadge(UserBadge userBadge);
+        public void WinBadgeJob();
     }
 }

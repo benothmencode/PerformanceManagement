@@ -57,8 +57,15 @@
                                     <option value="" selected disabled>-- Select Systeme Name --</option>
                                 </select>
                                 <span asp-validation-for="SystemeID" class="text-danger"></span>
-
                             </div>
+                            <div class="form-group">
+                                <label asp-for="JobIds">Configuration badge :</label>
+                                <select type="button" class="btn btn-md btn-secondary" asp-for="@Model.JobId" asp-items="@Model.JobIds">
+                                    <option value="" selected disabled>-- Select Configuration badge--</option>
+                                </select>
+                                <span asp-validation-for="@Model.JobId" class="text-danger"></span>
+                            </div>
+
                             <div class="form-group">
                                 <label asp-for="Title" class="control-label"></label>
                                 <input asp-for="Title" class="form-control" />
@@ -87,13 +94,14 @@
                                 </select>
                                 <span asp-validation-for="Periodicity" class="text-danger"></span>
                             </div>
-                            
-                                <div class="form-group">
-                                    <label asp-for="ValueOfPeriodicity" class="control-label"></label>
-                                    <input asp-for="ValueOfPeriodicity" class="form-control" />
-                                    <span asp-validation-for="ValueOfPeriodicity" class="text-danger"></span>
-                                </div>
-                       
+
+                            <div class="form-group">
+                                <label asp-for="ValueOfPeriodicity" class="control-label"></label>
+                                <input asp-for="ValueOfPeriodicity" class="form-control" />
+                                <span asp-validation-for="ValueOfPeriodicity" class="text-danger"></span>
+                            </div>
+
+
                             <div class="form-group">
                                 <a asp-controller="Badge" asp-action="Listofbadges" class="btn btn-secondary">Cancel</a>
                                 <input type="submit" value="Create new Badge" class="btn btn-success float-right">

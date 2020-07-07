@@ -17,6 +17,7 @@ namespace PerformanceManagement.ENTITIES
         public string Description { get; set; }
         public string Location { get; set; }
         public string Skills { get; set; }
+        public bool Active { get; set; }
         public List<VoteRights> VoteRights { get; set; }
         public List<UserBadge> UserBadges { get; set; }
         public List<SystemeUser> SystemeUsers { get; set; }

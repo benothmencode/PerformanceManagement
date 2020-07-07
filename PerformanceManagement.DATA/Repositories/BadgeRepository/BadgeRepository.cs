@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -20,6 +22,8 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
         private readonly IUserBadgeRepository _UserbadgeRepository;
 
+        // This is a hack, only used at runtime
+        private List<string> _jobIds;
 
         public BadgeRepository(PerformanceManagementDBContext context, UserManager<User> userManager, IUserBadgeRepository userBadgeRepository)
         {
@@ -27,9 +31,27 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             //_VoteRepository = voteRepository ?? throw new ArgumentNullException(nameof(voteRepository));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _UserbadgeRepository = userBadgeRepository;
+
+            _jobIds  = new List<string>();
         }
 
+        //public void populateJobIds(List<string> jobIds)
+        //{
 
+        //    //Serialize 
+        //    string Temp = JsonConvert.SerializeObject(jobIds);
+        //    File.WriteAllText("C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\BadgeJobs\\jobIds.json", Temp);
+        //}
+        //public List<string> getJobIds()
+        //{
+        //    var MyList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\BadgeJobs\\jobIds.json"));
+        //    return MyList ;
+        //}
+
+        public Badge GetBadgeByJobId(string jobId)
+        {
+            return _context.Badges.FirstOrDefault(b => b.jobId == jobId);
+        }
 
         public IEnumerable<Badge> GetAll()
         {

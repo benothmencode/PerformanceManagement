@@ -76,7 +76,20 @@ namespace PerformanceManagement.DATA.Repositories
             return _context.Users.Any(a => a.Id == userId);
         }
 
-
-       
+        public bool DesactivateOrActivateUser(int userId, bool result)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if(user != null)
+            {
+              user.Active = result;
+             _context.Update(user);
+            
+            }
+           var saved = _context.SaveChanges();
+            return saved >= 0 ? true : false;
+        }
     }
+
+
+    
 }

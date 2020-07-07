@@ -130,6 +130,7 @@ namespace ProjectF.Controllers
                 user.Location = vm.Location;
                 user.Skills = vm.Skills;
                 user.Userimage = stringFileName;
+                user.Email = vm.Email;
                
                var result = await _userManager.UpdateAsync(user);
                    if(result.Succeeded) return RedirectToAction("Profile","Users", routeValues: new { idUser = user.Id });

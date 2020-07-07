@@ -18,7 +18,9 @@ using Microsoft.Extensions.Logging;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
+using ProjectF.BadgeJobs;
 using ProjectF.Components;
 using ProjectF.ModelsDTOS;
 using ProjectF.ViewModels;
@@ -35,7 +37,10 @@ namespace ProjectF.Areas.Identity.Pages.Account
         private readonly PerformanceManagementDBContext _context;
         private readonly ISystemeRepository _systemeRepository;
         private readonly IBadgeRepository _badgeRepository;
+        private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IMapper _mapper;
+        private readonly IJobService _jobService;
+        public Systeme systemG;
 
 
         public RegisterModel(
@@ -46,7 +51,10 @@ namespace ProjectF.Areas.Identity.Pages.Account
             PerformanceManagementDBContext context,
             ISystemeRepository systemeRepository,
             IMapper mapper,
-            IBadgeRepository badgeRepository)
+            IBadgeRepository badgeRepository, 
+            IUserBadgeRepository userBadgeRepository,
+            IJobService jobService
+           )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -56,6 +64,9 @@ namespace ProjectF.Areas.Identity.Pages.Account
             _systemeRepository = systemeRepository;
             _mapper = mapper;
             _badgeRepository = badgeRepository;
+            _UserbadgeRepository = userBadgeRepository;
+            _jobService = jobService;
+            systemG = _systemeRepository.GetGitlab("Gitlab");
         }
 
 
@@ -64,16 +75,12 @@ namespace ProjectF.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public UserSystemsVm UserSystemsvm { get; set; }
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+         
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -100,13 +107,15 @@ namespace ProjectF.Areas.Identity.Pages.Account
             [Display(Name = "UserName")]
             public string UserName { get; set; }
             
-            [DataType(DataType.Text)]
-            [Display(Name = "Identifier")]
-            public int? Identifier { get; set; }
-          
+           
             [DataType(DataType.Text)]
             [Display(Name = "UrlAccount")]
             public string UrlAccount { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Identifier")]
+            public int? Identifier { get; set; }
+
 
         }
 
@@ -114,14 +123,7 @@ namespace ProjectF.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var Systemes = _systemeRepository.GetSystemes();
-            var SystemeModel = _mapper.Map<IList<SystemeEntityDto>>(Systemes);
-            var systemeList = new SystemesList(SystemeModel.ToList());
-            UserSystemsvm = new UserSystemsVm
-            {
-                systemes = systemeList.GetSystemesList()
-            };
-           
+            
             return Page();
         }
 
@@ -131,24 +133,20 @@ namespace ProjectF.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.UserName, Email = Input.Email , FirstName = Input.FirstName , LastName =Input.LastName , Userimage= "avatar04.png" };
+                var user = new User { UserName = Input.UserName, FirstName = Input.FirstName , LastName =Input.LastName , Userimage= "avatar04.png", Active=true };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 
                 if (result.Succeeded)
                 {
                     _userManager.AddToRoleAsync(user, "Employee").Wait();
-                    UserSystemsvm.UserId = user.Id;
-                    UserSystemsvm.SelectedSystemesID = UserSystemsvm.SelectedSystemesID;
-                    if(UserSystemsvm != null)
+                    _logger.LogInformation("User created a new account with password.");
+
+                    if(systemG != null)
                     {
-                        User userselected = await _userManager.FindByIdAsync(UserSystemsvm.UserId.ToString());
-                        var Systemselected = _systemeRepository.GetSystemeById(UserSystemsvm.SelectedSystemesID);
                         var UserSystem = new SystemeUser()
                         {
-                            User = userselected,
-                            UserId = UserSystemsvm.UserId,
-                            Systeme = Systemselected,
-                            SystemeId = UserSystemsvm.SelectedSystemesID,
+                            User = user,
+                            Systeme = systemG,
                             Identifier = Input.Identifier,
                             UrlUserSystemAccount = Input.UrlAccount,
 
@@ -159,18 +157,28 @@ namespace ProjectF.Areas.Identity.Pages.Account
                             _context.SaveChanges();
                         }
                     }
-                    _logger.LogInformation("User created a new account with password.");
 
                     IEnumerable<Badge> badges = _badgeRepository.GetAll();
-                    foreach(var badge in badges)
+                    if (badges.Count() != 0)
                     {
-                        var ub = new UserBadge()
+                        foreach (var badge in badges)
                         {
-                            Badge = badge,
-                            User = user,
-
-
-                        };
+                            _UserbadgeRepository.CreateUserBadge(user.Id, badge.Id);
+                            if (badge.jobId != null)
+                            {
+                                _jobService.startJob(badge.jobId);
+                            }
+                            if (badge.TypeVote != null)
+                            {
+                                var voteRights = new VoteRights()
+                                {
+                                    TypeVoteId = (int)badge.TypeVoteId,
+                                    Quantity = badge.BadgeCriteria,
+                                    Update = DateTime.Now,
+                                    UserId = user.Id,
+                                };
+                            }
+                        }
                     }
                     
                     return LocalRedirect(returnUrl);

@@ -50,8 +50,21 @@
                             <p class="text-sm">
                                 Badge Periodicity :
                                 <b class="d-block">@Model.periodicity.ToString()</b>
-                                <b class="d-block">@Model.ValueOfPeriodicity</b>
-
+                                <b class="d-block">
+                                    It is available only for @Model.ValueOfPeriodicity
+                                    @if (Model.periodicity.ToString() == "Monthly")
+                                    {
+                                        <b>Months</b>
+                                    }
+                                    else if (Model.periodicity.ToString() == "Weekly")
+                                    {
+                                        <b>Weeks</b>
+                                    }
+                                    else
+                                    {
+                                        <b>Years</b>
+                                    }
+                                </b>
                             </p>
                             @if (Model.Systeme != null)
                             {

@@ -17,6 +17,7 @@ namespace ProjectF.ViewModels
         public int AccessFailedCount { get; set; }
         public string Userimage { get; set; }
         public string Created { get; set; }
+        public bool Active { get; set; }
         public List<UsersForAdmin> ListusersForAdmins { get; set; }
 
         public UsersForAdmin(User aus, List<string> userRoles)
@@ -30,6 +31,7 @@ namespace ProjectF.ViewModels
             AccessFailedCount = aus.AccessFailedCount;
             Userimage = aus.Userimage;
             Created = aus.Created.ToString("dd/MM/yyyy");
+            Active = aus.Active;
         }
         public UsersForAdmin(List<UsersForAdmin> listusersForAdmins)
         {

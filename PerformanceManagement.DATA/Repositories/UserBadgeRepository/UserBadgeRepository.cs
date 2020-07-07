@@ -19,7 +19,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void CreateUserBadge(int idUser , int idBadge)
+        public void CreateUserBadge(int idUser, int idBadge)
         {
 
             var badgedeadline = new DateTime();
@@ -31,14 +31,15 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
 
             if (badge.periodicity.Equals(weekly))
             {
-                 badgedeadline = badge.Created.AddDays(7 * badge.ValueOfPeriodicity); 
+                badgedeadline = badge.Created.AddDays(7 * badge.ValueOfPeriodicity);
             }
-            else if(badge.periodicity.Equals(Monthly)) {
-                 badgedeadline = badge.Created.AddMonths(badge.ValueOfPeriodicity);
-            }
-            else if(badge.periodicity.Equals(Yeary))
+            else if (badge.periodicity.Equals(Monthly))
             {
-                 badgedeadline = badge.Created.AddYears(badge.ValueOfPeriodicity);
+                badgedeadline = badge.Created.AddMonths(badge.ValueOfPeriodicity);
+            }
+            else if (badge.periodicity.Equals(Yeary))
+            {
+                badgedeadline = badge.Created.AddYears(badge.ValueOfPeriodicity);
             }
             if (!UserBadgeExist(idUser, idBadge, badge.Created))
             {
@@ -46,7 +47,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
                 {
                     Badge = badge,
                     User = user,
-                    StartedAt = badge.Created,
+                    StartedAt = DateTime.Today,
                     State = "In progress",
                     BadgeDeadline = badgedeadline,
 
@@ -71,7 +72,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
         }
         public List<UserBadge> GetUserBadges()
         {
-            return _context.userBadges.ToList();
+            return _context.userBadges.Include(ub => ub.User).Include(ub => ub.Badge).Include(ub => ub.Progressions).ToList();
         }
         public UserBadge GetUserBadge(int UserId, int BadgeId)
         {
@@ -89,7 +90,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             var progression = _context.Progressions.Where(p => p.UserBadgeId == ubID).ToList().LastOrDefault();
             if (progression != null)
             {
-               
+
                 return progression;
             }
             return null;
@@ -105,7 +106,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
             return null;
         }
         //UserBadgeExistAtcertainTime
-        public bool UserBadgeExist(int idUser , int idBadge , DateTime Date)
+        public bool UserBadgeExist(int idUser, int idBadge, DateTime Date)
         {
             var result = false;
             var userBadge = _context.userBadges.Where(ub => ub.UserId == idUser).Where(ub => ub.BadgeId == idBadge).Where(ub => ub.StartedAt == Date).FirstOrDefault();
@@ -121,12 +122,47 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
 
         public void UpdateUserbadge(UserBadge userBadge)
         {
-            if(userBadge != null)
+            if (userBadge != null)
             {
                 _context.userBadges.Update(userBadge);
                 _context.SaveChanges();
             }
         }
-    
+
+        public void WinBadgeJob()
+        {
+            var ubadges = GetUserBadges().Where(ub => ub.State != "Done");
+            var evente = _context.Events.Where(e => e.Date == DateTime.Today).FirstOrDefault();
+            foreach (var ub in ubadges)
+            {
+                if (ub.UserProgression == ub.Badge.BadgeCriteria && DateTime.Now <= ub.BadgeDeadline)
+                {
+                    ub.ObtainedAt = DateTime.Now;
+                    ub.State = "Done";
+                    if (evente != null)
+                    {
+                        evente.DayEvent.Add(
+                        new DayEvent()
+                        {
+                            Action = ub.Badge.Title + "Badge winner",
+                            Date = DateTime.Today,
+                            Description = ub.User.UserName + "won a " + ub.Badge.Title + "badge",
+                            UserId = ub.UserId,
+                            EventId = evente.Id,
+                            Type = ENTITIES.Type.Badge
+                        });
+                     
+                    }
+                    _context.Events.Update(evente);
+                    _context.Update(ub);
+                    _context.SaveChanges();
+                }
+            }
+
+
+
+
+
+        }
     }
 }

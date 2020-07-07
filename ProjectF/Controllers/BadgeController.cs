@@ -24,6 +24,9 @@ using ProjectF.Helpers;
 using Microsoft.AspNetCore.Http;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using Vereyon.Web;
+using static ProjectF.Helpers.Helper;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ProjectF.BadgeJobs;
 
 namespace ProjectF.Controllers
 {
@@ -38,12 +41,14 @@ namespace ProjectF.Controllers
         private readonly IVoteRepository _VoteRepository;
         private readonly IUserBadgeRepository _UserBadgeRepository;
         private readonly IFlashMessage _flashMessage;
+        private IJobService _jobService;
 
         private readonly UserManager<User> _userManager;
 
         public BadgeController(IBadgeRepository badgeRepository,IMapper mapper, IVoteRepository VoteRepository,
             IUserRepository userRepository , ISystemeRepository systemeRepository ,IWebHostEnvironment webHostEnvironment ,
-            UserManager<User> userManager , IUserBadgeRepository userBadgeRepository , IFlashMessage  flashMessage)
+            UserManager<User> userManager , IUserBadgeRepository userBadgeRepository , IFlashMessage  flashMessage,
+            IJobService jobService)
         {
             
 
@@ -61,6 +66,8 @@ namespace ProjectF.Controllers
 
             _UserBadgeRepository = userBadgeRepository;
             _flashMessage = flashMessage;
+
+            _jobService = jobService;
         }
 
 
@@ -112,10 +119,23 @@ namespace ProjectF.Controllers
         public IActionResult Create()
         {
             var Systemes = _systemeRepository.GetSystemes();
-            var SystemeModel = _mapper.Map<IList<SystemeEntityDto>>(Systemes);
-            var systemeList = new SystemesList(SystemeModel.ToList());
-            BadgeForCreationDto BadgeForCreationDto = new BadgeForCreationDto { systemes = systemeList.GetSystemesList() };
-            return View(BadgeForCreationDto);
+            if (Systemes.Count() != 0)
+            {
+                var SystemeModel = _mapper.Map<IList<SystemeEntityDto>>(Systemes);
+                var systemeList = new SystemesList(SystemeModel.ToList());
+                BadgeForCreationDto BadgeForCreationDto = new BadgeForCreationDto
+                {
+                    systemes = systemeList.GetSystemesList(),
+                    JobIds = _jobService.getJobIds().Select(s => new SelectListItem { Text = s, Value = s }).ToList()
+                };
+                return View(BadgeForCreationDto);
+            }
+            else
+            {
+                _flashMessage.Warning("You need To Add a System First");
+                return RedirectToAction("CreateSysteme", "Admin");
+            }
+
         }
 
 
@@ -128,8 +148,8 @@ namespace ProjectF.Controllers
         {
             var stringFileName = UploadFile(badgeForCreation.Icon);
             var statusCode = ValidateBadge(SystemeID, badgeForCreation);
-            if (!ModelState.IsValid)
-                return StatusCode(statusCode.StatusCode);
+            
+             
             if (ModelState.IsValid)
             {
                 var badge = _mapper.Map<Badge>(badgeForCreation);
@@ -141,14 +161,16 @@ namespace ProjectF.Controllers
                     return StatusCode(500, ModelState);
                 }
 
+                _jobService.startJob(badge.jobId);
                 return RedirectToAction("Listofbadges");
             }
 
-            return View(badgeForCreation);
+            return RedirectToAction("Create", badgeForCreation);
         }
 
 
 
+        [NoDirectAccess]
         public IActionResult AddOrEditBadgeVote(int id = 0)
         {
             var VoteType = _VoteRepository.GetTypeVotes();
@@ -201,9 +223,11 @@ namespace ProjectF.Controllers
                         _VoteRepository.AddOrUpdateVoteRights(VoteRight.Id, VoteRight);
                     }
                 }
-                return RedirectToAction("Listofbadges");
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Listofbadges", _BadgeRepository.GetAll().ToList()) });
             }
-            return View(badgeForVotes);
+
+            // return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEditBadgeVote",  badgeForVotes) });
+            return RedirectToAction("AddOrEditBadgeVote", badgeForVotes);
         }
 
         private StatusCodeResult ValidateBadge(int SystemId, BadgeForCreationDto badge)

@@ -17,6 +17,8 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         public void UpdateLastCreationDate(DateTime LastCreationDate, Badge badge);
         public Badge GetBadgeByTitle(string title);
         public Badge BadgeForToday();
-       public bool badgefortoday(DateTime d);
+        public bool badgefortoday(DateTime d);
+
+        public Badge GetBadgeByJobId(string jobId);
     }
 }

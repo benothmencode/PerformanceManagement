@@ -22,6 +22,9 @@ namespace PerformanceManagement.ENTITIES
         public Type Type { get; set; }
 
         public string Action { get; set; }
+
+
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Required]
         public DateTime Date { get; set; }
         public string Description { get; set; }

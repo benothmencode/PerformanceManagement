@@ -33,7 +33,7 @@ namespace ProjectF
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        { 
+        {
             Configuration = configuration;
         }
 
@@ -48,22 +48,22 @@ namespace ProjectF
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                                );
             services.AddRazorPages();
-            string connectionString = this.Configuration.GetConnectionString("myDefaultContext");
-            services.AddDbContext<PerformanceManagementDBContext>(Options => 
+            string connectionString = this.Configuration.GetConnectionString("DefaultContext");
+            services.AddDbContext<PerformanceManagementDBContext>(Options =>
             Options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
-           
+
             services.AddHangfire(configuration => configuration
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(Configuration.GetConnectionString("myHangfireConnection"), new SqlServerStorageOptions
+                    .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
                     {
-                      CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                      SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                      QueuePollInterval = TimeSpan.Zero,
-                      UseRecommendedIsolationLevel = true,
-                      UsePageLocksOnDequeue = true,
-                      DisableGlobalLocks = true
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        UsePageLocksOnDequeue = true,
+                        DisableGlobalLocks = true
                     }));
             services.AddHangfireServer();
             JobStorage.Current = new SqlServerStorage(Configuration.GetConnectionString("HangfireConnection"));
@@ -94,7 +94,7 @@ namespace ProjectF
             .AddRoles<AppRole>()
             .AddEntityFrameworkStores<PerformanceManagementDBContext>()
             .AddSignInManager<ApplicationSignInManager>();
-            
+
 
             services.AddAutoMapper(typeof(Startup));
             //services.AddMvcCore(options =>

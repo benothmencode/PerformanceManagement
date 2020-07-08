@@ -31,7 +31,7 @@ namespace ProjectF.ExernalServices
         private readonly IBadgeRepository _badgeRepository;
         private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IEventRepository _eventRepository;
-        public string host = "http://localhost/redmine/";
+        public string host = "http://localhost/redmine/"; // Si vous voulez utiliser le serveur de la société il faut changer le host et le apikey de l admin
         public string apiKey = "01f1b7962f14cfd0475d03b136efc32e14ef159e";
         //public String login = "Hassen";
 

@@ -4,7 +4,7 @@
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-@{ 
+@{
     var userConnected = await UserManager.GetUserAsync(User);
 }
 <!DOCTYPE html>
@@ -21,6 +21,18 @@
     <link rel="stylesheet" href="~/theme/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+        #header_largelogo {
+            max-width: 150px;
+            max-height: 250px;
+        } 
+        #header_tinylogo {
+            max-height: 100px;
+            
+            max-width: 50px;
+        }
+     
+    </style>
 </head>
 @RenderSection("head", required: false)
 <body class="hold-transition sidebar-mini">
@@ -191,7 +203,7 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <a class="btn btn-default btn-flat" asp-action="Profile" asp-controller="Users" asp-route-idUser="@UserManager.GetUserId(User)"  >
+                                <a class="btn btn-default btn-flat" asp-action="Profile" asp-controller="Users" asp-route-idUser="@UserManager.GetUserId(User)">
                                     Hello @UserManager.GetUserName(User)!
                                 </a>
                                 <form id="logoutForm" class="float-right" asp-area="Identity" asp-page="/Account/Logout">
@@ -201,8 +213,8 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">
-                            
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+                            <i class="fas fa-th-large"></i>
                         </a>
                     </li>
                 </ul>
@@ -213,16 +225,20 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="#" class="brand-link">
-                <img src="~/theme/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                     style="opacity: .8">
-                <span class="brand-text font-weight-light">Performance <br>Management</span>
+            <a href="#" class="brand-link logo-switch">
+                <img id="header_tinylogo" src="~/theme/dist/img/tinylogoFinale.png" alt="Logo Small" class="brand-image-xl center logo-xs">
+                <img id="header_largelogo" src="~/theme/dist/img/logofinal3.png" alt="Logo Large" class="brand-image-xs logo-xl" style="left: 40px">
             </a>
-
+         
             <!-- Sidebar -->
-            <div class="sidebar">
+            <div class="sidebar os-host os-theme-light os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-scrollbar-vertical-hidden os-host-transition">
                 @if (SignInManager.IsSignedIn(User))
                 {
+                    @*<ul class="nav nav-pills nav-sidebar flex-column">
+                        <li class="navbar-brand">
+                            <span class="brand-text text-white">Performance Management</span>
+                        </li>
+                    </ul>*@
                     <!-- Sidebar user (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
@@ -301,9 +317,14 @@
 
         @RenderBody()
         <footer class="main-footer">
-           
         </footer>
-        
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->

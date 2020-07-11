@@ -14,6 +14,8 @@ namespace ProjectF.Profiles
         public UserProfile()
         {
             CreateMap<User, UserEntityDto>();
+            CreateMap<User, UserForEditDto>();
+            CreateMap<UserForEditDto,User>();
         }
 
     }

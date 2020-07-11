@@ -15,5 +15,7 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         void DeleteSysteme(Systeme Systeme);
         public Systeme GetGitlab(string title);
         bool SystemeExists(int systemeId);
+
+        void updatesystemUser(SystemeUser systemeUser);
     }
 }

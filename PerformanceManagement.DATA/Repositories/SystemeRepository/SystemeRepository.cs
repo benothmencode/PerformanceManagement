@@ -59,5 +59,14 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
             return _context.Systemes.FirstOrDefault(s => s.SystemName == title);
         }
 
+        public void updatesystemUser(SystemeUser systemeUser)
+        {
+            if (systemeUser != null)
+            {
+                _context.Update(systemeUser);
+                _context.SaveChanges();
+            }
+        }
+
     }
 }

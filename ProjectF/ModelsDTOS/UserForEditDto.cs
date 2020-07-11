@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,15 +11,37 @@ namespace ProjectF.ModelsDTOS
     public class UserForEditDto
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Username { get; set; }
-        public IFormFile Userimage { get; set; }
-        public string Job { get; set; }
-        public string Description { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
 
-        public string Location { get; set; }
-        public string Skills { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
+
+       
+
+
+
+        public SystemeUser systemeUser { get; set; }
 
     }
 }

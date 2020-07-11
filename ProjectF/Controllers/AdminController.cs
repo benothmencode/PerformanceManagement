@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,7 @@ using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.ENTITIES;
 using ProjectF.ExernalServices;
+using ProjectF.ModelsDTOS;
 using ProjectF.ViewModels;
 
 namespace ProjectF.Controllers
@@ -24,11 +26,10 @@ namespace ProjectF.Controllers
         private readonly ISystemeRepository _SystemeRepository;
         private readonly IBadgeRepository _BadgeRepository;
         private readonly IUserRepository _userRepository;
-
-        private readonly ICommitsController _CommitsController;
+        private readonly IMapper _mapper;
 
         public AdminController(UserManager<User> userManager , RoleManager<AppRole> roleManager , ISystemeRepository systemeRepository 
-            , IBadgeRepository badgeRepository , IUserRepository userRepository)
+            , IBadgeRepository badgeRepository , IUserRepository userRepository , IMapper mapper)
         {
             _userManager =userManager ??
               throw new ArgumentNullException(nameof(userManager));
@@ -39,6 +40,7 @@ namespace ProjectF.Controllers
              throw new ArgumentNullException(nameof(systemeRepository));
             _BadgeRepository = badgeRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
 
         }
 
@@ -134,10 +136,61 @@ namespace ProjectF.Controllers
                 responseText = "Something went wrong !! "
             });
 
-
-
-
         }
 
+
+
+         [HttpGet]
+        public  IActionResult EditUserAccount(int UserId)
+        {
+            var user = _userRepository.GetUserById(UserId);
+            var system = _SystemeRepository.GetGitlab("Gitlab");
+            var Gitlab = user.SystemeUsers.Where(s => s.SystemeId == system.Id).FirstOrDefault();
+            var userViewModel = new EditUserForAdmin()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+               UserName = user.UserName,
+             systemeUser = Gitlab
+            };
+            return View(userViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserAccount(EditUserForAdmin uservm)
+        {
+           
+                if (ModelState.IsValid)
+                {
+                var user = await _userManager.FindByIdAsync(uservm.Id.ToString());
+                if (user != null)
+                {
+                    var systemuser = uservm.systemeUser;
+                    user.FirstName = uservm.FirstName;
+                    user.LastName = uservm.LastName;
+                    user.UserName = uservm.UserName;
+                    if (uservm.Password != null)
+                    {
+                        // Use passwordHash to add new password
+                        user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, uservm.Password);
+                        //update user password
+                    }
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if(systemuser != null)
+                    {
+                        systemuser.UserId = uservm.Id;
+                        _SystemeRepository.updatesystemUser(systemuser);
+                    }
+
+                    if (result.Succeeded) return RedirectToAction("UserManagement");
+                }
+            }
+            ModelState.AddModelError("", "User not updated , something went wrong");
+            return View(uservm);
+        
+
+        }
     }
 }

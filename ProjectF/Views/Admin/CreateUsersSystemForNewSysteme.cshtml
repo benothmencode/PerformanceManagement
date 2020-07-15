@@ -1,0 +1,70 @@
+﻿@model ProjectF.ViewModels.UserSystemForNewSysteme
+@{
+    ViewData["Title"] = "CreateUsersSystemForNewSysteme";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Project Add</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">SystemManagement</a></li>
+                        <li class="breadcrumb-item active">Systeme Add</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">General</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="CreateUsersSystemForNewSysteme" asp-controller="Admin">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                @for (var i = 0; i < Model.Users.Count; i++)
+                                {
+                                    <div class="input-group mb-3">
+                                        <input type="hidden" asp-for="@Model.Users[i].Value" />
+                                        <input asp-for="Users[i].Selected" />@Model.Users[i].Text
+                                    </div>
+                                    <div class="text-center">
+                                        <small> If the service require an identifier , please check your local server and insert here ! </small>
+                                        <input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Please enter user service Identifier" />
+                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Please enter user service url Account" />
+                                        <input type="hidden" asp-for="@Model.systemeUsers[i].SystemeId" value="@Model.SystemeId" />
+                                        <input type="hidden" asp-for="@Model.systemeUsers[i].UserId" value="@Model.Users[i].Value" />
+                                    </div>
+                                }
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        </form>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

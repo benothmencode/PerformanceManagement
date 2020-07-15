@@ -81,27 +81,9 @@
                                             </div>
                                         </div>
 
-                                        @if (@Model.systemG != null)
-                                        {
-                                            <div class="input-group mb-3">
-                                                <input asp-for="Input.Identifier" class="form-control" placeholder="Gitlab Identifier" />
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text">
-                                                        <span asp-validation-for="Input.Identifier" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="input-group mb-3">
 
-                                                <input asp-for="Input.UrlAccount" class="form-control" placeholder="Gitlab UrlAccount" />
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text">
-                                                        <span asp-validation-for="Input.UrlAccount" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
 
+                                    
                                         <div class="col-8">
                                             <button type="submit" class="btn btn-primary btn-block">Register</button>
                                         </div>
@@ -111,17 +93,43 @@
                         </div>
                     </div>
                 </div>
-</div>
             </div>
+        </div>
     </section>
 
 </div>
 
 
-
+@*  @foreach (var systemUser in systeme.SystemeUsers)
+    {
+        <div class="input-group mb-3">
+            <input asp-for="@systemUser.Identifier" class="form-control" placeholder="Gitlab Identifier" />
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span asp-validation-for="@systemUser.Identifier" class="text-danger"></span>
+                </div>
+            </div>
+            <input asp-for="@systemUser.UrlUserSystemAccount" class="form-control" placeholder="Gitlab UrlAccount" />
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span asp-validation-for="@systemUser.UrlUserSystemAccount" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    }
+*@
 
 
 
 @section Scripts {
+    <script>
+        $('.select-item').change(function () {
+            $(".mydiv").hide();
+            $(".select-item option:selected").each(function () {
+                $("#" + $(this).val()).show();
+            });
+        });
+    </script>
+
     <partial name="_ValidationScriptsPartial" />
 }

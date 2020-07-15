@@ -28,7 +28,7 @@ namespace PerformanceManagement.ENTITIES
         public int BadgeCriteria { get; set; }
 
 
-     
+        public bool IsArchieved { get; set; }
 
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         

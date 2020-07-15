@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace ProjectF.ViewModels
 {
-    public class UserSystemsVm
+    public class SystemUser
     {
-        public int UserId { get; set; }
+      
 
-        public List<int> SelectedSystemesIDS { get; set; }
-        public IEnumerable<SelectListItem> systemes { get; set; }
+        public int userId { get; set; }
+      public  IList<SystemeUser> systemeUsers { get; set; }
+      public IList<SelectListItem> Systemes { get; set; }
 
     }
 }

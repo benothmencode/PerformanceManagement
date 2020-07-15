@@ -1,4 +1,5 @@
-﻿using PerformanceManagement.ENTITIES;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -42,8 +43,9 @@ namespace ProjectF.ViewModels
 
 
 
-            public SystemeUser systemeUser { get; set; }
+            public List<SystemeUser> systemesUser { get; set; }
+        public IList<SelectListItem> Systems { get; set; }
 
-        }
+    }
     }
 

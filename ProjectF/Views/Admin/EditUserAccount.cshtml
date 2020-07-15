@@ -75,29 +75,23 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (@Model.systemeUser != null)
+                            @if (Model.systemesUser.Count() != 0)
                             {
-                                <div class="form-group">
-                                    <input asp-for="@Model.systemeUser.SystemeId" class="form-control" hidden />
-                                    <span asp-validation-for="@Model.systemeUser.SystemeId" class="text-danger"></span>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <input asp-for="@Model.systemeUser.Identifier" class="form-control" placeholder="Gitlab Identifier" />
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span asp-validation-for="@Model.systemeUser.Identifier" class="text-danger"></span>
-                                        </div>
+                                @for (var i = 0; i < Model.Systems.Count; i++)
+                                {
+                                    <div class="input-group mb-3">
+                                        <small> Choose your service and configure it</small><br />
+                                        <input type="hidden" asp-for="@Model.Systems[i].Value" />
+                                        <input asp-for="Systems[i].Selected" />@Model.Systems[i].Text
                                     </div>
-                                </div>
-                                <div class="input-group mb-3">
-
-                                    <input asp-for="@Model.systemeUser.UrlUserSystemAccount" class="form-control" placeholder="Gitlab UrlAccount" />
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span asp-validation-for="@Model.systemeUser.UrlUserSystemAccount" class="text-danger"></span>
-                                        </div>
+                                    <div class="text-center">
+                                        <small> If the service require an identifier , please check your local server and insert it here ! </small>
+                                        <input asp-for="@Model.systemesUser[i].Identifier" class="form-control" placeholder="Modifie user service Identifier" />
+                                        <input asp-for="@Model.systemesUser[i].UrlUserSystemAccount" class="form-control" placeholder="Modifie  user service url Account" />
+                                        <input type="hidden" asp-for="@Model.systemesUser[i].SystemeId" value="@Model.Systems[i].Value"  />
+                                        <input type="hidden" asp-for="@Model.systemesUser[i].UserId" value="@Model.Id" />
                                     </div>
-                                </div>
+                                }
                             }
                             <div class="col-8">
                                 <button type="submit" class="btn btn-primary btn-block">Register</button>

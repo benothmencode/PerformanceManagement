@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.ENTITIES;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -83,6 +85,12 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         {
             return _context.SystemeUsers.Where(us => us.UserId == userId).Select(us => us.Systeme).ToList();
         }
+
+
+       
+
+
+
 
     }
 }

@@ -1,29 +1,24 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PerformanceManagement.DATA.Repositories;
+using PerformanceManagement.DATA.Repositories.BadgeRepository;
+using PerformanceManagement.DATA.Repositories.EventsRepository;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
+using Redmine.Net.Api;
+using Redmine.Net.Api.Async;
+using Redmine.Net.Api.Types;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
-using Redmine.Net.Api.Types;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Redmine.Net.Api;
-using Xunit;
-using System.Net;
-using System.Collections.Specialized;
-using Redmine.Net.Api.Async;
-using PerformanceManagement.DATA.Repositories.BadgeRepository;
-using PerformanceManagement.DATA.Repositories;
-using PerformanceManagement.ENTITIES;
-using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
-using PerformanceManagement.DATA.Repositories.EventsRepository;
-using Type = PerformanceManagement.ENTITIES.Type;
 using User = Redmine.Net.Api.Types.User;
 
 namespace ProjectF.ExernalServices
 {
-    
-    [Route("api/todos")]
-    [ApiController]
 
+    [Route("api/[controller]/[action]")]
+    [ApiController]
     public class ToDosController : ControllerBase, IToDosController
 
     {
@@ -98,6 +93,23 @@ namespace ProjectF.ExernalServices
             return response.Last().Status.Name;
 
         }
+
+        [ActionName("getissues")]
+        public async Task<List<Issue>> GetIssues()
+        {
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+
+            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
+
+            return response;
+
+        }
+
+
+       
+
+
+
         [HttpGet("IssueProgression")]
 
         public async Task<float?>  IssueProgression()
@@ -138,7 +150,6 @@ namespace ProjectF.ExernalServices
                 {
 
                     ub.UserProgression = (int)progression;
-                    ub.State = status;
                     _UserbadgeRepository.UpdateUserbadge(ub);
                   
                 };
@@ -196,14 +207,29 @@ namespace ProjectF.ExernalServices
         //}
 
 
-        [HttpGet("returnUser")]
-        public  async Task<List<User>> returnUser()
+        [ActionName("returnUser")]
+        public  async Task<IActionResult> returnUser()
         {
+            
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
             var users = await _redmineClient.GetObjectsAsync<User>(parameters);
-            return (users);
+            
+                //Serialize 
+                var Temp = JsonConvert.SerializeObject(users);
+             System.IO.File.WriteAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json",Temp);
 
+            return Ok(users);
         }
+
+
+        [ActionName("GetSystemesIds")]
+        public List<User> getUserSystemesIds()
+        {
+            var MyList = JsonConvert.DeserializeObject<List<User>>(System.IO.File.ReadAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json"));
+            return MyList;
+        }
+
+
 
         //[HttpGet("returnApiKey")]
         //public String returnApiKey()

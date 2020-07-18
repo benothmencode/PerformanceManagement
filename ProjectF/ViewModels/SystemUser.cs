@@ -14,6 +14,7 @@ namespace ProjectF.ViewModels
         public int userId { get; set; }
       public  IList<SystemeUser> systemeUsers { get; set; }
       public IList<SelectListItem> Systemes { get; set; }
+      public IList<SelectListItem> UserSystemesIds { get; set; }
 
     }
 }

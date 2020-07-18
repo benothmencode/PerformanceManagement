@@ -61,8 +61,14 @@ namespace PerformanceManagement.DATA.Repositories
             var IdGitlab = _context.SystemeUsers.Where(su => su.UserId == userId).Where(su => su.Systeme.SystemName == "Gitlab").Select(su => su.Identifier).First();
             return IdGitlab;
         }
-       
-      
+
+        public int? GetIdUserRedmine(int userId)
+        {
+            var IdRedmine = _context.SystemeUsers.Where(su => su.UserId == userId).Where(su => su.Systeme.SystemName == "Redmine").Select(su => su.Identifier).First();
+            return IdRedmine;
+        }
+
+
 
         public bool UpdateUserProgression(UserBadge userBadge)
         {

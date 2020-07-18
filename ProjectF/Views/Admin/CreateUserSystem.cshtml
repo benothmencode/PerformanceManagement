@@ -49,7 +49,8 @@
                                     </div>
                                     <div class="text-center">
                                         <small> If the service require an identifier , please check your local server and insert here ! </small>
-                                        <input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Please enter user @Model.Systemes[i].Text Identifier" />
+
+                                        @*<input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Please enter user @Model.Systemes[i].Text Identifier" />*@
                                         <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Please enter user @Model.Systemes[i].Text url Account" />
                                         <input type="hidden" asp-for="@Model.systemeUsers[i].SystemeId" value="@Model.Systemes[i].Value" />
                                         <input type="hidden" asp-for="@Model.systemeUsers[i].UserId" value="@Model.userId" />

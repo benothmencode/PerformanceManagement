@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
@@ -96,6 +97,8 @@ namespace ProjectF.Controllers
             }
             return View(systeme);
         }
+
+      
 
         [HttpPost]
         public async Task<IActionResult> DesactivateUser(int UserId)
@@ -202,10 +205,19 @@ namespace ProjectF.Controllers
 
         }
 
+        [ActionName("GetSystemesIds")]
+        public List<Redmine.Net.Api.Types.User> getUserSystemesIds()
+        {
+            var MyList = JsonConvert.DeserializeObject<List<Redmine.Net.Api.Types.User>>(System.IO.File.ReadAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json"));
+            return MyList;
+        }
+
         [HttpGet]
         public IActionResult CreateUserSystem(User user)
         {
             var SystemesList = _SystemeRepository.GetSystemes();
+            var redmineUsers = getUserSystemesIds();
+
             if (SystemesList.Count() != 0)
             {
 
@@ -215,10 +227,17 @@ namespace ProjectF.Controllers
                     Value = x.Id.ToString()
                 }).ToList();
 
+                var IdUserSystListItem = redmineUsers.Select(x => new SelectListItem()
+                {
+                    Text = x.FirstName,
+                    Value = x.Id.ToString()
+                }).ToList();
+
                 var vm = new SystemUser()
                 {
                     Systemes = sysListItem,
                     userId = user.Id,
+                    UserSystemesIds = IdUserSystListItem
                     
                 };
                 return View(vm);

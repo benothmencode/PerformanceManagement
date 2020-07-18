@@ -14,6 +14,7 @@ namespace PerformanceManagement.DATA.Repositories
         User GetUserById(int? userId);
 
         Task<IList<User>> GetUserByUsername(string username);
+        public int? GetIdUserRedmine(int userId);
 
         IEnumerable<Badge> GetAllUserbadgesForAuser(int? userId);
         void Edit(User user);

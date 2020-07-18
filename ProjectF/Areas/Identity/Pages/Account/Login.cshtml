@@ -20,60 +20,81 @@
     <link rel="stylesheet" href="~/theme/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <style>
+
+
+        #bg {
+            background-image: url('https://localhost:44322/theme/dist/img/bg.png');
+            /*background-image: url('theme/dist/img/bgimage.png');*/
+            /* Image is centered vertically and horizontally at all times */
+            /* Image doesn't repeat */
+            background-repeat: no-repeat;
+            /* Makes the image fixed in the viewport so that it doesn't move when 
+     the content height is greater than the image height */
+            /*background-attachment: fixed;*/
+            /* This is what makes the background image rescale based on its container's size */
+            background-size: cover;
+            background-position: center center;
+            /* Pick a solid background color that will be displayed while the background image is loading */
+           
+        }
+
+    </style>
 </head>
-<body class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-            @*<a href="../../index2.html"><b>Admin</b>LTE</a>*@
-        </div>
-        <!-- /.login-logo -->
-        <div class="card">
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
+<body class="hold-transition login-page" id="bg">
 
-                <form id="account" method="post">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="input-group mb-3">
-                        <input asp-for="Input.UserName" type="text" class="form-control" placeholder="Username" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span asp-validation-for="Input.UserName" class="fas fa-user"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input asp-for="Input.Password" type="password" class="form-control" placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span asp-validation-for="Input.Password" class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- /.col -->
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </form>
+            <div class="login-box">
+                <div class="login-logo">
+                    <a>Performance Management</a>
+                </div>
+                <!-- /.login-logo -->
+                <div class="card bg-transparent">
+                    <div class="card-body bg-transparent login-card-body">
+                        <p class="login-box-msg">Sign in to start your session</p>
 
+                        <form id="account" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="input-group mb-3">
+                                <input asp-for="Input.UserName" type="text" class="form-control" placeholder="Username" />
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span asp-validation-for="Input.UserName" class="fas fa-user"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input asp-for="Input.Password" type="password" class="form-control" placeholder="Password">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span asp-validation-for="Input.Password" class="fas fa-lock"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- /.col -->
+                                <div class="col-4">
+                                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.login-card-body -->
+                </div>
             </div>
-            <!-- /.login-card-body -->
-        </div>
-    </div>
-
-
+        
+ 
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
         <!-- /.login-box -->
-        
+
         <script src="~/theme/plugins/jquery/jquery.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="~/theme/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- AdminLTE App -->
         <script src="~/theme/dist/js/adminlte.min.js"></script>
-        
+
 
     }
 

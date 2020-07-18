@@ -131,7 +131,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
 
         public void WinBadgeJob()
         {
-            var ubadges = GetUserBadges().Where(ub => ub.State != "Done");
+            var ubadges = GetUserBadges().Where(ub => ub.State != "Done").ToList();
             var evente = _context.Events.Where(e => e.Date == DateTime.Today).FirstOrDefault();
             foreach (var ub in ubadges)
             {
@@ -141,8 +141,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
                     ub.State = "Done";
                     if (evente != null)
                     {
-                        evente.DayEvent.Add(
-                        new DayEvent()
+                        var dayevent = new DayEvent()
                         {
                             Action = ub.Badge.Title + "Badge winner",
                             Date = DateTime.Today,
@@ -150,8 +149,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
                             UserId = ub.UserId,
                             EventId = evente.Id,
                             Type = ENTITIES.Type.Badge
-                        });
-                     
+                        };
                     }
                     _context.Events.Update(evente);
                     _context.Update(ub);

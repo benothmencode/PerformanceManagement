@@ -38,13 +38,13 @@ namespace ProjectF.ModelsDTOS
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Periodicity == Periodicity.Monthly && ValueOfPeriodicity >= 4 && ValueOfPeriodicity < 1)
+            if (Periodicity == Periodicity.Weekly && ValueOfPeriodicity >= 4 && ValueOfPeriodicity < 1)
             {
                 yield return new ValidationResult(
                     "Value of Periodicity must be between 1 and 3",
                     new[] { nameof(ValueOfPeriodicity) });
             }
-            if (Periodicity == Periodicity.Weekly && ValueOfPeriodicity >= 12 && ValueOfPeriodicity < 1)
+            if (Periodicity == Periodicity.Monthly && ValueOfPeriodicity >= 12 && ValueOfPeriodicity < 1)
             {
                 yield return new ValidationResult(
                     "Value of Periodicity must be between 1 and 11",

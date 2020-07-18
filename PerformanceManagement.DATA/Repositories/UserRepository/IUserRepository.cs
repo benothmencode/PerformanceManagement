@@ -24,7 +24,7 @@ namespace PerformanceManagement.DATA.Repositories
         bool UserExists(int userId);
         bool DesactivateOrActivateUser(int userId , bool result);
 
-
+        IList<VoteHistory> TotalVotes(int userId);
 
 
 

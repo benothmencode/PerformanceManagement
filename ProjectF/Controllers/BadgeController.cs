@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.ENTITIES;
 using ProjectF.ModelsDTOS;

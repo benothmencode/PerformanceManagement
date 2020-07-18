@@ -28,8 +28,8 @@ namespace ProjectF.ExernalServices
 
         public CommitsController(IUserRepository userRepository , IBadgeRepository badgeRepository , IUserBadgeRepository userBadgeRepository )
         {
-            _gitLabClient = new GitLabClient("http://10.10.10.104/", "-NVEYtWgMfhuKTjGDNzr");
-            //_gitLabClient = new GitLabClient("http://192.168.1.108", "3WjDVGLxxbT6kx3fcF_3");
+            //_gitLabClient = new GitLabClient("http://10.10.10.104/", "-NVEYtWgMfhuKTjGDNzr");
+            _gitLabClient = new GitLabClient("http://192.168.1.108", "3WjDVGLxxbT6kx3fcF_3");
             _userRepository = userRepository;
             _badgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;

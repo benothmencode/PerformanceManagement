@@ -45,10 +45,10 @@
 
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
-                                    <b>Total Badges</b> <a class="float-right">@Model.badges.Count()</a>
+                                    <b>Total Badges</b> <a asp-action="Index" asp-controller="Badge" asp-route-idUser="@Model.user.Id" class="float-right">@Model.badgesObtained.Count()</a>
                                 </li>
                                 <li class="list-group-item">
-                                    <b>Total Votes</b> <a class="float-right">543</a>
+                                    <b>Total Votes</b> <a class="float-right">@Model.VoteHistories.Count()</a>
                                 </li>
                                 <br>
                                 <br>
@@ -102,8 +102,6 @@
                         </div>
 
 
-
-
                     </div>
                     <!-- /.card -->
                 </div>
@@ -133,24 +131,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.badges)
+                                        @foreach (var item in Model.badgesInProgress)
                                         {
-                                            @foreach (var item2 in item.UserBadges)
-                                            {
+                                           
                                                 <tr>
                                                     <td></td>
-                                                    <td>@item.Title </td>
+                                                    <td><a asp-action="Details" asp-controller="Badge" asp-route-idBadge="@item.BadgeId">@item.Badge.Title </a></td>
                                                     <td>
                                                         <div class="progress progress-xs">
-                                                            <div class="progress-bar bg-green" role="progressbar" aria-volumenow="@item2.UserProgression" aria-volumemin="0" aria-volumemax="100" style="width:@item2.UserProgression%"></div>
+                                                            <div class="progress-bar bg-green" role="progressbar" aria-volumenow="@item.UserProgression" aria-volumemin="0" aria-volumemax="@item.Badge.BadgeCriteria" style="width:@item.UserProgression%"></div>
 
                                                         </div>
                                                     </td>
-                                                    <td><span class="badge bg-danger">@item2.UserProgression%</span></td>
-                                                    <td>@item2.StartedAt</td>
-                                                    <td>@item2.BadgeDeadline</td>
+                                                    <td><span class="badge bg-danger">@item.UserProgression%</span></td>
+                                                    <td>@item.StartedAt</td>
+                                                    <td>@item.BadgeDeadline</td>
                                                 </tr>
-                                            }
+                                            
                                         }
                                     </tbody>
                                 </table>

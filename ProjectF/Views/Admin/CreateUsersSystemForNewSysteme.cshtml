@@ -42,18 +42,48 @@
                             <div class="form-group">
                                 @for (var i = 0; i < Model.Users.Count; i++)
                                 {
-                                    <div class="input-group mb-3">
-                                        <input type="hidden" asp-for="@Model.Users[i].Value" />
-                                        <input asp-for="Users[i].Selected" />@Model.Users[i].Text
-                                    </div>
-                                    <div class="text-center">
-                                        <small> If the service require an identifier , please check your local server and insert here ! </small>
-                                        <input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Please enter user service Identifier" />
-                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Please enter user service url Account" />
-                                        <input type="hidden" asp-for="@Model.systemeUsers[i].SystemeId" value="@Model.SystemeId" />
-                                        <input type="hidden" asp-for="@Model.systemeUsers[i].UserId" value="@Model.Users[i].Value" />
-                                    </div>
+                                    <fieldset class="filter-row">
+                                        <div>
+                                            <ul>
+                                                <li>
+                                                    <div class="checkbox">
+                                                        <input type="hidden" asp-for="@Model.Users[i].Value" />
+                                                        <input asp-for="Users[i].Selected" />
+                                                        <label>@Model.Users[i].Text</label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset class="filter-row">
+                                        <div class="row-section">
+                                            <div class="row-heading" hidden>@Model.Users[i].Text</div>
+                                            <ul>
+                                                <li>
+                                                    <div class="checkbox">
+                                                        <small> If the service require an identifier , please check your local server and insert it here ! </small>
+                                                        <input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Please enter user service Identifier" />
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="checkbox">
+                                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
+                                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Please enter user service url Account" />
+                                                        <input type="hidden" asp-for="@Model.systemeUsers[i].SystemeId" value="@Model.SystemeId" />
+                                                        <input type="hidden" asp-for="@Model.systemeUsers[i].UserId" value="@Model.Users[i].Value" />
+                                                    </div>
+
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </fieldset>
                                 }
+
+
+
+
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Save</button>
                         </form>
@@ -68,3 +98,17 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".row-section").hide();
+            $("input:checkbox").change(function () {
+                var clickedText = $(this).siblings('label').text();
+                $(".row-section").filter(function () {
+                    var txt = $(this).find("div.row-heading").text();
+                    return txt === clickedText;
+                }).toggle($(this).is(':checked'));
+            });
+             });
+    </script>
+}

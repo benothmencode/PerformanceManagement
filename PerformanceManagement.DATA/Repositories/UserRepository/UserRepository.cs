@@ -78,6 +78,12 @@ namespace PerformanceManagement.DATA.Repositories
             return _context.Users.Any(a => a.Id == userId);
         }
 
+
+        public IList<VoteHistory> TotalVotes(int userId) {
+        var    votes = _context.VoteHistories.Where(vh => vh.UserChosenId == userId).ToList();
+            return votes;
+        }
+
         public bool DesactivateOrActivateUser(int userId, bool result)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == userId);

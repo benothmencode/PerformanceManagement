@@ -133,6 +133,7 @@ namespace ProjectF
 
             Scheduler.ScheduleUserbadgeTask();
             Scheduler.EventEveryDay();
+            Scheduler.ScheduleWinBadges();
 
             app.UseRouting();
             app.UseAuthentication();

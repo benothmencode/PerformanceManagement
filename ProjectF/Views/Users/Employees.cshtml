@@ -51,7 +51,7 @@
                             <li>
                                 <img src="~/theme/dist/img/@item.Userimage" alt="User Image" width="100" height="250"><br />
                                 @Html.ActionLink(@item.Username, "Profile", new { idUser = @item.Id })
-                                <span class="users-list-date">Today</span>
+                                <span class="users-list-date">@item.Created.ToString("dd/MM/yyyy")</span>
                             </li>
                         }
                     </ul>

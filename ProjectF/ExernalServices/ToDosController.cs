@@ -16,6 +16,7 @@ using PerformanceManagement.ENTITIES;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.DATA.Repositories.EventsRepository;
 using Type = PerformanceManagement.ENTITIES.Type;
+using User = Redmine.Net.Api.Types.User;
 
 namespace ProjectF.ExernalServices
 {
@@ -33,18 +34,21 @@ namespace ProjectF.ExernalServices
         private readonly IEventRepository _eventRepository;
         public string host = "http://localhost/redmine/"; // Si vous voulez utiliser le serveur de la société il faut changer le host et le apikey de l admin
         public string apiKey = "01f1b7962f14cfd0475d03b136efc32e14ef159e";
-        //public String login = "Hassen";
+        public String login = "Racha";
+
+
+
 
 
         public ToDosController(IEventRepository eventRepository,IUserRepository userRepository, IBadgeRepository badgeRepository, IUserBadgeRepository userBadgeRepository)
         {
 
-            _redmineClient = new RedmineManager(host, apiKey/*,login*/);
+            _redmineClient = new RedmineManager(host,apiKey);
             _userRepository = userRepository;
             _badgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
             _eventRepository = eventRepository;
-            //_redmineClient.ImpersonateUser = login;
+            _redmineClient.ImpersonateUser = login;
         }
 
 
@@ -223,14 +227,14 @@ namespace ProjectF.ExernalServices
         //}
 
 
-        //[HttpGet("returnUser")]
-        //public  async Task<List<User>> returnUser()
-        //{
-        //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
-        //    var users = await _redmineClient.GetObjectsAsync<GitLabApiClient.Models.Users.Responses.User>(parameters);
-        //    return (users);
+        [HttpGet("returnUser")]
+        public  async Task<List<User>> returnUser()
+        {
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+            var users = await _redmineClient.GetObjectsAsync<User>(parameters);
+            return (users);
 
-        //}
+        }
 
         //[HttpGet("returnApiKey")]
         //public String returnApiKey()

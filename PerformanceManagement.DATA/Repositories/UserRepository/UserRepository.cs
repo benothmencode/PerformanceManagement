@@ -29,8 +29,10 @@ namespace PerformanceManagement.DATA.Repositories
 
         public User GetUserById(int? userId)
         {
-            return _context.Users.Include(u => u.UserBadges).Where(u => u.Id == userId).FirstOrDefault();
+            return _context.Users.Include(u => u.UserBadges).Include(u => u.SystemeUsers).Where(u => u.Id == userId).FirstOrDefault();
         }
+
+        
 
         public async Task<IList<User>> GetUserByUsername(string Empsearch)
         {

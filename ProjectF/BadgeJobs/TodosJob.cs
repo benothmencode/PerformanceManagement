@@ -35,7 +35,6 @@ namespace ProjectF.BadgeJobs
 
                 RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), "00 11 * * *", TimeZoneInfo.Local);
                 RecurringJob.AddOrUpdate<ToDosController>("todos", gl => gl.TodosBadge(), "00 11 * * *", TimeZoneInfo.Local);
-                RecurringJob.AddOrUpdate<ToDosController>("dayeventforbadgefirstfeature", gl => gl.dayevent(), "00 11 * * *", TimeZoneInfo.Local);
 
             }
         }

@@ -1,0 +1,115 @@
+﻿@model ProjectF.ViewModels.EditUserForAdmin
+@{
+    ViewData["Title"] = "EditUserAccount";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h3 class="text-primary"><i class="fas fa-info-circle"></i>Edit Employee Account </h3>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"> <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Register"></a></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body register-card-body">
+                        <p class="login-box-msg">Edit Employee Account</p>
+                        <form asp-action="EditUserAccount" method="post">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group">
+                                <input asp-for="@Model.Id" class="form-control" hidden />
+                                <span asp-validation-for="@Model.Id" class="text-danger"></span>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input asp-for="@Model.FirstName" type="text" class="form-control" placeholder="First name">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input asp-for="@Model.LastName" type="text" class="form-control" placeholder="Last name">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input asp-for="@Model.UserName" type="text" class="form-control" placeholder="User name">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <input asp-for="@Model.Password" type="password" class="form-control" placeholder="Password">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span asp-validation-for="@Model.Password" class="fas fa-lock"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input asp-for="@Model.ConfirmPassword" type="password" class="form-control" placeholder="Retype password">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span asp-validation-for="@Model.ConfirmPassword" class="fas fa-lock"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model.systemesUser.Count() != 0)
+                            {
+                                @for (var i = 0; i < Model.Systems.Count; i++)
+                                {
+                                    <div class="input-group mb-3">
+                                        <small> Choose your service and configure it</small><br />
+                                        <input type="hidden" asp-for="@Model.Systems[i].Value" />
+                                        <input asp-for="Systems[i].Selected" />@Model.Systems[i].Text
+                                    </div>
+                                    <div class="text-center">
+                                        <small> If the service require an identifier , please check your local server and insert it here ! </small>
+                                        <input asp-for="@Model.systemesUser[i].Identifier" class="form-control" placeholder="Modifie user service Identifier" />
+                                        <input asp-for="@Model.systemesUser[i].UrlUserSystemAccount" class="form-control" placeholder="Modifie  user service url Account" />
+                                        <input type="hidden" asp-for="@Model.systemesUser[i].SystemeId" value="@Model.Systems[i].Value"  />
+                                        <input type="hidden" asp-for="@Model.systemesUser[i].UserId" value="@Model.Id" />
+                                    </div>
+                                }
+                            }
+                            <div class="col-8">
+                                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.form-box -->
+                </div><!-- /.card -->
+                <a  type="button" class="btn btn-default" aria-label="Left Align" asp-controller="Admin" asp-action="UserManagement">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="false"></span>
+
+                    </a>
+            </div>
+            </div>
+</section>
+
+</div>
+
+
+

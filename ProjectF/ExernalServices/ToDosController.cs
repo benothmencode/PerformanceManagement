@@ -116,38 +116,7 @@ namespace ProjectF.ExernalServices
             return rep1;
 
         }
-        [HttpGet("dayevent")]
-        public async Task dayevent()
-        {
-
-            var Badge = _badgeRepository.GetBadgeByTitle("the first featured");
-
-            var userBadges = _UserbadgeRepository.GetUsersBadge(Badge);
-            foreach (var ub in userBadges)
-            {
-                if (ub.UserProgression == 10)
-                {
-                    var evente = _eventRepository.GetAll().Where(e => e.Date == DateTime.Today).FirstOrDefault();
-                    if (evente != null)
-                    {
-                        DayEvent ListEvent = new DayEvent()
-                        {
-                            Action = "Progression",
-                            Date = DateTime.Today,
-                            Description = ub.User.UserName + " Started a new bagde which is " + ub.Badge.Title,
-                            UserId = ub.UserId,
-                            EventId = evente.Id,
-                           Type= Type.Badge
-                         
-                        };
-                        var result = _eventRepository.CreateDayEvent(ListEvent);
-                        
-
-                    }
-                }
-            }
-        }
-
+       
 
         [HttpGet("TodosBadge")]
         public async Task TodosBadge()

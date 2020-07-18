@@ -110,7 +110,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                     badge.LastCreation = badge.Created;
                 }
             }
-            return saved >= 0 ? true : false; ;
+            return saved >= 0 ? true : false; 
         }
 
         public void Update(Badge badgeParam/*, string password = null*/)

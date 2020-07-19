@@ -13,12 +13,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Project Add</h1>
+                    <h1>Configure user services</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">SystemManagement</a></li>
-                        <li class="breadcrumb-item active">Systeme Add</li>
+                        <li class="breadcrumb-item"><a href="#">Configure user services</a></li>
+                        <li class="breadcrumb-item active">Configure user services</li>
                     </ol>
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="col-md-6">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">General</h3>
+                        <h3 class="card-title">Configure services</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                                 <i class="fas fa-minus"></i>
@@ -43,18 +43,48 @@
                             <div class="form-group">
                                 @for (var i = 0; i < Model.Systemes.Count; i++)
                                 {
-                                    <div class="input-group mb-3">
-                                        <input type="hidden" asp-for="@Model.Systemes[i].Value" />
-                                        <input asp-for="Systemes[i].Selected" />@Model.Systemes[i].Text
-                                    </div>
-                                    <div class="text-center">
-                                        <small> If the service require an identifier , please check your local server and insert here ! </small>
 
-                                        @*<input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Please enter user @Model.Systemes[i].Text Identifier" />*@
-                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Please enter user @Model.Systemes[i].Text url Account" />
-                                        <input type="hidden" asp-for="@Model.systemeUsers[i].SystemeId" value="@Model.Systemes[i].Value" />
-                                        <input type="hidden" asp-for="@Model.systemeUsers[i].UserId" value="@Model.userId" />
-                                    </div>
+                                    <fieldset class="filter-row">
+                                        <div>
+                                            <ul>
+                                                <li>
+                                                    <div class="checkbox">
+                                                        <input type="hidden" asp-for="@Model.Systemes[i].Value" />
+                                                        <input type="checkbox" asp-for="Systemes[i].Selected" />
+                                                        <label>@Model.Systemes[i].Text</label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset class="filter-row">
+                                        <div class="row-section">
+                                            <div class="row-heading" hidden>@Model.Systemes[i].Text</div>
+                                            <ul>
+                                                        <li>
+                                                            <div class="checkbox">
+                                                                <small> If the service require an identifier , please check your local server and insert it here ! </small>
+                                                                <div class="form-group">
+                                                                    <label asp-for="@Model.systemUserViewModels[i].UserSystemesIds">Systemes:</label>
+                                                                    <select type="button" class="btn btn-md btn-secondary" asp-for="@Model.systemUserViewModels[i].IdUsersystemselected" asp-items="@Model.systemUserViewModels[i].UserSystemesIds">
+                                                                        <option value="" selected disabled>--  user Name identifier --</option>
+                                                                    </select>
+                                                                    <span asp-validation-for="@Model.systemUserViewModels[i].IdUsersystemselected" class="text-danger"></span>
+                                                                </div>
+
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="checkbox">
+                                                                <input asp-for="@Model.systemUserViewModels[i].systemeUser.UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
+                                                                <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.SystemeId" value="@Model.Systemes[i].Value" />
+                                                                <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.UserId" value="@Model.userId" />
+                                                            </div>
+                                                        </li>
+                                            </ul>
+                                        </div>
+                                    </fieldset>
                                 }
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Save</button>
@@ -65,8 +95,23 @@
                 <!-- /.card -->
 
             </div>
-            </div>
-</section>
+        </div>
+    </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".row-section").hide();
+            $("input:checkbox").change(function () {
+                var clickedText = $(this).siblings('label').text();
+                $(".row-section").filter(function () {
+                    var txt = $(this).find("div.row-heading").text();
+                    return txt === clickedText;
+                }).toggle($(this).is(':checked'));
+            });
+        });
+    </script>
+}

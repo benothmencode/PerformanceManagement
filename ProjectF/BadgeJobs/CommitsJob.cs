@@ -24,19 +24,21 @@ namespace ProjectF.BadgeJobs
 
         public void execute()
         {
-            var badge = _BadgeRepository.GetBadgeByJobId("CommitsJob");
-            var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
-            if (UserBadge.Count != 0)
+            var badges = _BadgeRepository.GetBadgesByJobId("CommitsJob");
+            foreach (var badge in badges)
             {
-                foreach (var Ub in UserBadge)
+                var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
+                if (UserBadge.Count != 0)
                 {
-                    if (Ub.State != "done")
+                    foreach (var Ub in UserBadge)
                     {
-                        RecurringJob.AddOrUpdate<CommitsJob>($"{Ub.BadgeId}-{Ub.UserId}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.StartedAt), "20 11 * * *", TimeZoneInfo.Local);
+                        if (Ub.State != "done")
+                        {
+                            RecurringJob.AddOrUpdate<CommitsJob>($"{Ub.BadgeId}-{Ub.UserId}", gl => gl.nombreCommits(Ub.UserId, Ub.BadgeId, Ub.StartedAt), "44 19 * * *", TimeZoneInfo.Local);
+                        }
                     }
                 }
             }
-            Console.WriteLine("Hello");
         }
     }
 }

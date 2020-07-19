@@ -35,22 +35,10 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             _jobIds  = new List<string>();
         }
 
-        //public void populateJobIds(List<string> jobIds)
-        //{
 
-        //    //Serialize 
-        //    string Temp = JsonConvert.SerializeObject(jobIds);
-        //    File.WriteAllText("C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\BadgeJobs\\jobIds.json", Temp);
-        //}
-        //public List<string> getJobIds()
-        //{
-        //    var MyList = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText("C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\BadgeJobs\\jobIds.json"));
-        //    return MyList ;
-        //}
-
-        public Badge GetBadgeByJobId(string jobId)
+        public List<Badge> GetBadgesByJobId(string jobId)
         {
-            return _context.Badges.FirstOrDefault(b => b.jobId == jobId);
+            return _context.Badges.Where(b => b.jobId == jobId).ToList();
         }
 
         public IEnumerable<Badge> GetAll()
@@ -89,6 +77,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
                 var Systeme = _context.Systemes.Where(s => s.Id == SystemeId).FirstOrDefault();
                 badge.SystemeId = SystemeId;
                 badge.Systeme = Systeme;
+                badge.IsArchieved = false;
                 _context.Badges.Add(badge);
                 saved = _context.SaveChanges();
             }
@@ -98,6 +87,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
                 badge.TypeVote = voteType;
                 badge.TypeVoteId = TypevoteId;
+                badge.IsArchieved = false;
                 _context.Badges.Add(badge);
                 saved = _context.SaveChanges();
             }
@@ -113,7 +103,7 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
             return saved >= 0 ? true : false; 
         }
 
-        public void Update(Badge badgeParam/*, string password = null*/)
+        public void Update(Badge badgeParam)
         {
             var badge = _context.Badges.Find(badgeParam.Id);
             if (badge == null)
@@ -185,10 +175,24 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
 
         public Badge BadgeForToday()
         {
-           return (Badge)_context.Badges.Where(d => d.Created == DateTime.Today);
+           return _context.Badges.Where(d => d.Created == DateTime.Today).FirstOrDefault();
             
 
         }
+
+
+        public void DesactivateBadge(int idbadge)
+        {
+            var badge = _context.Badges.FirstOrDefault(b => b.Id == idbadge);
+            if(badge != null)
+            {
+                badge.IsArchieved = true;
+                _context.Badges.Update(badge);
+                _context.SaveChanges();
+            }
+        }
+        
+
 
 
     }

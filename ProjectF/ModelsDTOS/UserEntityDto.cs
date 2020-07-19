@@ -17,6 +17,8 @@ namespace ProjectF.ModelsDTOS
        
         public string Location { get; set; }
         public string Skills { get; set; }
+        public DateTime Created { get; set; }
+
 
 
 

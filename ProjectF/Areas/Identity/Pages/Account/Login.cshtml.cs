@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PerformanceManagement.ENTITIES;
 
-
 namespace ProjectF.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]

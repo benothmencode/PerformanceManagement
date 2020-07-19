@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PerformanceManagement.DATA.DbContexts;
 using PerformanceManagement.DATA.Repositories;
+using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
 using PerformanceManagement.ENTITIES;
 using ProjectF.ModelsDTOS;
 using ProjectF.ViewModels;
@@ -28,10 +29,12 @@ namespace ProjectF.Controllers
         private UserManager<User> _userManager;
 
         private readonly IUserRepository _userRepository;
+        private readonly IUserBadgeRepository _userBadgeRepository ;
 
-        public UsersController(IWebHostEnvironment webHostEnvironment , IMapper mapper, 
+        public UsersController(IWebHostEnvironment webHostEnvironment, IMapper mapper,
             IUserRepository userRepository,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IUserBadgeRepository userBadgeRepository)
         {
             _WebHostEnvironment = webHostEnvironment;
             _mapper = mapper ??
@@ -40,6 +43,7 @@ namespace ProjectF.Controllers
                 throw new ArgumentNullException(nameof(userRepository));
             _userManager = userManager ??
              throw new ArgumentNullException(nameof(userManager));
+            _userBadgeRepository = userBadgeRepository;
 
         }
 
@@ -69,29 +73,23 @@ namespace ProjectF.Controllers
         
 
         // GET: Users/Details/5
-        public IActionResult Profile(int? idUser)
+        public IActionResult Profile(int idUser)
         {
-            if (idUser == null)
-            {
-                return NotFound();
-            }
             var user = _userRepository.GetUserById(idUser);
             if (user == null)
             {
                 return NotFound();
             }
             var model = _mapper.Map<UserEntityDto>(user);
-            var Badges = _userRepository.GetAllUserbadgesForAuser(idUser);
-            if (Badges.Count() <= 0)
-            {
-                //ViewBag.BadgeMessage = $"{user.Username} has no Badges yet ";
-            }
-            var model2 = _mapper.Map<IList<BadgeEntityDto>>(Badges);
-
+            var Badgesobtained = _userBadgeRepository.GetUsersBadge(idUser).Where(b => b.State == "Done").ToList();
+            var BadgesInProgress = _userBadgeRepository.GetUsersBadge(idUser).Where(b => b.State == "In progress").ToList();
+            var voteHistories = _userRepository.TotalVotes(idUser);
             var userProfileviewModel = new UserProfileViewModel()
             {
                 user = model,
-                badges = model2
+                badgesInProgress = BadgesInProgress ,
+                badgesObtained = Badgesobtained,
+               VoteHistories = voteHistories
             };
             return View(userProfileviewModel);
         }
@@ -118,6 +116,7 @@ namespace ProjectF.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(UserViewModel vm)
         {
+            
             var stringFileName = UploadFile(vm);
             
                 var user = await _userManager.FindByIdAsync(vm.Id.ToString());
@@ -129,9 +128,11 @@ namespace ProjectF.Controllers
                 user.LastName = vm.LastName;
                 user.Location = vm.Location;
                 user.Skills = vm.Skills;
-                user.Userimage = stringFileName;
                 user.Email = vm.Email;
-               
+               if (stringFileName != null)
+                {
+                    user.Userimage = stringFileName;
+                }
                var result = await _userManager.UpdateAsync(user);
                    if(result.Succeeded) return RedirectToAction("Profile","Users", routeValues: new { idUser = user.Id });
 

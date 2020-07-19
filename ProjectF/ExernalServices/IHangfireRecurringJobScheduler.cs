@@ -4,6 +4,8 @@
     {
         void ScheduleUserbadgeTask();
         void EventEveryDay();
-       
+        public void ScheduleWinBadges();
+
+
     }
 }

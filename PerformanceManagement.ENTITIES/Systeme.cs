@@ -17,12 +17,9 @@ namespace PerformanceManagement.ENTITIES
         public DateTime Modified { get; set; }
         public IList<Badge> Badges { get; set; }
         public List<SystemeUser> SystemeUsers { get; set; }
+        public string path { get; set; }
 
     }
 
 }
 
-//commit counter = yconecty aal gitlab mettre a jour la table user badge avec config mta3 badge ychouf l periodicité
-//    et il met a jour le nbre de commit de user dans la table userbadge = classe entre system et user badge / objet http client
-    
-//    hangfire.net =projet open source pour plannifier des taches.

@@ -25,19 +25,22 @@ namespace ProjectF.BadgeJobs
 
         public void execute()
         {
-        var badge = _BadgeRepository.GetBadgeByJobId("TodosJob");
-        var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
-
-        foreach (var Ub in UserBadge)
-        {
-            if (Ub.State != "done")
+        var badges = _BadgeRepository.GetBadgesByJobId("TodosJob");
+            foreach (var badge in badges)
             {
+                var UserBadge = _UserbadgeRepository.GetUsersBadge(badge);
 
-                RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), "00 11 * * *", TimeZoneInfo.Local);
-                RecurringJob.AddOrUpdate<ToDosController>("todos", gl => gl.TodosBadge(), "00 11 * * *", TimeZoneInfo.Local);
+                foreach (var Ub in UserBadge)
+                {
+                    if (Ub.State != "done")
+                    {
 
+                        RecurringJob.AddOrUpdate<ToDosController>("Progression", gl => gl.IssueProgression(), "00 11 * * *", TimeZoneInfo.Local);
+                        RecurringJob.AddOrUpdate<ToDosController>("todos", gl => gl.TodosBadge(), "00 11 * * *", TimeZoneInfo.Local);
+
+                    }
+                }
             }
-        }
     }
 }
 

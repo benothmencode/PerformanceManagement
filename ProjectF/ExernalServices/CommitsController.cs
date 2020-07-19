@@ -9,6 +9,8 @@ using GitLabApiClient.Models.Projects.Responses;
 using GitLabApiClient.Models.Users.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
@@ -16,9 +18,9 @@ using PerformanceManagement.ENTITIES;
 
 namespace ProjectF.ExernalServices
 {
-    //[Route("api/[controller]/[action]")]
-    //[ApiController]
-    public class CommitsController : ICommitsController
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class CommitsController : ControllerBase,ICommitsController
     {
         private readonly GitLabClient _gitLabClient;
         private readonly IUserRepository _userRepository;
@@ -28,8 +30,8 @@ namespace ProjectF.ExernalServices
 
         public CommitsController(IUserRepository userRepository , IBadgeRepository badgeRepository , IUserBadgeRepository userBadgeRepository )
         {
-            _gitLabClient = new GitLabClient("http://10.10.10.104/", "-NVEYtWgMfhuKTjGDNzr");
-            //_gitLabClient = new GitLabClient("http://192.168.1.108", "3WjDVGLxxbT6kx3fcF_3");
+            //_gitLabClient = new GitLabClient("http://10.10.10.104/", "-NVEYtWgMfhuKTjGDNzr");
+            _gitLabClient = new GitLabClient("http://192.168.1.16", "3WjDVGLxxbT6kx3fcF_3");
             _userRepository = userRepository;
             _badgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
@@ -54,8 +56,38 @@ namespace ProjectF.ExernalServices
                 throw new Exception("user not found");
              }
                
-            
             return idUserGitlab;
+        }
+        [ActionName("IdUser")]
+        public async Task<IActionResult> returnUser()
+        
+        {
+
+            dynamic Gitlab = new JObject();
+            Gitlab.Users = new JArray() as dynamic;
+            var users = await _gitLabClient.Users.GetAsync();
+            foreach(var user in users)
+            {
+                
+
+                dynamic gitlabUser = new JObject();
+                gitlabUser.username = user.Name;
+                gitlabUser.id = user.Id;
+                Gitlab.Users.Add(gitlabUser);
+                System.IO.File.WriteAllText(@"C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\Gitlab.json", Gitlab.ToString());
+            }
+
+
+
+            return Ok(Gitlab);
+        }
+
+
+        [ActionName("GetSystemesIds")]
+        public List<GitLabApiClient.Models.Users.Responses.User> getUserSystemesIds()
+        {
+            var MyList = JsonConvert.DeserializeObject<List<GitLabApiClient.Models.Users.Responses.User>>(System.IO.File.ReadAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json"));
+            return MyList;
         }
 
 
@@ -82,6 +114,7 @@ namespace ProjectF.ExernalServices
             int nbrCommit = new int();
             IList<Commit> commits = new List<Commit>();
             int? IdsUserGitlab = await VerifyIdUser(userId);
+            await returnUser();
             IList<Project> userprojects = await LoadProjects();
             var UserBadge = _UserbadgeRepository.GetUserBadge(userId, idBadge);
             update = UserBadge.StartedAt;

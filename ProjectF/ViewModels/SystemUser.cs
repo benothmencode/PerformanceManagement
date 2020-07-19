@@ -9,12 +9,12 @@ namespace ProjectF.ViewModels
 {
     public class SystemUser
     {
-      
+
+
 
         public int userId { get; set; }
-      public  IList<SystemeUser> systemeUsers { get; set; }
-      public IList<SelectListItem> Systemes { get; set; }
-      public IList<SelectListItem> UserSystemesIds { get; set; }
+        public IList<SelectListItem> Systemes { get; set; }
+       public List<SystemUserViewModel> systemUserViewModels { get; set; }
 
     }
 }

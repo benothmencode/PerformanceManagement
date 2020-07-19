@@ -43,7 +43,7 @@ namespace ProjectF.ViewModels
 
 
 
-            public List<SystemeUser> systemesUser { get; set; }
+        public List<SystemUserViewModel> systemUserViewModels { get; set; }
         public IList<SelectListItem> Systems { get; set; }
 
     }

@@ -1,4 +1,5 @@
-﻿using Redmine.Net.Api.Types;
+﻿using Microsoft.AspNetCore.Mvc;
+using Redmine.Net.Api.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,7 @@ namespace ProjectF.ExernalServices
 
 
 
-        public List<Issue> GetTimeEntries();
        
-
-    
-       
-        public  Task<String> GetIssueStatus();
         
         
 
@@ -27,14 +23,17 @@ namespace ProjectF.ExernalServices
 
         
         public  Task TodosBadge();
-      
 
 
-        public  Task<IdentifiableName> GetIssuePerProject();
-       
 
+        public  Task<int?> verifyidredmine(int userId);
+        public  Task<List<int>> listofusersidinredmine();
+
+        public  Task<List<Issue>> GetIssuesperuser();
+        public  Task<IActionResult> returnUser();
+        public List<User> getUserSystemesIds();
         
-
+            
 
 
 

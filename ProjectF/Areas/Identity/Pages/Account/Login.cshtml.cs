@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PerformanceManagement.ENTITIES;
-using Microsoft.AspNet.Identity.Owin;
+
 
 namespace ProjectF.Areas.Identity.Pages.Account
 {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.EventsRepository;
@@ -60,55 +61,64 @@ namespace ProjectF.ExernalServices
         }
 
 
-        [HttpGet("GetTimeEntries")]
-        public List<Issue> GetTimeEntries()
-        {
+  
+    
 
-            var parameters = new NameValueCollection { /*{ RedmineKeys.STATUS_ID, RedmineKeys.ALL }*/ };
-            var response = _redmineClient.GetObjects<Issue>(parameters);
-            //var issue = new Issue.SpentHours;
-
-            return (response);
-
-        }
-
-        //[HttpGet("IssueStatus")]
-        //public async Task<IEnumerable<IdentifiableName>> IssueStatus()
+        //[HttpGet("GetIssueStatus")]
+        //public async Task<String> GetIssueStatus()
         //{
         //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
 
         //    var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
-        //    var rep = response.Select(T => T.Status);
 
-        //    return rep;
+        //    return response.Last().Status.Name;
+
         //}
 
-        [HttpGet("GetIssueStatus")]
-        public async Task<String> GetIssueStatus()
-        {
-            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+        //[ActionName("getissues")]
+        //public async Task<List<Issue>> GetIssues()
+        //{
+        //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
 
-            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
+        //    var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
 
-            return response.Last().Status.Name;
+        //    return response;
 
-        }
+        //}
+
+        //public async Task<int?> VerifyIdUser(int userId)
+        //{
+
+        //    int? idUserRedmine = 6;
+        //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+
+        //    var users = await _redmineClient.GetObjectsAsync<User>(parameters);
+        //    var user = users.Where(u => u.Id == idUserRedmine).FirstOrDefault();
+        //    if (user == null)
+        //    {
+        //        throw new Exception("user not found");
+        //    }
+
+
+        //    return idUserRedmine;
+        //}
+
 
         [ActionName("getissues")]
-        public async Task<List<Issue>> GetIssues()
+        public async Task<List<Issue>> GetIssuesperuser()
         {
+            //exemple
+            int id = 5;
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
 
             var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
 
-            return response;
+            var listissuesPeruser = response.Where(x => x.Author.Id == id).ToList();
+
+            return listissuesPeruser;
 
         }
-
-
        
-
-
 
         [HttpGet("IssueProgression")]
 
@@ -128,6 +138,37 @@ namespace ProjectF.ExernalServices
             return rep1;
 
         }
+
+        //public async Task<int> progressionforuser()
+        //{
+        //    var listofidis = new List<int>();
+        //    listofidis.Add(1);
+        //    listofidis.Add(2);
+        //   var l= listofusersidinredmine();
+        //   var users = Getusers();
+            
+        //    var user = users.Where(u => u.Id == idUserGitlab).FirstOrDefault();
+
+
+        //}
+
+        
+
+
+        //public async Task<List<int>> getissueidauthorAsync()
+        //{
+        //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+        //    var l =new List<int> ();
+        //    var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
+        //    foreach(var r in response)
+        //    {
+        //     var id=  r.Author.Id;
+        //        l.Add(id);
+        //    }
+
+        //    return l;
+
+        //}
        
 
         [HttpGet("TodosBadge")]
@@ -138,8 +179,8 @@ namespace ProjectF.ExernalServices
 
             var userBadges = _UserbadgeRepository.GetUsersBadge(Badge);
 
-
-            var status = await GetIssueStatus();
+            //int? IdsUserRedmine = await verifyidredmine(userId);
+            //var status = await GetIssueStatus();
 
             float? progression = await IssueProgression();
 
@@ -161,64 +202,33 @@ namespace ProjectF.ExernalServices
         }
 
 
-        [HttpGet("GetIssuePerProject")]
-        public async Task<IdentifiableName> GetIssuePerProject()
-        {
-
-            
-            IdentifiableName parentname =null;
-            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
-            var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
-            
-            foreach (var rep in response)
-            {
-              parentname=  rep.Project;
-
-
-            }
-
-            return parentname;
-            
-            //foreach(var r in )
-            //{
-
-            //   var re= response2.
-            //}
-        }
+    
 
 
 
-
-
-        //[HttpGet("issues")]
-        //public async Task<ActionResult<List<Issue>>> GetIssues()
-        //{
-
-        //    /*string issueId = "<issue-id>";*/
-        //    var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
-
-        //    //parameter - fetch issues for a date range
-        //    //parameters.Add(RedmineKeys.CREATED_ON, "><2012-03-01|2012-03-07");
-
-        //    var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
-
-        //    return Ok(response);
-
-        //}
 
 
         [ActionName("returnUser")]
-        public  async Task<IActionResult> returnUser()
+        public async Task<IActionResult> returnUser()
         {
-            
+
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
             var users = await _redmineClient.GetObjectsAsync<User>(parameters);
-            
+            dynamic Redmine = new JObject();
+            Redmine.Users = new JArray() as dynamic;
+            foreach (var user in users)
+            {
+                dynamic redmineUser = new JObject();
+                redmineUser.username = user.FirstName;
+                redmineUser.id = user.Id;
+                Redmine.Users.Add(redmineUser);
                 //Serialize 
                 var Temp = JsonConvert.SerializeObject(users);
-             System.IO.File.WriteAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json",Temp);
+                System.IO.File.WriteAllText(@"C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json", Redmine.ToString());
 
-            return Ok(users);
+                
+            }
+            return Ok(Redmine);
         }
 
 
@@ -228,6 +238,47 @@ namespace ProjectF.ExernalServices
             var MyList = JsonConvert.DeserializeObject<List<User>>(System.IO.File.ReadAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json"));
             return MyList;
         }
+
+
+        [ActionName("listusersredmine")]
+        public async Task<List<int>> listofusersidinredmine()
+        {
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+            var users = await _redmineClient.GetObjectsAsync<User>(parameters);
+            var l = new List<int>();
+            foreach (var user in users){
+                var u = user.Id;
+                l.Add(u);
+               
+            }
+            return l.ToList();
+            
+        }
+
+      
+
+
+
+
+        public async Task<int?> verifyidredmine(int userId)
+        {
+
+            int? idUserredmine = _userRepository.GetIdUserRedmine(userId);
+
+            var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
+            var users = await _redmineClient.GetObjectsAsync<User>(parameters);
+            var user = users.Where(u => u.Id == idUserredmine).FirstOrDefault();
+            if (user == null)
+            {
+                throw new Exception("user not found");
+            }
+
+
+            return idUserredmine;
+        }
+
+
+
 
 
 

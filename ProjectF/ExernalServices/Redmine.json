@@ -1,20 +1,16 @@
 {
   "Users": [
     {
-      "username": "rachaa",
+      "username": "Hassen",
       "id": 6
     },
     {
-      "username": "wijden",
-      "id": 3
-    },
-    {
-      "username": "hassen",
-      "id": 2
-    },
-    {
-      "username": "Administrator",
+      "username": "racha",
       "id": 1
+    },
+    {
+      "username": "Wijden",
+      "id": 5
     }
   ]
 }

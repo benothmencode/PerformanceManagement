@@ -1,8 +1,6 @@
 ﻿@model PerformanceManagement.ENTITIES.Systeme
-@addTagHelper *, Vereyon.Web.FlashMessage
-
 @{
-    ViewData["Title"] = "CreateSysteme";
+    ViewData["Title"] = "updateSystem";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -42,9 +40,10 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form asp-action="CreateSysteme">
+                        <form asp-action="updateSystem" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
+                                <input asp-for="Id" hidden class="form-control" />
                                 <label asp-for="SystemName" class="control-label"></label>
                                 <input asp-for="SystemName" class="form-control" />
                                 <span asp-validation-for="SystemName" class="text-danger"></span>
@@ -56,7 +55,7 @@
                             </div>
                             <div class="form-group">
                                 <a href="#" class="btn btn-secondary">Cancel</a>
-                                <input type="submit" value="Create new System" class="btn btn-success float-right">
+                                <input type="submit" value="Update System" class="btn btn-success float-right">
                             </div>
                         </form>
                     </div>

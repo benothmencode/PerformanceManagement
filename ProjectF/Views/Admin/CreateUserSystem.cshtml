@@ -62,21 +62,26 @@
                                         <div class="row-section">
                                             <div class="row-heading" hidden>@Model.Systemes[i].Text</div>
                                             <ul>
-                                                <li>
-                                                    <div class="checkbox">
-                                                        <small> If the service require an identifier , please check your local server and insert it here ! </small>
-                                                        <input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Modifie user service Identifier" />
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="checkbox">
-                                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
-                                                        <input type="hidden" asp-for="@Model.systemeUsers[i].SystemeId" value="@Model.Systemes[i].Value" />
-                                                        <input type="hidden" asp-for="@Model.systemeUsers[i].UserId" value="@Model.userId" />
-                                                    </div>
+                                                        <li>
+                                                            <div class="checkbox">
+                                                                <small> If the service require an identifier , please check your local server and insert it here ! </small>
+                                                                <div class="form-group">
+                                                                    <label asp-for="@Model.systemUserViewModels[i].UserSystemesIds">Systemes:</label>
+                                                                    <select type="button" class="btn btn-md btn-secondary" asp-for="@Model.systemUserViewModels[i].IdUsersystemselected" asp-items="@Model.systemUserViewModels[i].UserSystemesIds">
+                                                                        <option value="" selected disabled>--  user Name identifier --</option>
+                                                                    </select>
+                                                                    <span asp-validation-for="@Model.systemUserViewModels[i].IdUsersystemselected" class="text-danger"></span>
+                                                                </div>
 
-
-                                                </li>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="checkbox">
+                                                                <input asp-for="@Model.systemUserViewModels[i].systemeUser.UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
+                                                                <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.SystemeId" value="@Model.Systemes[i].Value" />
+                                                                <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.UserId" value="@Model.userId" />
+                                                            </div>
+                                                        </li>
                                             </ul>
                                         </div>
                                     </fieldset>
@@ -107,6 +112,6 @@
                     return txt === clickedText;
                 }).toggle($(this).is(':checked'));
             });
-             });
+        });
     </script>
 }

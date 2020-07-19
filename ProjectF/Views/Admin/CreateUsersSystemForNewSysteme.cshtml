@@ -63,18 +63,22 @@
                                                 <li>
                                                     <div class="checkbox">
                                                         <small> If the service require an identifier , please check your local server and insert it here ! </small>
-                                                        <input asp-for="@Model.systemeUsers[i].Identifier" class="form-control" placeholder="Please enter user service Identifier" />
+                                                        <div class="form-group">
+                                                            <label asp-for="@Model.systemUserViewModels[i].UserSystemesIds">Systemes:</label>
+                                                            <select type="button" class="btn btn-md btn-secondary" asp-for="@Model.systemUserViewModels[i].IdUsersystemselected" asp-items="@Model.systemUserViewModels[i].UserSystemesIds">
+                                                                <option value="" selected disabled>--  user Name identifier --</option>
+                                                            </select>
+                                                            <span asp-validation-for="@Model.systemUserViewModels[i].IdUsersystemselected" class="text-danger"></span>
+                                                        </div>
+
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="checkbox">
-                                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
-                                                        <input asp-for="@Model.systemeUsers[i].UrlUserSystemAccount" class="form-control" placeholder="Please enter user service url Account" />
-                                                        <input type="hidden" asp-for="@Model.systemeUsers[i].SystemeId" value="@Model.SystemeId" />
-                                                        <input type="hidden" asp-for="@Model.systemeUsers[i].UserId" value="@Model.Users[i].Value" />
+                                                        <input asp-for="@Model.systemUserViewModels[i].systemeUser.UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
+                                                        <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.SystemeId" value="@Model.SystemeId" />
+                                                        <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.UserId" value="@Model.Users[i].Value" />
                                                     </div>
-
-
                                                 </li>
                                             </ul>
                                         </div>

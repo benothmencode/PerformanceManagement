@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (Model.systemesUser.Count() != 0)
+                            @if (Model.systemUserViewModels.Count() != 0)
                             {
                         <small><b>Choose available services and configure them !</b></small><br />
                                 @for (var i = 0; i < Model.Systems.Count; i++)
@@ -100,17 +100,22 @@
                                                 <li>
                                                     <div class="checkbox">
                                                         <small> If the service require an identifier , please check your local server and insert it here ! </small>
-                                                        <input asp-for="@Model.systemesUser[i].Identifier" class="form-control" placeholder="Modifie user service Identifier" />
+                                                        <div class="form-group">
+                                                            <label asp-for="@Model.systemUserViewModels[i].UserSystemesIds">Systemes:</label>
+                                                            <select type="button" class="btn btn-md btn-secondary" asp-for="@Model.systemUserViewModels[i].IdUsersystemselected" asp-items="@Model.systemUserViewModels[i].UserSystemesIds">
+                                                                <option value="" selected disabled>--  user Name identifier --</option>
+                                                            </select>
+                                                            <span asp-validation-for="@Model.systemUserViewModels[i].IdUsersystemselected" class="text-danger"></span>
+                                                        </div>
+
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="checkbox">
-                                                        <input asp-for="@Model.systemesUser[i].UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
-                                                        <input type="hidden" asp-for="@Model.systemesUser[i].SystemeId" value="@Model.Systems[i].Value" />
-                                                        <input type="hidden" asp-for="@Model.systemesUser[i].UserId" value="@Model.Id" />
+                                                        <input asp-for="@Model.systemUserViewModels[i].systemeUser.UrlUserSystemAccount" class="form-control" placeholder="Modify user service url Account" />
+                                                        <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.SystemeId" value="@Model.Systems[i].Value" />
+                                                        <input type="hidden" asp-for="@Model.systemUserViewModels[i].systemeUser.UserId" value="@Model.Id" />
                                                     </div>
-
-                                                  
                                                 </li>
                                             </ul>
                                         </div>

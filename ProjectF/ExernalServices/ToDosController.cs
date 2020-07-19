@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.EventsRepository;
@@ -97,11 +98,15 @@ namespace ProjectF.ExernalServices
         [ActionName("getissues")]
         public async Task<List<Issue>> GetIssues()
         {
+            //exemple
+            int id = 1;
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
 
             var response = await _redmineClient.GetObjectsAsync<Issue>(parameters);
 
-            return response;
+            var listissuesPeruser = response.Where(x => x.Author.Id == id).ToList();
+
+            return listissuesPeruser;
 
         }
 
@@ -213,12 +218,21 @@ namespace ProjectF.ExernalServices
             
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };
             var users = await _redmineClient.GetObjectsAsync<User>(parameters);
-            
-                //Serialize 
-                var Temp = JsonConvert.SerializeObject(users);
-             System.IO.File.WriteAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json",Temp);
 
-            return Ok(users);
+            dynamic Redmine = new JObject();
+            Redmine.Users = new JArray() as dynamic;
+            foreach (var user in users)
+            {
+                dynamic redmineUser = new JObject();
+                redmineUser.username = user.FirstName;
+                redmineUser.id = user.Id;
+                Redmine.Users.Add(redmineUser);
+                System.IO.File.WriteAllText(@"C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\Gitlab.json", Redmine.ToString());
+            }
+
+
+
+            return Ok(Redmine);
         }
 
 

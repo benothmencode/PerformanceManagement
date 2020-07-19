@@ -14,6 +14,7 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
     {
 
         private readonly PerformanceManagementDBContext _context;
+
         public SystemeRepository(PerformanceManagementDBContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));

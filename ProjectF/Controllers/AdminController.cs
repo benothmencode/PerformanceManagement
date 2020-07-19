@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
@@ -33,8 +36,10 @@ namespace ProjectF.Controllers
 
         private readonly IFlashMessage _flashMessage;
 
+        private readonly IWebHostEnvironment _WebHostEnvironment;
+
         public AdminController(UserManager<User> userManager, RoleManager<AppRole> roleManager, ISystemeRepository systemeRepository
-            , IBadgeRepository badgeRepository, IUserRepository userRepository, IMapper mapper, IFlashMessage flashMessage)
+            , IBadgeRepository badgeRepository, IUserRepository userRepository, IMapper mapper, IFlashMessage flashMessage , IWebHostEnvironment webHostEnvironment )
         {
             _userManager = userManager ??
               throw new ArgumentNullException(nameof(userManager));
@@ -47,6 +52,7 @@ namespace ProjectF.Controllers
             _userRepository = userRepository;
             _mapper = mapper;
             _flashMessage = flashMessage;
+            _WebHostEnvironment = webHostEnvironment;
 
         }
 
@@ -91,6 +97,9 @@ namespace ProjectF.Controllers
         {
             if (ModelState.IsValid)
             {
+                string contentRootPath = _WebHostEnvironment.ContentRootPath;
+               systeme.path = contentRootPath + "\\ExernalServices\\" + systeme.SystemName+".json" ;
+
                 _SystemeRepository.CreateSysteme(systeme);
                
                 return RedirectToAction("CreateUsersSystemForNewSysteme",systeme);
@@ -98,7 +107,30 @@ namespace ProjectF.Controllers
             return View(systeme);
         }
 
-      
+        
+        public IActionResult updateSystem(int systemeId)
+        {
+            var System = _SystemeRepository.GetSystemeById(systemeId);
+            return View(System);
+
+        }
+
+        [HttpPost]
+        public IActionResult updateSystem(Systeme systeme)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                systeme.Created = DateTime.Now;
+
+                _SystemeRepository.UpdateSysteme(systeme);
+
+                return RedirectToAction("SystemManagement", systeme);
+            }
+            return View(systeme);
+
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> DesactivateUser(int UserId)
@@ -152,13 +184,23 @@ namespace ProjectF.Controllers
         {
             var user = _userRepository.GetUserById(UserId);
             var systemes = _SystemeRepository.GetSystemes(user.Id);
+            List<SystemUserViewModel> systemUserViews = new List<SystemUserViewModel>();
+            var paths = systemes.Select(s => s.path).ToList();
+            foreach (var path in paths)
+            {
+                var listitem = getUserSystemesIds(path);
+                systemUserViews.Add(new SystemUserViewModel()
+                {
+                    UserSystemesIds = listitem,
+                });
+            }
             var userViewModel = new EditUserForAdmin()
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserName = user.UserName,
-                systemesUser = user.SystemeUsers,
+                systemUserViewModels = systemUserViews,
                  Systems = systemes.Select(x => new SelectListItem()
                  {
                      Text = x.SystemName,
@@ -188,14 +230,15 @@ namespace ProjectF.Controllers
                         //update user password
                     }
                     var result = await _userManager.UpdateAsync(user);
-                    if(uservm.systemesUser.Count() != 0)
+                    if (uservm.systemUserViewModels.Count() != 0)
                     {
-                        foreach(var us in uservm.systemesUser)
+                        foreach (var Su in uservm.systemUserViewModels)
                         {
-                            _SystemeRepository.updatesystemUser(us);
+                            Su.systemeUser.Identifier = Su.IdUsersystemselected;
+                            _SystemeRepository.updatesystemUser(Su.systemeUser);
                         }
                     }
-                   
+                  
                     if (result.Succeeded) return RedirectToAction("UserManagement");
                 }
             }
@@ -205,40 +248,55 @@ namespace ProjectF.Controllers
 
         }
 
-        [ActionName("GetSystemesIds")]
-        public List<Redmine.Net.Api.Types.User> getUserSystemesIds()
+      
+        public List<SelectListItem> getUserSystemesIds(string path)
         {
-            var MyList = JsonConvert.DeserializeObject<List<Redmine.Net.Api.Types.User>>(System.IO.File.ReadAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json"));
-            return MyList;
+            //JObject u = JObject.Parse(System.IO.File.ReadAllText(@path));
+            using (StreamReader file = System.IO.File.OpenText(@path))
+            using (JsonTextReader reader = new JsonTextReader(file))
+            {
+                JObject o1 = (JObject)JToken.ReadFrom(reader);
+
+                var users = from u in o1["Users"]
+                 select new { userName = (string)u["username"], id = (int)u["id"] };
+                var IdUserSystListItem = users.Select(x => new SelectListItem()
+                {
+                    Text = x.userName,
+                    Value = x.id.ToString()
+                }).ToList();
+
+                return IdUserSystListItem;
+            }
+         
         }
+
 
         [HttpGet]
         public IActionResult CreateUserSystem(User user)
         {
+            List<SystemUserViewModel> systemUserViews = new List<SystemUserViewModel>();
             var SystemesList = _SystemeRepository.GetSystemes();
-            var redmineUsers = getUserSystemesIds();
-
+            var paths = SystemesList.Select(s => s.path).ToList();
+            foreach(var path in paths)
+            {
+               var listitem = getUserSystemesIds(path);
+                systemUserViews.Add(new SystemUserViewModel()
+                {
+                  UserSystemesIds = listitem,
+                });
+            }
             if (SystemesList.Count() != 0)
             {
-
                 var sysListItem = SystemesList.Select(x => new SelectListItem()
                 {
                     Text = x.SystemName,
                     Value = x.Id.ToString()
                 }).ToList();
-
-                var IdUserSystListItem = redmineUsers.Select(x => new SelectListItem()
-                {
-                    Text = x.FirstName,
-                    Value = x.Id.ToString()
-                }).ToList();
-
                 var vm = new SystemUser()
                 {
                     Systemes = sysListItem,
-                    userId = user.Id,
-                    UserSystemesIds = IdUserSystListItem
-                    
+                    systemUserViewModels = systemUserViews,
+                    userId = user.Id
                 };
                 return View(vm);
             }
@@ -251,13 +309,14 @@ namespace ProjectF.Controllers
         public IActionResult CreateUserSystem(SystemUser vm)
         {
             bool result = true;
-           if(vm != null)
+            if (vm != null)
             {
-                if(vm.systemeUsers.Count() != 0)
+                if (vm.systemUserViewModels.Count() != 0)
                 {
-                    foreach(var Su in vm.systemeUsers)
+                    foreach (var Su in vm.systemUserViewModels)
                     {
-                        result = _SystemeRepository.CreateSystemUser(Su);
+                        Su.systemeUser.Identifier = Su.IdUsersystemselected;
+                        result = _SystemeRepository.CreateSystemUser(Su.systemeUser);
                     }
                     if (result == false) return View(vm);
                 }
@@ -268,9 +327,22 @@ namespace ProjectF.Controllers
         [HttpGet]
         public IActionResult CreateUsersSystemForNewSysteme(Systeme systeme)
         {
+
             var Users = _userRepository.GetUsers();
+            List<SystemUserViewModel> systemUserViews = new List<SystemUserViewModel>();
+
             if (Users.Count() != 0)
             {
+                for (int i = 0 ; i < Users.Count() ; i++)
+                {
+                    var path = systeme.path;
+                    var listitem = getUserSystemesIds(path);
+                    systemUserViews.Add(new SystemUserViewModel()
+                    {
+                        UserSystemesIds = listitem,
+                    });
+
+                }
 
                 var UserListItem = Users.Select(x => new SelectListItem()
                 {
@@ -282,7 +354,7 @@ namespace ProjectF.Controllers
                 {
                     Users = UserListItem,
                     SystemeId = systeme.Id,
-
+                    systemUserViewModels = systemUserViews
                 };
                 return View(vm);
             }
@@ -297,11 +369,12 @@ namespace ProjectF.Controllers
             bool result = true;
             if (vm != null)
             {
-                if (vm.systemeUsers.Count() != 0)
+                if (vm.systemUserViewModels.Count() != 0)
                 {
-                    foreach (var Su in vm.systemeUsers)
+                    foreach (var Su in vm.systemUserViewModels)
                     {
-                        result = _SystemeRepository.CreateSystemUser(Su);
+                        Su.systemeUser.Identifier = Su.IdUsersystemselected;
+                        result = _SystemeRepository.CreateSystemUser(Su.systemeUser);
                     }
                     if (result == false) return View(vm);
                 }

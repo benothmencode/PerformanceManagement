@@ -29,6 +29,8 @@ namespace PerformanceManagement.ENTITIES
 
 
         public bool IsArchieved { get; set; }
+        public bool SystemIsArchieved { get; set; }
+
 
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         

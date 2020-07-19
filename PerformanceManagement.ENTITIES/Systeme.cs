@@ -19,6 +19,8 @@ namespace PerformanceManagement.ENTITIES
         public List<SystemeUser> SystemeUsers { get; set; }
         public string path { get; set; }
 
+        public bool SystemIsArchieved { get; set; }
+
     }
 
 }

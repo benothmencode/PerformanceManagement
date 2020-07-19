@@ -24,11 +24,7 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         {
             return _context.Systemes.Include(s => s.Badges).Include(s => s.SystemeUsers).ToList();
         }
-        
-        //public IEnumerable<Badge> GetBadges(int SystemeId)
-        //{
-        //    return _context.Badges.Where(b => b.SystemeId == SystemeId).Include(b => b.Systeme).ToList();
-        //}
+     
         public Systeme GetSystemeById(int SystemeId)
         {
             return _context.Systemes.Include(s => s.Badges).Include(s => s.SystemeUsers).Where(s => s.Id == SystemeId).FirstOrDefault();
@@ -46,11 +42,6 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
             _context.SaveChanges();
         }
 
-        public void DeleteSysteme(Systeme systeme)
-        {
-            _context.Remove(systeme);
-            _context.SaveChanges();
-        }
 
         public bool SystemeExists(int systemeId)
         {
@@ -88,7 +79,27 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         }
 
 
-       
+        public bool DisableSystem(int systemId)
+        {
+            var systeme = _context.Systemes.Include(s=> s.Badges).Include(s => s.SystemeUsers).FirstOrDefault(s => s.Id == systemId);
+            var saved = 0;
+            if (systeme.SystemIsArchieved != true)
+            {
+                foreach (var badge in systeme.Badges)
+                {
+                    badge.SystemIsArchieved = true;
+                }
+                foreach (var userSystem in systeme.SystemeUsers)
+                {
+                    userSystem.SystemIsArchieved = true;
+                }
+                systeme.SystemIsArchieved = true;
+            }
+            _context.Update(systeme);
+            saved = _context.SaveChanges();
+
+            return saved >= 0 ? true : false;
+        }
 
 
 

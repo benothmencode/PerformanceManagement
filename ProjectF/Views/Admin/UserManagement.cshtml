@@ -116,7 +116,7 @@
                                         </a>
                                             @if (@item.UserId.ToString() != UserManager.GetUserId(User) && @item.Active)
                                             {
-                                                <a onclick="Desctivate(@item.UserId)" class="btn btn-danger btn-sm" href="#">
+                                                <a onclick="Desctivate(@item.UserId)" class="btn btn-danger btn-sm">
                                                     <i class="fas fa-trash">
                                                     </i>
                                                     Disable Account

@@ -382,7 +382,28 @@ namespace ProjectF.Controllers
             return RedirectToAction("SystemManagement");
         }
 
+        [HttpPost]
+        public IActionResult disabelSysteme(int SystemId)
+        {
+            bool result = false;
+            var system = _SystemeRepository.GetSystemeById(SystemId);
+            if (system != null && system.SystemIsArchieved == false )
+            {
 
+                 result = _SystemeRepository.DisableSystem(SystemId);
+                return Json(new
+                {
+                    success = result,
+                    responseText = system.SystemName + "disabled Successfully!! "
+                });
+            }
+            return Json(new
+            {
+                success = result,
+                responseText = "Something went wrong !! "
+            });
+
+        }
 
     }
 }

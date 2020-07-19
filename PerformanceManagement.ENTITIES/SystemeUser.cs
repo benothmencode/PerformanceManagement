@@ -12,6 +12,7 @@ namespace PerformanceManagement.ENTITIES
         public int SystemeId { get; set; }
         public Systeme Systeme { get; set; }
 
+        public bool SystemIsArchieved { get; set; }
 
         public string UrlUserSystemAccount { get; set; }
         public int? Identifier { get; set; }

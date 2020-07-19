@@ -95,20 +95,31 @@
                                 </td>
                                 <td class="project-actions text-right">
                                     @*<a class="btn btn-primary btn-sm" href="#">
-                                <i class="fas fa-folder">
-                                </i>
-                                View
-                            </a>*@
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            View
+                                        </a>*@
                                     <a class="btn btn-info btn-sm" asp-action="updateSystem" asp-route-systemeId="@systeme.Id">
                                         <i class="fas fa-pencil-alt">
                                         </i>
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger btn-sm" href="#">
-                                        <i class="fas fa-trash">
-                                        </i>
-                                        Delete
-                                    </a>
+                                    @if (!@systeme.SystemIsArchieved)
+                                    {
+                                        <a onclick="Desctivate(@systeme.Id)" class="btn btn-danger btn-sm" href="#">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Disable System
+                                        </a>
+                                    }
+                                    else if (@systeme.SystemIsArchieved)
+                                    {
+                                        <a onclick="Activate(@systeme.Id)" class="example2 btn btn-success btn-sm" href="#">
+                                            <i class="fas fa-toggle-on">
+                                            </i>
+                                            Enable System
+                                        </a>
+                                    }
                                 </td>
                             </tr>
                         }
@@ -125,3 +136,66 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+
+@section scripts{
+    <script>
+        function Desctivate(id) {
+            $.confirm({
+                title: 'Confirm!',
+                content: 'Simple confirm!',
+                buttons: {
+                    confirm: function () {
+                        $.ajax({
+                            url: "/Admin/disabelSysteme",
+                            type: "POST",
+                            dataType: "json",
+                            data: { SystemId: id },
+                            success: function (data) {
+                                if (data.success) {
+                                    alert(data.responseText);
+                                    window.location.reload(true);
+                                }
+                                else {
+                                    alert(data.responseText);
+                                }
+                            }
+                        });
+                        $.alert('Confirmed!');
+                    },
+                    cancel: function () {
+                        $.alert('Canceled!');
+                    },
+                }
+            });
+        }
+
+
+
+
+
+
+            //function Activate(id) {
+            //    if (confirm("Are you Sure you want to enable this User?")) {
+            //        $.ajax({
+            //            url: "/Admin/activateUser",
+            //            type: "POST",
+            //            dataType: "json",
+            //            data: { UserId: id },
+            //            success: function (data) {
+            //                if (data.success) {
+            //                    alert(data.responseText);
+            //                    window.location.reload(true);
+            //                }
+            //                else {
+            //                    alert(data.responseText);
+            //                }
+            //            }
+            //        });
+            //    }
+            //    else {
+            //        return false;
+            //    }
+            //};
+    </script>
+}

@@ -227,7 +227,7 @@ namespace ProjectF.ExernalServices
                 redmineUser.username = user.FirstName;
                 redmineUser.id = user.Id;
                 Redmine.Users.Add(redmineUser);
-                System.IO.File.WriteAllText(@"C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\Gitlab.json", Redmine.ToString());
+                System.IO.File.WriteAllText(@"C:\\Users\\Wijden BEN OTHMEN\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\Redmine.json", Redmine.ToString());
             }
 
 
@@ -236,13 +236,7 @@ namespace ProjectF.ExernalServices
         }
 
 
-        [ActionName("GetSystemesIds")]
-        public List<User> getUserSystemesIds()
-        {
-            var MyList = JsonConvert.DeserializeObject<List<User>>(System.IO.File.ReadAllText("C:\\Users\\PC HIMY\\source\\repos\\PerformanceManagement\\ProjectF\\ExernalServices\\RedmineUsers.json"));
-            return MyList;
-        }
-
+       
 
 
         //[HttpGet("returnApiKey")]

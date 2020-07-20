@@ -68,6 +68,13 @@ namespace ProjectF.Controllers
               select new UsersForAdmin(user, GetUserRoles(user).Result)).ToList()));
         }
 
+
+        public  IActionResult ficheEmployee(int userId)
+        {
+            var user = _userRepository.GetUserById(userId);
+            return View(user);
+        }
+
         private async Task<List<string>> GetUserRoles(User user)
         {
             var resultifnull = new List<string>();

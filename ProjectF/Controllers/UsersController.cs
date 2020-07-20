@@ -50,7 +50,7 @@ namespace ProjectF.Controllers
         // GET: Users
         public IActionResult Employees()
         {
-            var users = _userRepository.GetUsers();
+            var users = _userRepository.GetUsers().Where(u => u.Active != false);
             if (users.Count() <= 0)
             {
                 ViewBag.Message = "there was a prob retrieving users";
@@ -81,8 +81,8 @@ namespace ProjectF.Controllers
                 return NotFound();
             }
             var model = _mapper.Map<UserEntityDto>(user);
-            var Badgesobtained = _userBadgeRepository.GetUsersBadge(idUser).Where(b => b.State == "Done").ToList();
-            var BadgesInProgress = _userBadgeRepository.GetUsersBadge(idUser).Where(b => b.State == "In progress").ToList();
+            var Badgesobtained = _userBadgeRepository.GetUsersBadge(idUser).Where(b => b.State == "Done").Where(ub => ub.Badge.IsArchieved != true).ToList();
+            var BadgesInProgress = _userBadgeRepository.GetUsersBadge(idUser).Where(b => b.State == "In progress").Where(ub => ub.Badge.IsArchieved != true).ToList();
             var voteHistories = _userRepository.TotalVotes(idUser);
             var userProfileviewModel = new UserProfileViewModel()
             {

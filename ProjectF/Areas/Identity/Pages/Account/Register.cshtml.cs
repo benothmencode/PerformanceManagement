@@ -136,16 +136,6 @@ namespace ProjectF.Areas.Identity.Pages.Account
                     _userManager.AddToRoleAsync(user, "Employee").Wait();
                     _logger.LogInformation("User created a new account with password.");
 
-
-                    //UserSystemsvm.UserId = user.Id;
-                    //UserSystemsvm.SelectedSystemesIDS = UserSystemsvm.SelectedSystemesIDS;
-                    //if (UserSystemsvm != null)
-                    //{
-                    //    User userselected = await _userManager.FindByIdAsync(UserSystemsvm.UserId.ToString());
-
-                    //    var UserSystem = Input.Identifier;
-                       
-                    //}
                     IEnumerable<Badge> badges = _badgeRepository.GetAll();
                     if (badges.Count() != 0)
                     {
@@ -162,7 +152,7 @@ namespace ProjectF.Areas.Identity.Pages.Account
                                 {
                                     TypeVoteId = (int)badge.TypeVoteId,
                                     Quantity = badge.BadgeCriteria,
-                                    Update = DateTime.Now,
+                                    Update = badge.Created,
                                     UserId = user.Id,
                                 };
 

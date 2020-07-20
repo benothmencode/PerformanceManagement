@@ -20,7 +20,7 @@ namespace PerformanceManagement.ENTITIES
         public int TypeVoteId { get; set; }
         public TypeVote TypeVote { get; set; }
         public DateTime Update { get; set; }
-
+        public bool BadgeDisabled { get; set; }
 
 
 

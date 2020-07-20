@@ -77,7 +77,7 @@ namespace ProjectF.Controllers
                 return NotFound();
             }
             var model = _mapper.Map<UserEntityDto>(user);
-            var UserBadges = _UserBadgeRepository.GetUsersBadge(idUser);
+            var UserBadges = _UserBadgeRepository.GetUsersBadge(idUser).Where(ub => ub.Badge.IsArchieved != true);
             if (UserBadges.Count() <= 0)
             {
                 ViewBag.BadgeMessage = $"{user.UserName} has no Badges yet ";
@@ -384,8 +384,15 @@ namespace ProjectF.Controllers
             if (badge != null && badge.IsArchieved == false)
             {
                 _BadgeRepository.DesactivateBadge(idBadge,!badge.IsArchieved);
+                var users = _UserBadgeRepository.GetUsersBadge(badge).Select(ub => ub.User).ToList();
+                foreach (var user in users)
+                {
+                    var voteRights = _BadgeRepository.GetVoteRights(user, badge.Created);
+                    voteRights.BadgeDisabled = true;
+                    _VoteRepository.AddOrUpdateVoteRights(voteRights.Id, voteRights);
+                }
 
-               return Json(new
+                return Json(new
                {
                    success = true,
                    responseText = badge.Title + " disabled Successfully!! "
@@ -406,6 +413,13 @@ namespace ProjectF.Controllers
             if(badge != null)
             {
                 _BadgeRepository.DesactivateBadge(idBadge, !badge.IsArchieved);
+                var users = _UserBadgeRepository.GetUsersBadge(badge).Select(ub => ub.User).ToList();
+                foreach (var user in users)
+                {
+                    var voteRights = _BadgeRepository.GetVoteRights(user, badge.Created);
+                    voteRights.BadgeDisabled = false;
+                    _VoteRepository.AddOrUpdateVoteRights(voteRights.Id, voteRights);
+                }
                 return Json(new
                 {
                     success = true,

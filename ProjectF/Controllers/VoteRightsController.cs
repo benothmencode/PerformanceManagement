@@ -47,7 +47,7 @@ namespace ProjectF.Controllers
          {
             var users = _userRepository.GetUsers().Where(u => u.Id != userId);
            
-            var  Votes = _voteRepository.GetUserVoteRights(userId);
+            var  Votes = _voteRepository.GetUserVoteRights(userId).Where(vr => vr.BadgeDisabled == false);
            
             var votesmodel = _mapper.Map<IList<VoteRightsEntityDto>>(Votes);
 

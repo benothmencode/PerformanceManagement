@@ -19,7 +19,7 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         void updatesystemUser(SystemeUser systemeUser);
         public List<Systeme> GetSystemes(int userId);
 
-        public bool DisableSystem(int systemId);
+        public bool DisableSystem(int systemId, bool result);
 
 
     }

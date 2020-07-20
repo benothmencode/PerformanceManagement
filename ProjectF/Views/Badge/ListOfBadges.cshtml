@@ -60,7 +60,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="btn btn-light" onclick="showInPopup('@Url.Action("AddOrEditBadgeVote","Badge",null,Context.Request.Scheme)','New BadgesForVotes')">
+                                        <a class="btn btn-light" onclick="showInPopup('@Url.Action("AddOrEditBadgeVote","Badge",null,Context.Request.Scheme)','New Badges For Votes')">
                                             Add Badges For Vote
                                         </a>
 
@@ -124,23 +124,48 @@
                                         <center> TypeVote : @item.TypeVote.Libellé</center>
                                     </td>
                                 }
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" asp-action="Details" , asp-controller="badge" asp-route-idBadge="@item.Id">
-                                        <i class="fas fa-folder">
-                                        </i>
-                                        View
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="#">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Edit
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" href="#">
+                            <td class="project-actions text-right">
+                                <a class="btn btn-primary btn-sm" asp-action="Details" , asp-controller="badge" asp-route-idBadge="@item.Id">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    View
+                                </a>
+                                @if (!@item.IsArchieved)
+                                {
+                                    if (item.TypeVoteId != null)
+                                    {
+                                        <a class="btn btn-info btn-sm" onclick="showInPopup('@Url.Action("AddOrEditBadgeVote", "Badge", new { id = item.Id }, Context.Request.Scheme)','update Badges For Votes')">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Edit
+                                        </a>
+                                    }
+                                    if (item.SystemeId != null)
+                                    {
+                                        <a class="btn btn-info btn-sm" asp-action="updateBadgeSystem" asp-controller="Badge" , asp-route-idBadge="@item.Id">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Edit
+                                        </a>
+                                    }
+                                }
+                                @if (!@item.IsArchieved)
+                                {
+                                    <a onclick="Desctivate(@item.Id)" class="btn btn-danger btn-sm">
                                         <i class="fas fa-trash">
                                         </i>
                                         Disable
                                     </a>
-                                </td>
+                                }
+                                else if (@item.IsArchieved)
+                                {
+                                    <a onclick="Activate(@item.Id)" class="btn btn-success btn-sm">
+                                        <i class="fas fa-toggle-on">
+                                        </i>
+                                        Enable
+                                    </a>
+                                }
+                            </td>
                             </tr>
                         }
                     </tbody>
@@ -217,5 +242,56 @@
                 console.log(ex)
             }
         }
+    </script>
+    <script>
+        function Desctivate(id) {
+            if (confirm("Are you Sure you want to Disable this badge ?")) {
+                    $.ajax({
+                        url: "/badge/disableBadge",
+                        type: "POST",
+                        dataType: "json",
+                        data: { idBadge: id },
+
+                        success: function (data) {
+                            if (data.success) {
+                                alert(data.responseText);
+                                window.location.reload(true);
+                            }
+                            else {
+                                alert(data.responseText);
+                            }
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
+            };
+      
+
+        function Activate(id) {
+            if (confirm("Are you Sure you want to enable this Badge ?")) {
+                    $.ajax({
+                        url: "/badge/enableBadge",
+                        type: "POST",
+                        dataType: "json",
+                        data: { idBadge: id },
+                        success: function (data) {
+                            if (data.success) {
+                                alert(data.responseText);
+                                window.location.reload(true);
+                            }
+                            else {
+                                alert(data.responseText);
+                            }
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
+            };
+       
+
     </script>
 }

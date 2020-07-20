@@ -42,17 +42,17 @@
                         <h2> Votes </h2>
                         <hr>
                         <table class="table table-striped projects" id="list">
-                            <thead>
-                            <th style="width:20%">
-                                Votes
-                            </th>
-                            <th>
-                                Quantity
-                            </th>
-                            <th>
-                                Offer To
-                            </th>
-                            </thead >
+                            <tr>
+                                <th style="width:20%">
+                                    Votes
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Offer To
+                                </th>
+                            </tr>
                             <tbody>
                                 @foreach (var item in Model.VoteRightsDtos)
                                 {
@@ -115,16 +115,16 @@
         <h2> Awards </h2>
         <hr>
         <table class="table table-striped projects">
-            <thead>
-            <th style="width: 20%">
-                Votes
-            </th>
-            <th>
-                Given to
-            </th>
+            <tr>
+                <th style="width: 20%">
+                    Votes
+                </th>
+                <th>
+                    Given to
+                </th>
 
-            <th> Offered in </th>
-            </thead >
+                <th> Offered in </th>
+            </tr>
             <tbody>
                 {{#Vlist}}
                 <tr>

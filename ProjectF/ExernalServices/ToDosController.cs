@@ -259,10 +259,9 @@ namespace ProjectF.ExernalServices
 
 
 
-
+        [ActionName("verify")]
         public async Task<int?> verifyidredmine(int userId)
         {
-
             int? idUserredmine = _userRepository.GetIdUserRedmine(userId);
 
             var parameters = new NameValueCollection { { RedmineKeys.STATUS_ID, RedmineKeys.ALL } };

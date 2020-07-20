@@ -58,7 +58,7 @@ namespace PerformanceManagement.DATA.Repositories.UserBadgeRepository
         }
         public List<UserBadge> GetUsersBadge(Badge badge)
         {
-            return _context.userBadges.Where(ub => ub.Badge == badge).ToList();
+            return _context.userBadges.Where(ub => ub.Badge == badge).Include(ub => ub.User).ThenInclude(u => u.VoteRights).ToList();
         }
 
 

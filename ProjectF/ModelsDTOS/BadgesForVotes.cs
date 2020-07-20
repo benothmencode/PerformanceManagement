@@ -27,9 +27,15 @@ namespace ProjectF.ModelsDTOS
         public int BadgeCriteria { get; set; }
 
 
+        public List<VoteRights> VoteRights { get; set; }
+
         public int TypeVoteId { get; set; }
+
        
         public IEnumerable<SelectListItem> TypeVote { get; set; }
+
+        public DateTime Created { get; set; }
+
         [Required]
         public Periodicity Periodicity { get; set; }
 
@@ -38,13 +44,13 @@ namespace ProjectF.ModelsDTOS
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Periodicity == Periodicity.Weekly && ValueOfPeriodicity >= 4 && ValueOfPeriodicity < 1)
+            if (Periodicity == Periodicity.Monthly && ValueOfPeriodicity >= 4 && ValueOfPeriodicity < 1)
             {
                 yield return new ValidationResult(
                     "Value of Periodicity must be between 1 and 3",
                     new[] { nameof(ValueOfPeriodicity) });
             }
-            if (Periodicity == Periodicity.Monthly && ValueOfPeriodicity >= 12 && ValueOfPeriodicity < 1)
+            if (Periodicity == Periodicity.Weekly && ValueOfPeriodicity >= 12 && ValueOfPeriodicity < 1)
             {
                 yield return new ValidationResult(
                     "Value of Periodicity must be between 1 and 11",

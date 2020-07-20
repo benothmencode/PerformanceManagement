@@ -35,10 +35,7 @@ namespace PerformanceManagement.ENTITIES
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         
         public DateTime Created { get; set; }
-        public Badge()
-        {
-            Created = DateTime.Now;
-        }
+       
 
         [ForeignKey("SystemeId")]
         public int? SystemeId { get; set; }

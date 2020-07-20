@@ -47,7 +47,7 @@ namespace PerformanceManagement.DATA.Repositories
 
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users.OrderBy(u => u.Created).ToList();
+            return _context.Users.Include(u => u.VoteRights).OrderBy(u => u.Created).ToList();
         }
 
         public void Edit(User user)

@@ -102,10 +102,12 @@ namespace ProjectF.Controllers
 
         }
 
+       
+        
         [Authorize(Roles ="Administrator")]
         public IActionResult Listofbadges()
         {
-            var badges = _BadgeRepository.GetAll().ToList();
+            var badges = _BadgeRepository.GetAll().Where(b => b.SystemIsArchieved != true).ToList();
             
             return View(badges);
         }
@@ -116,7 +118,7 @@ namespace ProjectF.Controllers
         [Route("/Admin/Badge/Create")]
         public IActionResult Create()
         {
-            var Systemes = _systemeRepository.GetSystemes();
+            var Systemes = _systemeRepository.GetSystemes().Where(sy => sy.SystemIsArchieved == false);
             if (Systemes.Count() != 0)
             {
                 var SystemeModel = _mapper.Map<IList<SystemeEntityDto>>(Systemes);
@@ -168,6 +170,64 @@ namespace ProjectF.Controllers
 
 
 
+        [Authorize(Roles = "Administrator")]
+        public IActionResult updateBadgeSystem(int idBadge)
+        {
+            var Systemes = _systemeRepository.GetSystemes().Where(sy => sy.SystemIsArchieved == false);
+            var badge = _BadgeRepository.GetBadgeById(idBadge);
+            if (Systemes.Count() != 0 && badge != null)
+            {
+                var SystemeModel = _mapper.Map<IList<SystemeEntityDto>>(Systemes);
+                var systemeList = new SystemesList(SystemeModel.ToList());
+                BadgeForCreationDto BadgeForCreationDto = new BadgeForCreationDto
+                {
+                    Id = badge.Id,
+                    Periodicity = badge.periodicity,
+                    Description = badge.Description,
+                    BadgeCriteria = badge.BadgeCriteria,
+                    Title = badge.Title,
+                    ValueOfPeriodicity = badge.ValueOfPeriodicity,
+                    Created = badge.Created,
+                    systemes = systemeList.GetSystemesList(),
+                    JobIds = _jobService.getJobIds().Select(s => new SelectListItem { Text = s, Value = s }).ToList()
+                };
+                return View(BadgeForCreationDto);
+            }
+            else
+            {
+                _flashMessage.Warning("You need To Add a System First");
+                return RedirectToAction("CreateSysteme", "Admin");
+            }
+
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public IActionResult updateBadgeSystem(BadgeForCreationDto badgeForCreation)
+        {
+            var stringFileName = UploadFile(badgeForCreation.Icon);
+
+
+            if (ModelState.IsValid)
+            {
+                var badge = _mapper.Map<Badge>(badgeForCreation);
+                badge.Icon = stringFileName;
+                if (!_BadgeRepository.update(badge))
+                {
+                    ModelState.AddModelError("", $"Something went wrong saving the badge " +
+                                                $"{badgeForCreation.Title}");
+                    return StatusCode(500, ModelState);
+                }
+
+                _jobService.startJob(badge.jobId);
+                return RedirectToAction("Listofbadges");
+            }
+
+            return RedirectToAction("Create", badgeForCreation);
+
+        }
+
+
         [NoDirectAccess]
         public IActionResult AddOrEditBadgeVote(int id = 0)
         {
@@ -176,16 +236,29 @@ namespace ProjectF.Controllers
             {
                 var voteTypeList = new TypeVotesList(VoteType);
                 if (id == 0)
-
                     return View(new BadgesForVotes() { TypeVote = voteTypeList.GetvoteTypeList() });
                 else
                 {
                     var BadgeForVote = _BadgeRepository.GetBadgeById(id);
-                    if (BadgeForVote == null)
+
+                    if (BadgeForVote != null)
                     {
-                        return NotFound();
+                        var badgedto = new BadgesForVotes()
+                        {
+                            Id = BadgeForVote.Id,
+                            Periodicity = BadgeForVote.periodicity,
+                            Description = BadgeForVote.Description,
+                            BadgeCriteria = BadgeForVote.BadgeCriteria,
+                            Title = BadgeForVote.Title,
+                            ValueOfPeriodicity = BadgeForVote.ValueOfPeriodicity,
+                            TypeVote = voteTypeList.GetvoteTypeList(),
+                            TypeVoteId = (int)BadgeForVote.TypeVoteId,
+                            Created = BadgeForVote.Created,
+                           
+                        };
+                        return View(badgedto);
                     }
-                    return View(BadgeForVote);
+                    return RedirectToAction("Listofbadges");
                 }
             }
             else
@@ -198,7 +271,7 @@ namespace ProjectF.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddOrEditBadgeVote(int id, int? TypeVoteId, [Bind("Id,Title,Icon,BadgeCriteria,Description,Periodicity,ValueOfPeriodicity,TypeVoteId,TypeVote")] BadgesForVotes badgeForVotes)
+        public IActionResult AddOrEditBadgeVote(int id, int? TypeVoteId, [Bind("Id,Title,Icon,BadgeCriteria,Description,Periodicity,ValueOfPeriodicity,TypeVoteId,TypeVote,Created")] BadgesForVotes badgeForVotes)
         {
             if (ModelState.IsValid)
             {
@@ -220,11 +293,30 @@ namespace ProjectF.Controllers
                         VoteRight.Update = badge.Created;
                         _VoteRepository.AddOrUpdateVoteRights(VoteRight.Id, VoteRight);
                     }
+
+                    return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Listofbadges", _BadgeRepository.GetAll().ToList()) });
                 }
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Listofbadges", _BadgeRepository.GetAll().ToList()) });
+                else if(id != 0)
+                {
+                    var badge = _mapper.Map<Badge>(badgeForVotes);
+                    badge.Icon = stringFileName;
+
+                    _BadgeRepository.update(badge);
+                    var users = _UserBadgeRepository.GetUsersBadge(badge).Select(ub => ub.User).ToList();
+                    foreach (var user in users)
+                    {
+                        var voteRights = _BadgeRepository.GetVoteRights(user, badge.Created);
+                        voteRights.Quantity = badge.BadgeCriteria;
+                        voteRights.TypeVoteId = (int)TypeVoteId;
+                        _VoteRepository.AddOrUpdateVoteRights(voteRights.Id, voteRights);
+                    }
+
+                    return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "Listofbadges", _BadgeRepository.GetAll().ToList()) });
+
+                }
             }
 
-            // return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEditBadgeVote",  badgeForVotes) });
+      
             return RedirectToAction("AddOrEditBadgeVote", badgeForVotes);
         }
 
@@ -282,14 +374,53 @@ namespace ProjectF.Controllers
         }
 
 
+
         [Authorize(Roles = "Administrator")]
-        [Route("/Admin/Badge/Count")]
-        public int Countbadges()
+        [HttpPost]
+        public IActionResult disableBadge(int idBadge)
         {
-            return _BadgeRepository.numberOfBadges();
+           
+            var badge = _BadgeRepository.GetBadgeById(idBadge);
+            if (badge != null && badge.IsArchieved == false)
+            {
+                _BadgeRepository.DesactivateBadge(idBadge,!badge.IsArchieved);
+
+               return Json(new
+               {
+                   success = true,
+                   responseText = badge.Title + " disabled Successfully!! "
+               });
+            }
+            return Json(new
+            {
+                success = false,
+                responseText = "Something went wrong !! "
+            });
         }
 
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        public IActionResult enableBadge(int idBadge)
+        {
+            var badge = _BadgeRepository.GetBadgeById(idBadge);
+            if(badge != null)
+            {
+                _BadgeRepository.DesactivateBadge(idBadge, !badge.IsArchieved);
+                return Json(new
+                {
+                    success = true,
+                    responseText = badge.Title + " disabled Successfully!! "
+                });
+            }
+            return Json(new
+            {
+                success = false,
+                responseText = "Something went wrong !! "
+            });
 
+         }
 
     }
+
 }
+

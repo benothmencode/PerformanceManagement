@@ -106,7 +106,7 @@
                                     </a>
                                     @if (!@systeme.SystemIsArchieved)
                                     {
-                                        <a onclick="Desctivate(@systeme.Id)" class="btn btn-danger btn-sm" href="#">
+                                        <a onclick="Desctivate(@systeme.Id, @systeme.Badges.Count())" class="btn btn-danger btn-sm">
                                             <i class="fas fa-trash">
                                             </i>
                                             Disable System
@@ -114,7 +114,7 @@
                                     }
                                     else if (@systeme.SystemIsArchieved)
                                     {
-                                        <a onclick="Activate(@systeme.Id)" class="example2 btn btn-success btn-sm" href="#">
+                                        <a onclick="Activate(@systeme.Id,@systeme.Badges.Count())" class="btn btn-success btn-sm" >
                                             <i class="fas fa-toggle-on">
                                             </i>
                                             Enable System
@@ -124,7 +124,7 @@
                             </tr>
                         }
 
-
+                        
                     </tbody>
                 </table>
             </div>
@@ -140,62 +140,56 @@
 
 @section scripts{
     <script>
-        function Desctivate(id) {
-            $.confirm({
-                title: 'Confirm!',
-                content: 'Simple confirm!',
-                buttons: {
-                    confirm: function () {
-                        $.ajax({
-                            url: "/Admin/disabelSysteme",
-                            type: "POST",
-                            dataType: "json",
-                            data: { SystemId: id },
-                            success: function (data) {
-                                if (data.success) {
-                                    alert(data.responseText);
-                                    window.location.reload(true);
-                                }
-                                else {
-                                    alert(data.responseText);
-                                }
+        function Desctivate(id, nbr) {
+            if (confirm("Are you Sure you want to Disable this System ?")) {
+                if (confirm("if you disable this system , YOU WILL DISABLE " + nbr + " Badges")) {
+                    $.ajax({
+                        url: "/Admin/disabelSysteme",
+                        type: "POST",
+                        dataType: "json",
+                        data: { SystemId: id },
+
+                        success: function (data) {
+                            if (data.success) {
+                                alert(data.responseText);
+                                window.location.reload(true);
                             }
-                        });
-                        $.alert('Confirmed!');
-                    },
-                    cancel: function () {
-                        $.alert('Canceled!');
-                    },
+                            else {
+                                alert(data.responseText);
+                            }
+                        }
+                    });
                 }
-            });
-        }
+                else {
+                    return false;
+                }
+            };
+        };
 
+        function Activate(id, nbr) {
+            if (confirm("Are you Sure you want to enable this System ?")) {
+                if (confirm("if you enable this system , YOU WILL enable " + nbr + " Badges")) {
+                    $.ajax({
+                        url: "/Admin/enableSystem",
+                        type: "POST",
+                        dataType: "json",
+                        data: { SystemId: id },
+                        success: function (data) {
+                            if (data.success) {
+                                alert(data.responseText);
+                                window.location.reload(true);
+                            }
+                            else {
+                                alert(data.responseText);
+                            }
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
+            };
+        };
 
-
-
-
-
-            //function Activate(id) {
-            //    if (confirm("Are you Sure you want to enable this User?")) {
-            //        $.ajax({
-            //            url: "/Admin/activateUser",
-            //            type: "POST",
-            //            dataType: "json",
-            //            data: { UserId: id },
-            //            success: function (data) {
-            //                if (data.success) {
-            //                    alert(data.responseText);
-            //                    window.location.reload(true);
-            //                }
-            //                else {
-            //                    alert(data.responseText);
-            //                }
-            //            }
-            //        });
-            //    }
-            //    else {
-            //        return false;
-            //    }
-            //};
     </script>
 }

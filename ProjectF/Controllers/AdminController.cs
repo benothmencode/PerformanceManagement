@@ -390,16 +390,39 @@ namespace ProjectF.Controllers
             if (system != null && system.SystemIsArchieved == false )
             {
 
-                 result = _SystemeRepository.DisableSystem(SystemId);
+                 result = _SystemeRepository.DisableSystem(SystemId ,result);
                 return Json(new
                 {
                     success = result,
-                    responseText = system.SystemName + "disabled Successfully!! "
+                    responseText = system.SystemName + " disabled Successfully!! "
                 });
             }
             return Json(new
             {
                 success = result,
+                responseText = "Something went wrong !! "
+            });
+
+        }
+
+        [HttpPost]
+        public IActionResult enableSystem(int SystemId)
+        {
+            var system = _SystemeRepository.GetSystemeById(SystemId);
+            bool result = system.SystemIsArchieved;
+            if (system != null && system.SystemIsArchieved)
+            {
+
+                 _SystemeRepository.DisableSystem(SystemId, result);
+                return Json(new
+                {
+                    success = true,
+                    responseText = system.SystemName + " disabled Successfully!! "
+                });
+            }
+            return Json(new
+            {
+                success = false,
                 responseText = "Something went wrong !! "
             });
 

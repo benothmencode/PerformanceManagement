@@ -20,6 +20,9 @@ namespace PerformanceManagement.DATA.Repositories.BadgeRepository
         public bool badgefortoday(DateTime d);
 
         public List<Badge> GetBadgesByJobId(string jobId);
-        public void DesactivateBadge(int idbadge);
+        public void DesactivateBadge(int idbadge , bool result);
+        public bool update(Badge badge);
+
+        public VoteRights GetVoteRights(User user1, DateTime date);
     }
 }

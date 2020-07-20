@@ -10,10 +10,11 @@
     <div class="col-md-12">
         <form asp-controller="Badge" asp-action="AddOrEditBadgeVote" asp-route-id="@Model.Id" enctype="multipart/form-data" onsubmit="return jQueryAjaxPost(this);">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <input asp-for="@Model.Id" hidden class="form-control" />
+                        <input asp-for="@Model.Created" hidden class="form-control" />
                         <label asp-for="TypeVote">TypeVote:</label>
                         <select type="button" class="btn btn-md btn-secondary" asp-for="TypeVoteId" asp-items="@Model.TypeVote">
                             <option value="" selected disabled>-- Select type Vote --</option>

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PerformanceManagement.DATA.DbContexts;
+using PerformanceManagement.DATA.Repositories;
 using PerformanceManagement.DATA.Repositories.BadgeRepository;
 using PerformanceManagement.DATA.Repositories.SystemeRepository;
 using PerformanceManagement.DATA.Repositories.UserBadgeRepository;
@@ -31,8 +32,8 @@ namespace ProjectF.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly PerformanceManagementDBContext _context;
-        private readonly ISystemeRepository _systemeRepository;
         private readonly IBadgeRepository _badgeRepository;
+        private readonly IVoteRepository _VoteRepository;
         private readonly IUserBadgeRepository _UserbadgeRepository;
         private readonly IMapper _mapper;
         private readonly IJobService _jobService;
@@ -50,11 +51,11 @@ namespace ProjectF.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             PerformanceManagementDBContext context,
-            ISystemeRepository systemeRepository,
             IMapper mapper,
             IBadgeRepository badgeRepository,
             IUserBadgeRepository userBadgeRepository,
-            IJobService jobService
+            IJobService jobService,
+            IVoteRepository VoteRepository
            )
         {
             _userManager = userManager;
@@ -62,11 +63,11 @@ namespace ProjectF.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
-            _systemeRepository = systemeRepository;
             _mapper = mapper;
             _badgeRepository = badgeRepository;
             _UserbadgeRepository = userBadgeRepository;
             _jobService = jobService;
+            _VoteRepository = VoteRepository;
           
         }
 
@@ -164,6 +165,8 @@ namespace ProjectF.Areas.Identity.Pages.Account
                                     Update = DateTime.Now,
                                     UserId = user.Id,
                                 };
+
+                                _VoteRepository.AddOrUpdateVoteRights(voteRights.Id, voteRights);
                             }
                         }
                     }

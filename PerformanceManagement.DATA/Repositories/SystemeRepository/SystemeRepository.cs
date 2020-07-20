@@ -32,6 +32,7 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         public void CreateSysteme(Systeme systeme)
         {
             systeme.Created = DateTime.Now;
+            systeme.SystemIsArchieved = false;
             _context.Add(systeme);
             _context.SaveChanges();
         }
@@ -79,21 +80,35 @@ namespace PerformanceManagement.DATA.Repositories.SystemeRepository
         }
 
 
-        public bool DisableSystem(int systemId)
+        public bool DisableSystem(int systemId , bool result)
         {
-            var systeme = _context.Systemes.Include(s=> s.Badges).Include(s => s.SystemeUsers).FirstOrDefault(s => s.Id == systemId);
+            var systeme = _context.Systemes.Include(s=> s.Badges).Include(s => s.SystemeUsers).Where(s => s.SystemIsArchieved == result).FirstOrDefault(s => s.Id == systemId);
             var saved = 0;
             if (systeme.SystemIsArchieved != true)
             {
                 foreach (var badge in systeme.Badges)
                 {
                     badge.SystemIsArchieved = true;
+                    badge.IsArchieved = true;
                 }
                 foreach (var userSystem in systeme.SystemeUsers)
                 {
                     userSystem.SystemIsArchieved = true;
                 }
                 systeme.SystemIsArchieved = true;
+            }
+            else if (systeme.SystemIsArchieved == true)
+            {
+                foreach (var badge in systeme.Badges)
+                {
+                    badge.SystemIsArchieved = false;
+                    badge.IsArchieved = false;
+                }
+                foreach (var userSystem in systeme.SystemeUsers)
+                {
+                    userSystem.SystemIsArchieved = false;
+                }
+                systeme.SystemIsArchieved = false;
             }
             _context.Update(systeme);
             saved = _context.SaveChanges();

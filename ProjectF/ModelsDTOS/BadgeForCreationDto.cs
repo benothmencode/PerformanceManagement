@@ -19,6 +19,8 @@ namespace ProjectF.ModelsDTOS
 
         public string JobId { get; set; }
 
+        public DateTime Created { get; set; }
+
         public List<SelectListItem> JobIds { get; set; }
 
         [Required]

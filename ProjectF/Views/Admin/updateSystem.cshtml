@@ -54,7 +54,7 @@
                                 <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <a href="#" class="btn btn-secondary">Cancel</a>
+                                <a onclick="history.go(-1)" class="btn btn-secondary">Cancel</a>
                                 <input type="submit" value="Update System" class="btn btn-success float-right">
                             </div>
                         </form>
@@ -69,9 +69,4 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
